@@ -17,6 +17,7 @@
     "@hono/zod-validator": "^0.4.3",
     "better-sqlite3": "^11.9.0",
     "drizzle-orm": "^0.39.3",
+    "drizzle-zod": "^0.7.0",
     "hono": "^4.7.2",
     "pg": "^8.13.3",
     "postgres": "^3.4.5",
