@@ -7,7 +7,7 @@ import { zValidator } from '@hono/zod-validator'
 import db from '../db'
 import { insertMoodsSchema, moods as moodsTable } from '../db/schema/moods'
 import { desc, eq } from "drizzle-orm";
-import { createPostSchema, fakeMoods } from "../types";
+import { createPostSchema } from "../types";
 
 export const moodsRoute = new Hono()
 
