@@ -17,5 +17,5 @@ export const moods = sqliteTable('moods_table', {
 export const insertMoodsSchema = createInsertSchema(moods, {
     emoji: z.string().emoji(),
 });
-// Schema for selecting a Expenses - can be used to validate API responses
+// Schema for selecting a Mood - can be used to validate API responses
 export const selectMoodsSchema = createSelectSchema(moods);
