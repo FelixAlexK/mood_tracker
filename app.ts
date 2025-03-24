@@ -1,16 +1,13 @@
 import { Hono } from 'hono';
 import { logger } from 'hono/logger'
-import {moodsRoute} from './routes/moods'
+import { moodsRoute } from './routes/moods'
+import { authRoute } from './routes/auth'
 
 
 const app = new Hono();
 app.use("*", logger())
 
-
-app.get('/test', context => {
-    return context.json({ message: 'Hello from Bun server!' });
-})
-
-app.route('/api/moods', moodsRoute)
+const apiRoutes = app.basePath("/api").route("/moods", moodsRoute).route("/", authRoute);
 
 export default app;
+export type ApiRoutes = typeof apiRoutes;
