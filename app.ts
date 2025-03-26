@@ -1,13 +1,13 @@
-import { Hono } from 'hono';
-import { logger } from 'hono/logger'
-import { moodsRoute } from './routes/moods'
-import { authRoute } from './routes/auth'
+import { Hono } from "hono";
+import { logger } from "hono/logger";
 
+import { authRoute } from "./routes/auth";
+import { moodsRoute } from "./routes/moods";
 
 const app = new Hono();
-app.use("*", logger())
+app.use("*", logger());
 
-const apiRoutes = app.basePath("/api").route("/moods", moodsRoute).route("/", authRoute);
+const _apiRoutes = app.basePath("/api").route("/moods", moodsRoute).route("/", authRoute);
 
 export default app;
-export type ApiRoutes = typeof apiRoutes;
+export type ApiRoutes = typeof _apiRoutes;
