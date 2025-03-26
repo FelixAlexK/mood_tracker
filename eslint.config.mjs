@@ -2,6 +2,7 @@
 // pnpm dlx @antfu/eslint-config@latest
 
 import antfu from "@antfu/eslint-config";
+import eslintPluginYml from "eslint-plugin-yml";
 
 export default antfu({
   type: "app",
@@ -27,5 +28,9 @@ export default antfu({
       case: "kebabCase",
       ignore: ["README.md"],
     }],
+
   },
+  plugins: [
+    eslintPluginYml.configs["flat/recommended"],
+  ],
 });
