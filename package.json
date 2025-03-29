@@ -3,8 +3,8 @@
   "type": "module",
   "module": "index.ts",
   "scripts": {
-    "start": "bun index.ts",
-    "dev": "bun --watch index.ts",
+    "start": "bun backend/index.ts",
+    "dev": "bun --watch backend/index.ts",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "prepare": "husky"
