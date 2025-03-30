@@ -7,8 +7,8 @@ import NavComponent from "./components/nav-component.vue";
     <NavComponent />
     <main class="min-h-screen bg-gray-100 p-6">
       <div class="max-w-2xl mx-auto">
-        <section class=" py-[70px] mx-auto">
-          <div class="mx-auto px-4 sm:container">
+        <section class="pt-24 pb-12 mx-auto">
+          <div class="mx-auto">
             <div>
               <h2 class="text-dark mb-2 text-2xl font-semibold ">
                 {{ $route.name }}
