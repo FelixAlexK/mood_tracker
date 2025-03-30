@@ -29,7 +29,9 @@ function formattedDate(createdAt: string | null) {
 </script>
 
 <template>
-  <div class=" grid grid-cols-1 md:grid-cols-2 gap-4">
+  <span v-if="isPending">Loading...</span>
+  <span v-else-if="isError">Error: {{ error?.message }}</span>
+  <div v-else class=" grid grid-cols-1 md:grid-cols-2 gap-4">
     <div v-for="mood in data?.moods" :key="mood.id" class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow ">
       <div class="flex items-center justify-between mb-2">
         <span class="text-2xl">{{ mood.emoji }}</span>
