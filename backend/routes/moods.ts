@@ -3,6 +3,7 @@ import { desc, eq } from "drizzle-orm";
 import {
   Hono,
 } from "hono";
+import { z } from "zod";
 
 import db from "../db";
 import { insertMoodsSchema, moods as moodsTable } from "../db/schema/moods";
@@ -10,8 +11,11 @@ import { createPostSchema } from "../types";
 
 export const moodsRoute = new Hono()
 
-  .get("/", async (context) => {
-    const moods = await db.select().from(moodsTable).orderBy(desc(moodsTable.createdAt)).limit(100);
+  .get("/", zValidator("query", z.object({
+    itemlimit: z.string().optional(),
+  })), async (context) => {
+    const query = context.req.valid("query");
+    const moods = await db.select().from(moodsTable).orderBy(desc(moodsTable.createdAt)).limit(Number.parseInt(query.itemlimit ?? "100"));
 
     return context.json({ moods });
   })
