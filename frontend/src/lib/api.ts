@@ -16,8 +16,8 @@ export async function postMood(mood: Omit<MoodEntry, "id" | "createdAt">) {
   return data;
 }
 
-export async function getMoods() {
-  const result = await api.moods.$get();
+export async function getMoods(limit: string | undefined) {
+  const result = await api.moods.$get({ query: { itemlimit: limit } });
   if (!result.ok) {
     throw new Error("Failed to fetch moods");
   }
