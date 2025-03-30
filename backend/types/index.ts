@@ -4,7 +4,7 @@ export const moodSchema = z.object({
   id: z.number().int().positive().min(1),
   type: z.string(),
   emoji: z.string().emoji(),
-  createdAt: z.optional(z.number().int()),
+  createdAt: z.optional(z.string()),
   note: z.string().nullable(),
   userID: z.string(),
 });
