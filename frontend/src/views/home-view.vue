@@ -8,7 +8,7 @@ import type { MoodEntry } from "../types";
 
 const { data } = useQuery({
   queryKey: ["get-moods"],
-  queryFn: getMoods,
+  queryFn: () => getMoods("6"),
 });
 
 const variables = useMutationState<MoodEntry>({
@@ -23,6 +23,9 @@ const variables = useMutationState<MoodEntry>({
       <MoodFormComponent />
     </section>
     <section>
+      <h3 class="block text-gray-700 text-sm font-bold mb-2 pt-4">
+        Latest Moods
+      </h3>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MoodCardComponent
           v-for="mood in data?.moods"
