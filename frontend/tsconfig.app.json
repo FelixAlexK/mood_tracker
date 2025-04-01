@@ -10,7 +10,8 @@
       "@backend/*": [
         "../backend/*"
       ]
-    }
+    },
+    "strict": true
   },
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "../backend/*"],
   "exclude": ["src/**/__tests__/*"]
