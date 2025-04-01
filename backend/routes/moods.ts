@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import { desc, eq } from "drizzle-orm";
+import { count, desc, eq } from "drizzle-orm";
 import {
   Hono,
 } from "hono";
@@ -13,11 +13,20 @@ export const moodsRoute = new Hono()
 
   .get("/", zValidator("query", z.object({
     itemlimit: z.string().optional(),
+
   })), async (context) => {
     const query = context.req.valid("query");
     const moods = await db.select().from(moodsTable).orderBy(desc(moodsTable.createdAt)).limit(Number.parseInt(query.itemlimit ?? "100"));
 
     return context.json({ moods });
+  })
+
+  .get("/count", async (context) => {
+    const countMoods = await db
+      .select({ count: count() })
+      .from(moodsTable);
+
+    return context.json({ countMoods });
   })
 
   .post("/", zValidator("json", createPostSchema), async (context) => {
@@ -36,7 +45,7 @@ export const moodsRoute = new Hono()
     return context.json(result);
   })
 
-  .get("/:id{[0-9]+}", async (context) => {
+  .get("/:id", async (context) => {
     const id = Number.parseInt(context.req.param("id"));
     const mood = await db
       .select()
@@ -51,8 +60,10 @@ export const moodsRoute = new Hono()
     return context.json({ mood });
   })
 
-  .delete("/:id{[0-9]+}", async (context) => {
-    const id = Number.parseInt(context.req.param("id"));
+  .delete("/:id", zValidator("param", z.object({
+    id: z.number(),
+  })), async (context) => {
+    const id = context.req.valid("param").id;
     // const user = context.var.user;
 
     const mood = await db
