@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { MoodEntry } from "@/types";
 
+import router from "@/router";
 import { Clock } from "lucide-vue-next";
 
 const { mood } = defineProps<{
@@ -25,7 +26,7 @@ function formattedDate(createdAt: string | null) {
 </script>
 
 <template>
-  <div class="relative bg-white rounded-lg shadow-md w-full h-32 p-4 hover:shadow-lg transition-shadow">
+  <div class="relative bg-white rounded-lg shadow-md w-full h-32 p-4 hover:shadow-lg transition-shadow" @click="router.push(`/mood/${mood.id}`)">
     <div class="flex items-center justify-between mb-2">
       <span class="text-2xl">{{ mood.emoji }}</span>
       <span class="text-sm text-gray-600 capitalize">{{ mood.type }}</span>
