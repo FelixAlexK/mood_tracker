@@ -72,7 +72,7 @@ onUnmounted(() => {
               class="absolute right-4 top-full w-full max-w-[250px] rounded-lg bg-white px-6 py-5 shadow dark:bg-dark-2 lg:static lg:block lg:w-full lg:max-w-full lg:shadow-none lg:dark:bg-transparent"
             >
               <ul class="block lg:flex">
-                <template v-for="(item, index) in navLinkItems" :key="index">
+                <template v-for="(item, index) in navLinkItems.filter((v) => v.name !== '')" :key="index">
                   <li>
                     <RouterLink :to="item.path" class="flex py-2 text-base font-medium text-body-color hover:text-dark dark:text-dark-6 dark:hover:text-white lg:ml-12 lg:inline-flex">
                       {{ item.name }}
