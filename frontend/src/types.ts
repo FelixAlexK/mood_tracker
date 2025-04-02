@@ -15,3 +15,5 @@ export const MOOD_TYPES = [
   { type: "angry", emoji: "😠" },
   { type: "tired", emoji: "😴" },
 ] as const;
+
+export type UpdateMood = Omit<MoodEntry, "id" | "createdAt" | "userID">;
