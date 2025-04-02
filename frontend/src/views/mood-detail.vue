@@ -1,14 +1,19 @@
 <script setup lang="ts">
+import type { UpdateMood } from "@/types";
+
 import HeadlineComponent from "@/components/headline-component.vue";
-import { getMood } from "@/lib/api";
+import { deleteMood, getMood, updateMood } from "@/lib/api";
+import router from "@/router";
 import { MOOD_TYPES } from "@/types";
-import { useQuery } from "@tanstack/vue-query";
-import { Clock, Edit2, Save, X } from "lucide-vue-next";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
+import { Clock, Edit2, Save, Trash2, X } from "lucide-vue-next";
 import { computed, ref } from "vue";
 
 const { id } = defineProps<{
   id: string;
 }>();
+
+const queryClient = useQueryClient();
 
 const isEditing = ref(false);
 const selectedType = ref("");
@@ -16,8 +21,25 @@ const selectedEmoji = ref("");
 const editedNote = ref("");
 
 const { data } = useQuery({
-  queryKey: ["get-mood-by-id", id],
+  queryKey: ["get-mood-by-id", { id }],
   queryFn: () => getMood({ id }),
+});
+
+const { mutate: patch } = useMutation({
+  mutationKey: ["update-mood"],
+  mutationFn: (mood: { id: string; mood: UpdateMood }) => updateMood(mood),
+  onSuccess: (data) => {
+    queryClient.setQueryData(["get-mood-by-id", { id }], data);
+  },
+  onSettled: () => queryClient.invalidateQueries({ queryKey: ["get-mood-by-id", { id }] }),
+});
+const { mutate: deleteMutation } = useMutation({
+  mutationKey: ["delete-mood"],
+  mutationFn: () => deleteMood({ id }),
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["get-mood-by-id", { id }] });
+    router.go(-1);
+  },
 });
 
 const formattedDate = computed(() =>
@@ -46,17 +68,19 @@ function selectMood(type: string, emoji: string) {
 }
 
 function saveChanges() {
-//   emit("update", {
-//     ...mood,
-//     type: selectedType.value,
-//     emoji: selectedEmoji.value,
-//     note: editedNote.value.trim() || null,
-//   });
+  patch({ id, mood: { type: selectedType.value, emoji: selectedEmoji.value, note: editedNote.value.trim() || null } });
   isEditing.value = false;
 }
 
 function cancelEditing() {
   isEditing.value = false;
+}
+
+function handleDelete() {
+  // eslint-disable-next-line no-alert
+  if (confirm("Are you sure you want to delete this mood entry?")) {
+    deleteMutation();
+  }
 }
 </script>
 
@@ -76,13 +100,22 @@ function cancelEditing() {
           <span>{{ formattedDate }}</span>
         </div>
       </div>
-      <button
-        v-if="!isEditing"
-        class="text-blue-500 hover:text-blue-600 transition-colors"
-        @click="startEditing"
-      >
-        <Edit2 class="w-5 h-5" />
-      </button>
+      <div class="flex gap-2">
+        <button
+          v-if="!isEditing"
+          class="text-blue-500 hover:text-blue-600 transition-colors"
+          @click="startEditing"
+        >
+          <Edit2 class="w-5 h-5" />
+        </button>
+        <button
+          v-if="!isEditing"
+          class="text-red-500 hover:text-red-600 transition-colors"
+          @click="handleDelete"
+        >
+          <Trash2 class="w-5 h-5" />
+        </button>
+      </div>
     </div>
 
     <div v-if="isEditing">
