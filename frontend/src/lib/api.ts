@@ -1,4 +1,4 @@
-import type { MoodEntry } from "@/types";
+import type { MoodEntry, UpdateMood } from "@/types";
 import type { ApiRoutes } from "@backend/app";
 
 import { hc } from "hono/client";
@@ -35,7 +35,7 @@ export async function getMoodsCount() {
 }
 
 export async function getMood({ id }: { id: string }) {
-  const result = await api.moods[":id"].$get({ param: { id } });
+  const result = await api.moods[":id{[0-9]+}"].$get({ param: { id } });
   if (!result.ok) {
     throw new Error("Failed to fetch mood");
   }
@@ -44,11 +44,18 @@ export async function getMood({ id }: { id: string }) {
   return data;
 }
 
-// export async function deleteMood({ id }: { id: number }) {
-//   const result = await api.moods[":id{[0-9]+}"].$delete({ param: { id: id.toString() } });
-//   if (!result.ok) {
-//     throw new Error("Failed to delete mood");
-//   }
-//   const data = await result.json();
-//   return data;
-// }
+export async function deleteMood({ id }: { id: string }) {
+  const result = await api.moods[":id{[0-9]+}"].$delete({ param: { id: id.toString() } });
+  if (!result.ok) {
+    throw new Error("Failed to delete mood");
+  }
+}
+
+export async function updateMood({ id, mood }: { id: string; mood: UpdateMood }) {
+  const result = await api.moods[":id{[0-9]+}"].$patch({ param: { id }, json: mood });
+  if (!result.ok) {
+    throw new Error("Failed to update mood");
+  }
+  const data = await result.json() as { mood: MoodEntry };
+  return data;
+}
