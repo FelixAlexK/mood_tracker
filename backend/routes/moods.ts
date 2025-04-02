@@ -7,7 +7,7 @@ import { z } from "zod";
 
 import db from "../db";
 import { insertMoodsSchema, moods as moodsTable } from "../db/schema/moods";
-import { createPostSchema } from "../types";
+import { createPostSchema, updatePostSchema } from "../types";
 
 export const moodsRoute = new Hono()
 
@@ -45,7 +45,7 @@ export const moodsRoute = new Hono()
     return context.json(result);
   })
 
-  .get("/:id", async (context) => {
+  .get("/:id{[0-9]+}", async (context) => {
     const id = Number.parseInt(context.req.param("id"));
     const mood = await db
       .select()
@@ -60,10 +60,8 @@ export const moodsRoute = new Hono()
     return context.json({ mood });
   })
 
-  .delete("/:id", zValidator("param", z.object({
-    id: z.number(),
-  })), async (context) => {
-    const id = context.req.valid("param").id;
+  .delete("/:id{[0-9]+}", async (context) => {
+    const id = Number.parseInt(context.req.param("id"));
     // const user = context.var.user;
 
     const mood = await db
@@ -77,4 +75,25 @@ export const moodsRoute = new Hono()
     }
 
     return context.json({ mood });
+  })
+
+  .patch("/:id{[0-9]+}", zValidator("json", updatePostSchema), async (context) => {
+    const id = Number.parseInt(context.req.param("id"));
+    const mood = context.req.valid("json");
+    const validatedMood = updatePostSchema.parse({
+      ...mood,
+    });
+
+    const updatedMood = await db
+      .update(moodsTable)
+      .set(validatedMood)
+      .where(eq(moodsTable.id, id))
+      .returning()
+      .then(res => res[0]);
+
+    if (!updatedMood) {
+      return context.notFound();
+    }
+
+    return context.json({ updatedMood });
   });
