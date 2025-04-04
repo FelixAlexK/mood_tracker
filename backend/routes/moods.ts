@@ -234,7 +234,7 @@ export const moodsRoute = new Hono()
       const date = new Date();
       date.setDate(today.getDate() - i);
       return {
-        date: date.getTime(),
+        date: date.toISOString().split("T")[0],
         type: "", // Default type is null
         emoji: "", // Default emoji is null
         count: 0, // Default count is 0
@@ -243,7 +243,7 @@ export const moodsRoute = new Hono()
 
     // Map the fetched moods to the weekly trend array
     moods.forEach((mood) => {
-      const trendDay = weeklyTrend.find(day => day.date === mood.date ? new Date(mood.date) : new Date());
+      const trendDay = weeklyTrend.find(day => day.date === (mood.date ? new Date(mood.date).toISOString().split("T")[0] : ""));
       if (!trendDay)
         return;
       // If the current mood has a higher count, update the trend day
@@ -255,4 +255,41 @@ export const moodsRoute = new Hono()
     });
 
     return context.json({ weeklyTrend });
+  })
+
+  .get("/stats/monthly-overview", async (context) => {
+    // Get the current date and calculate the start of the year
+    const today = new Date();
+    const startOfYear = new Date(today.getFullYear(), 0, 1); // January 1st of the current year
+
+    // Fetch mood entries grouped by month and mood type
+    const moods = await db
+      .select({
+        createdAt: moodsTable.createdAt, // Extract year-month
+        type: moodsTable.type, // Mood type
+        emoji: moodsTable.emoji, // Emoji associated with the mood
+        count: count(), // Count the number of moods per type per month
+      })
+      .from(moodsTable)
+      .where(
+        between(moodsTable.createdAt, startOfYear.getTime(), today.getTime()), // Filter by date range (current year)
+      )
+      .groupBy(moodsTable.createdAt, moodsTable.type, moodsTable.emoji)
+      .orderBy(desc(moodsTable.createdAt));
+
+    // Organize the data into a structured format
+    const monthlyOverview: Record<string, Array<{ type: string; emoji: string; count: number }>> = {};
+
+    moods.forEach((mood) => {
+      const date = new Date(mood.createdAt ?? 0);
+      const month = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`; // Format as YYYY-MM
+
+      const { type, emoji, count } = mood;
+      if (!monthlyOverview[month]) {
+        monthlyOverview[month] = [];
+      }
+      monthlyOverview[month].push({ type, emoji, count });
+    });
+
+    return context.json({ monthlyOverview });
   });
