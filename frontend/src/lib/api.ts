@@ -16,13 +16,14 @@ export async function postMood(mood: Omit<MoodEntry, "id" | "createdAt">) {
   return data;
 }
 
-export async function getMoods(limit: string | undefined) {
-  const result = await api.moods.$get({ query: { itemlimit: limit } });
+export async function getMoods({ page = 1, pageSize = 10 }: { page?: number; pageSize?: number }) {
+  const result = await api.moods.$get({ query: { page: page.toString(), pageSize: pageSize.toString() } });
   if (!result.ok) {
     throw new Error("Failed to fetch moods");
   }
-  const data = await result.json();
-  return data;
+  const mood = await result.json() as { moods: MoodEntry[]; total: number; page: string; pageSize: string };
+
+  return mood;
 }
 
 export async function getMood({ id }: { id: string }) {
