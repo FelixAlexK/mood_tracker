@@ -3,7 +3,7 @@ import ButtonComponent from "@/components/button-component.vue";
 import HeadlineComponent from "@/components/headline-component.vue";
 import MoodCardComponent from "@/components/mood-card-component.vue";
 import MoodFormComponent from "@/components/mood-form-component.vue";
-import { getMoods, getMoodsCount } from "@/lib/api";
+import { getMoods } from "@/lib/api";
 import { useMutationState, useQuery } from "@tanstack/vue-query";
 
 import type { MoodEntry } from "../types";
@@ -11,11 +11,6 @@ import type { MoodEntry } from "../types";
 const { data } = useQuery({
   queryKey: ["get-moods"],
   queryFn: () => getMoods("6"),
-});
-
-const { data: moodCount } = useQuery({
-  queryKey: ["get-moods-count"],
-  queryFn: getMoodsCount,
 });
 
 const variables = useMutationState<MoodEntry>({
@@ -49,7 +44,7 @@ const variables = useMutationState<MoodEntry>({
           :mood="mood"
         />
       </div>
-      <ButtonComponent :disabled="(moodCount?.count ?? 0) <= 6" class="mt-4" text="See All" />
+      <ButtonComponent :disabled="(data?.count ?? 0) <= 6" class="mt-4" text="See All" />
     </section>
   </div>
 </template>
