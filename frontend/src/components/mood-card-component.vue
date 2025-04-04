@@ -1,28 +1,13 @@
 <script setup lang="ts">
 import type { MoodEntry } from "@/types";
 
+import { formattedDate } from "@/lib/utils";
 import router from "@/router";
 import { Clock } from "lucide-vue-next";
 
 const { mood } = defineProps<{
   mood: MoodEntry;
 }>();
-
-function formattedDate(createdAt: string | null) {
-  if (!createdAt)
-    return "No date";
-
-  const date = new Date(createdAt);
-
-  // Format the date for Germany (CET/CEST) using the `timeZone` option
-  return new Intl.DateTimeFormat("de-DE", {
-    timeZone: "Europe/Berlin", // Automatically handles CET/CEST
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
-}
 </script>
 
 <template>
