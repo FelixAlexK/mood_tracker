@@ -6,7 +6,6 @@ import MoodCardComponent from "@/components/mood-card-component.vue";
 import PaginationComponent from "@/components/pagination-component.vue";
 import { getMoods } from "@/lib/api";
 import { keepPreviousData, useMutationState, useQuery } from "@tanstack/vue-query";
-import { ChevronLeft, ChevronRight } from "lucide-vue-next";
 import { computed, ref } from "vue";
 
 const PAGE_SIZE = 25;
