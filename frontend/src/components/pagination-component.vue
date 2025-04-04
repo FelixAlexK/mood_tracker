@@ -76,8 +76,8 @@ const displayedPages = computed(() => {
 
     <div class="flex gap-1">
       <button
-        v-for="p in displayedPages"
-        :key="p"
+        v-for="(p, index) in displayedPages"
+        :key="index"
         class="min-w-[2.5rem] h-10 rounded-lg transition-colors flex items-center justify-center"
         :class="p === page ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'"
         @click="emit('goToPage', p)"
