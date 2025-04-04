@@ -6,6 +6,8 @@ const { type = "button", disabled = false } = defineProps<{
 }>();
 
 defineEmits(["click"]);
+
+defineEmits(["click"]);
 </script>
 
 <template>
