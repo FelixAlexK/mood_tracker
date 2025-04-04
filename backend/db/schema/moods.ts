@@ -9,7 +9,7 @@ export const moods = sqliteTable("moods_table", {
   type: text().notNull(),
   emoji: text().notNull(),
   note: text(),
-  createdAt: int("created_at").default(sql`(strftime('%s', 'now') * 1000)`), // Store UNIX timestamp in milliseconds
+  createdAt: int("created_at", { mode: "timestamp_ms" }).notNull().default(sql`(unixepoch() * 1000)`), // Store UNIX timestamp in milliseconds
 });
 
 // Schema for inserting a user - can be used to validate API requests

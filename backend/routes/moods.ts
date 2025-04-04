@@ -12,11 +12,26 @@ import { createPostSchema, updatePostSchema } from "../types";
 export const moodsRoute = new Hono()
 
   .get("/", zValidator("query", z.object({
-    itemlimit: z.string().optional(),
+    pageSize: z.string().min(1).max(100).default("10"),
+    page: z.string().min(1).max(100).default("1"),
 
   })), async (context) => {
     const query = context.req.valid("query");
-    const moods = await db.select().from(moodsTable).orderBy(desc(moodsTable.createdAt)).limit(Number.parseInt(query.itemlimit ?? "100"));
+
+    const page = Number.parseInt(query.page ?? "1");
+    const pageSize = Number.parseInt(query.pageSize ?? "10");
+
+    const moods = await db
+      .select()
+      .from(moodsTable)
+      .orderBy(desc(moodsTable.createdAt), desc(moodsTable.id))
+      .limit(pageSize)
+      .offset((page - 1) * pageSize);
+
+    if (!moods || moods.length === 0) {
+      context.status(404);
+      return context.json({ message: "No moods found", moods: [] });
+    }
 
     const moodCount = await db
       .select({
@@ -25,7 +40,7 @@ export const moodsRoute = new Hono()
       .from(moodsTable)
       .then(res => res[0]);
 
-    return context.json({ moods, count: moodCount.count });
+    return context.json({ moods, total: moodCount.count, page: query.page, pageSize: query.pageSize });
   })
 
   .post("/", zValidator("json", createPostSchema), async (context) => {
@@ -224,7 +239,7 @@ export const moodsRoute = new Hono()
       })
       .from(moodsTable)
       .where(
-        between(moodsTable.createdAt, startOfWeek.getTime(), today.getTime()), // Filter by date range
+        between(moodsTable.createdAt, startOfWeek, today), // Filter by date range
       )
       .groupBy(moodsTable.createdAt, moodsTable.type, moodsTable.emoji)
       .orderBy(desc(moodsTable.createdAt));
@@ -272,7 +287,7 @@ export const moodsRoute = new Hono()
       })
       .from(moodsTable)
       .where(
-        between(moodsTable.createdAt, startOfYear.getTime(), today.getTime()), // Filter by date range (current year)
+        between(moodsTable.createdAt, startOfYear, today), // Filter by date range (current year)
       )
       .groupBy(moodsTable.createdAt, moodsTable.type, moodsTable.emoji)
       .orderBy(desc(moodsTable.createdAt));

@@ -12,7 +12,7 @@ export const moodSchema = z.object({
 export type Mood = z.infer<typeof moodSchema>;
 
 export const createPostSchema = moodSchema.omit({ id: true });
-export const updatePostSchema = moodSchema.partial().omit({ id: true });
+export const updatePostSchema = moodSchema.partial().omit({ id: true, createdAt: true });
 
 export const fakeMoods: Mood[] = [
   {
