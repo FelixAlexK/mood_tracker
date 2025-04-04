@@ -32,5 +32,6 @@ export default antfu({
   },
   plugins: [
     eslintPluginYml.configs["flat/recommended"],
+
   ],
 });
