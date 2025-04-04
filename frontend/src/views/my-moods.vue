@@ -39,7 +39,7 @@ const totalPages = computed(() => Math.ceil((data.value?.total || 0) / PAGE_SIZE
 </script>
 
 <template>
-  <HeadlineComponent text="My Moods" />
+  <HeadlineComponent text="Tracked Moods" />
   <section>
     <PaginationComponent
       :page="page"
