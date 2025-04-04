@@ -8,9 +8,11 @@ import { useMutationState, useQuery } from "@tanstack/vue-query";
 
 import type { MoodEntry } from "../types";
 
+const PAGE_SIZE = 6;
+
 const { data } = useQuery({
   queryKey: ["get-moods"],
-  queryFn: () => getMoods("6"),
+  queryFn: () => getMoods({ page: 1, pageSize: PAGE_SIZE }),
 });
 
 const variables = useMutationState<MoodEntry>({
