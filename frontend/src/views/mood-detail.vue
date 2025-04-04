@@ -3,11 +3,12 @@ import type { UpdateMood } from "@/types";
 
 import HeadlineComponent from "@/components/headline-component.vue";
 import { deleteMood, getMood, updateMood } from "@/lib/api";
+import { formattedDate } from "@/lib/utils";
 import router from "@/router";
 import { MOOD_TYPES } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { Clock, Edit2, Save, Trash2, X } from "lucide-vue-next";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
 const { id } = defineProps<{
   id: string;
@@ -41,19 +42,6 @@ const { mutate: deleteMutation } = useMutation({
     router.go(-1);
   },
 });
-
-const formattedDate = computed(() =>
-  data.value?.mood.createdAt
-    ? new Date(data.value?.mood.createdAt).toLocaleDateString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      })
-    : "No date",
-);
 
 function startEditing() {
   isEditing.value = true;
@@ -97,7 +85,7 @@ function handleDelete() {
         </div>
         <div class="flex items-center text-gray-500 text-sm">
           <Clock class="w-4 h-4 mr-1" />
-          <span>{{ formattedDate }}</span>
+          <span>{{ formattedDate(data?.mood.createdAt ?? null) }}</span>
         </div>
       </div>
       <div class="flex gap-2">
