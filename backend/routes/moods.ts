@@ -24,7 +24,7 @@ export const moodsRoute = new Hono()
     const moods = await db
       .select()
       .from(moodsTable)
-      .orderBy(desc(moodsTable.createdAt), desc(moodsTable.id))
+      .orderBy(desc(moodsTable.createdAt))
       .limit(pageSize)
       .offset((page - 1) * pageSize);
 
@@ -292,18 +292,16 @@ export const moodsRoute = new Hono()
       .groupBy(moodsTable.createdAt, moodsTable.type, moodsTable.emoji)
       .orderBy(desc(moodsTable.createdAt));
 
-    // Organize the data into a structured format
-    const monthlyOverview: Record<string, Array<{ type: string; emoji: string; count: number }>> = {};
+    // Flatten the data into a single array
+    const monthlyOverview = moods.map((mood) => {
+      const date = new Date(mood.createdAt ?? 0).toISOString().split("T")[0]; // Format the date to YYYY-MM-DD
 
-    moods.forEach((mood) => {
-      const date = new Date(mood.createdAt ?? 0);
-      const month = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`; // Format as YYYY-MM
-
-      const { type, emoji, count } = mood;
-      if (!monthlyOverview[month]) {
-        monthlyOverview[month] = [];
-      }
-      monthlyOverview[month].push({ type, emoji, count });
+      return {
+        date,
+        type: mood.type,
+        emoji: mood.emoji,
+        count: mood.count,
+      };
     });
 
     return context.json({ monthlyOverview });
