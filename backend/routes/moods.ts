@@ -24,7 +24,7 @@ export const moodsRoute = new Hono()
     const moods = await db
       .select()
       .from(moodsTable)
-      .orderBy(desc(moodsTable.createdAt))
+      .orderBy(desc(moodsTable.createdAt), desc(moodsTable.id))
       .limit(pageSize)
       .offset((page - 1) * pageSize);
 
