@@ -3,7 +3,7 @@
 <script setup lang="ts">
 import HeadlineComponent from "@/components/headline-component.vue";
 import MonthlyOverviewComponent from "@/components/stats/monthly-overview-component.vue";
-import { getMonthlyOverView, getMoodDistribution, getMostCommonMood, getStreak, getTotalEntries, getWeeklyTrend } from "@/lib/api";
+import { getMoodDistribution, getMostCommonMood, getStreak, getTotalEntries, getWeeklyTrend } from "@/lib/api";
 import { getDayName } from "@/lib/utils";
 import { useQuery } from "@tanstack/vue-query";
 import { BarChart3, BookOpen, Flame } from "lucide-vue-next";
