@@ -1,6 +1,7 @@
 import type { MoodEntry, UpdateMood } from "@/types";
 import type { ApiRoutes } from "@backend/app";
 
+import { queryOptions } from "@tanstack/vue-query";
 import { hc } from "hono/client";
 
 const client = hc<ApiRoutes>("/");
@@ -104,4 +105,20 @@ export async function getMonthlyOverView() {
   }
   const data = await result.json();
   return data.monthlyOverview;
+}
+
+export const userQueryOptions = queryOptions({
+  queryKey: ["get-current-user"],
+  queryFn: getCurrentUser,
+
+  staleTime: Infinity,
+});
+
+export async function getCurrentUser() {
+  const result = await api.me.$get();
+  if (!result.ok) {
+    throw new Error("Failed to fetch user");
+  }
+  const data = await result.json();
+  return data.user;
 }
