@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import { between, count, desc, eq } from "drizzle-orm";
+import { and, between, count, desc, eq } from "drizzle-orm";
 import {
   Hono,
 } from "hono";
@@ -7,16 +7,18 @@ import { z } from "zod";
 
 import db from "../db";
 import { insertMoodsSchema, moods as moodsTable } from "../db/schema/moods";
+import { getUser } from "../kinde";
 import { createPostSchema, updatePostSchema } from "../types";
 
 export const moodsRoute = new Hono()
 
-  .get("/", zValidator("query", z.object({
+  .get("/", getUser, zValidator("query", z.object({
     pageSize: z.string().min(1).max(100).default("10"),
     page: z.string().min(1).max(100).default("1"),
 
   })), async (context) => {
     const query = context.req.valid("query");
+    const user = context.var.user;
 
     const page = Number.parseInt(query.page ?? "1");
     const pageSize = Number.parseInt(query.pageSize ?? "10");
@@ -25,6 +27,7 @@ export const moodsRoute = new Hono()
       .select()
       .from(moodsTable)
       .orderBy(desc(moodsTable.createdAt), desc(moodsTable.id))
+      .where(eq(moodsTable.userID, user.id))
       .limit(pageSize)
       .offset((page - 1) * pageSize);
 
@@ -43,10 +46,13 @@ export const moodsRoute = new Hono()
     return context.json({ moods, total: moodCount.count, page: query.page, pageSize: query.pageSize });
   })
 
-  .post("/", zValidator("json", createPostSchema), async (context) => {
+  .post("/", getUser, zValidator("json", createPostSchema), async (context) => {
     const mood = context.req.valid("json");
+    const user = context.var.user;
+
     const validatedMood = insertMoodsSchema.parse({
       ...mood,
+      userID: user.id,
     });
 
     const result = await db
@@ -59,12 +65,15 @@ export const moodsRoute = new Hono()
     return context.json(result);
   })
 
-  .get("/:id{[0-9]+}", async (context) => {
+  .get("/:id{[0-9]+}", getUser, async (context) => {
     const id = Number.parseInt(context.req.param("id"));
+
+    const user = context.var.user;
+
     const mood = await db
       .select()
       .from(moodsTable)
-      .where(eq(moodsTable.id, id))
+      .where(and(eq(moodsTable.userID, user.id), eq(moodsTable.id, id)))
       .then(res => res[0]);
 
     if (!mood) {
@@ -74,13 +83,13 @@ export const moodsRoute = new Hono()
     return context.json({ mood });
   })
 
-  .delete("/:id{[0-9]+}", async (context) => {
+  .delete("/:id{[0-9]+}", getUser, async (context) => {
     const id = Number.parseInt(context.req.param("id"));
-    // const user = context.var.user;
+    const user = context.var.user;
 
     const mood = await db
       .delete(moodsTable)
-      .where(eq(moodsTable.id, id))
+      .where(and(eq(moodsTable.userID, user.id), eq(moodsTable.id, id)))
       .returning()
       .then(res => res[0]);
 
@@ -91,9 +100,12 @@ export const moodsRoute = new Hono()
     return context.json({ mood });
   })
 
-  .patch("/:id{[0-9]+}", zValidator("json", updatePostSchema), async (context) => {
+  .patch("/:id{[0-9]+}", getUser, zValidator("json", updatePostSchema), async (context) => {
     const id = Number.parseInt(context.req.param("id"));
     const mood = context.req.valid("json");
+
+    const user = context.var.user;
+
     const validatedMood = updatePostSchema.parse({
       ...mood,
     });
@@ -101,7 +113,7 @@ export const moodsRoute = new Hono()
     const updatedMood = await db
       .update(moodsTable)
       .set(validatedMood)
-      .where(eq(moodsTable.id, id))
+      .where(and(eq(moodsTable.userID, user.id), eq(moodsTable.id, id)))
       .returning()
       .then(res => res[0]);
 
@@ -112,7 +124,9 @@ export const moodsRoute = new Hono()
     return context.json({ updatedMood });
   })
 
-  .get("/stats/most-common", async (context) => {
+  .get("/stats/most-common", getUser, async (context) => {
+    const user = context.var.user;
+
     const stats = await db
       .select({
         count: count(),
@@ -120,6 +134,7 @@ export const moodsRoute = new Hono()
         emoji: moodsTable.emoji,
       })
       .from(moodsTable)
+      .where(eq(moodsTable.userID, user.id))
       .groupBy(moodsTable.type)
       .orderBy(desc(count()))
       .limit(1)
@@ -128,25 +143,31 @@ export const moodsRoute = new Hono()
     return context.json({ stats });
   })
 
-  .get("/stats/total-entries", async (context) => {
+  .get("/stats/total-entries", getUser, async (context) => {
+    const user = context.var.user;
+
     const stats = await db
       .select({
         total: count(),
       })
       .from(moodsTable)
+      .where(eq(moodsTable.userID, user.id))
       .limit(1)
       .then(res => res[0]);
 
     return context.json({ stats });
   })
 
-  .get("/stats/streak", async (context) => {
+  .get("/stats/streak", getUser, async (context) => {
+    const user = context.var.user;
+
     // Fetch all mood entries ordered by date (descending)
     const moods = await db
       .select({
         createdAt: moodsTable.createdAt,
       })
       .from(moodsTable)
+      .where(eq(moodsTable.userID, user.id))
       .orderBy(desc(moodsTable.createdAt));
 
     if (!moods || moods.length === 0) {
@@ -182,13 +203,15 @@ export const moodsRoute = new Hono()
     return context.json({ streak });
   })
 
-  .get("/stats/mood-distribution", zValidator("query", z.object({
+  .get("/stats/mood-distribution", getUser, zValidator("query", z.object({
     page: z.string().optional(),
     limit: z.string().optional(), // Optional offset query parameter
   })), async (context) => {
     const query = context.req.valid("query");
     const page = Number.parseInt(query.page ?? "0"); // Default offset to 0 if not provided
     const limit = Number.parseInt(query.limit ?? "3");
+
+    const user = context.var.user;
 
     const total = await db
       .select({
@@ -205,6 +228,7 @@ export const moodsRoute = new Hono()
         count: count(), // Count of occurrences
       })
       .from(moodsTable)
+      .where(eq(moodsTable.userID, user.id))
       .groupBy(moodsTable.type, moodsTable.emoji) // Group by mood type and emoji
       .orderBy(desc(count())) // Order by count in descending order
       .offset(page) // Apply the offset
@@ -223,7 +247,9 @@ export const moodsRoute = new Hono()
     return context.json({ distribution: distributionWithPercentages });
   })
 
-  .get("/stats/weekly-trend", async (context) => {
+  .get("/stats/weekly-trend", getUser, async (context) => {
+    const user = context.var.user;
+
     // Get today's date and calculate the start of the week (7 days ago)
     const today = new Date();
     const startOfWeek = new Date();
@@ -239,7 +265,7 @@ export const moodsRoute = new Hono()
       })
       .from(moodsTable)
       .where(
-        between(moodsTable.createdAt, startOfWeek, today), // Filter by date range
+        and(between(moodsTable.createdAt, startOfWeek, today), eq(moodsTable.userID, user.id)), // Filter by date range
       )
       .groupBy(moodsTable.createdAt, moodsTable.type, moodsTable.emoji)
       .orderBy(desc(moodsTable.createdAt));
@@ -272,7 +298,9 @@ export const moodsRoute = new Hono()
     return context.json({ weeklyTrend });
   })
 
-  .get("/stats/monthly-overview", async (context) => {
+  .get("/stats/monthly-overview", getUser, async (context) => {
+    const user = context.var.user;
+
     // Fetch mood entries grouped by month and mood type
     const moods = await db
       .select({
@@ -282,7 +310,7 @@ export const moodsRoute = new Hono()
         count: count(), // Count the number of moods per type per month
       })
       .from(moodsTable)
-
+      .where(eq(moodsTable.userID, user.id))
       .groupBy(moodsTable.createdAt, moodsTable.type, moodsTable.emoji)
       .orderBy(desc(moodsTable.createdAt));
 
