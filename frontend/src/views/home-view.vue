@@ -4,15 +4,17 @@ import HeadlineComponent from "@/components/headline-component.vue";
 import MoodCardComponent from "@/components/mood-card-component.vue";
 import MoodFormComponent from "@/components/mood-form-component.vue";
 import { getMoods } from "@/lib/api";
+import router from "@/router";
 import { useMutationState, useQuery } from "@tanstack/vue-query";
 
 import type { MoodEntry } from "../types";
 
 const PAGE_SIZE = 6;
+const PAGE = 1;
 
 const { data } = useQuery({
   queryKey: ["get-moods"],
-  queryFn: () => getMoods({ page: 1, pageSize: PAGE_SIZE }),
+  queryFn: () => getMoods({ page: PAGE, pageSize: PAGE_SIZE }),
 });
 
 const variables = useMutationState<MoodEntry>({
@@ -46,7 +48,7 @@ const variables = useMutationState<MoodEntry>({
           :mood="mood"
         />
       </div>
-      <ButtonComponent :disabled="(data?.count ?? 0) <= 6" class="mt-4" text="See All" />
+      <ButtonComponent :disabled="(data?.total ?? 0) <= 6" class="mt-4" text="See All" @click="router.push({ path: '/moods' })" />
     </section>
   </div>
 </template>

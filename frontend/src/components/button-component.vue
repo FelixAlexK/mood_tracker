@@ -4,6 +4,8 @@ const { type = "button", disabled = false } = defineProps<{
   text: string;
   disabled?: boolean;
 }>();
+
+defineEmits(["click"]);
 </script>
 
 <template>
@@ -13,6 +15,7 @@ const { type = "button", disabled = false } = defineProps<{
     :class="{
       'opacity-50 cursor-not-allowed': disabled,
     }"
+    @click="!disabled && $emit('click')"
   >
     <slot name="icon" />
     {{ text }}

@@ -103,5 +103,5 @@ export async function getMonthlyOverView() {
     throw new Error("Failed to fetch mood distribution count");
   }
   const data = await result.json();
-  return data;
+  return data.monthlyOverview;
 }

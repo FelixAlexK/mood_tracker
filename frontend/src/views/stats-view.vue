@@ -2,7 +2,8 @@
 <!-- eslint-disable antfu/no-import-dist -->
 <script setup lang="ts">
 import HeadlineComponent from "@/components/headline-component.vue";
-import { getMonthlyOverView, getMoodDistribution, getMostCommonMood, getStreak, getTotalEntries, getWeeklyTrend } from "@/lib/api";
+import MonthlyOverviewComponent from "@/components/stats/monthly-overview-component.vue";
+import { getMoodDistribution, getMostCommonMood, getStreak, getTotalEntries, getWeeklyTrend } from "@/lib/api";
 import { getDayName } from "@/lib/utils";
 import { useQuery } from "@tanstack/vue-query";
 import { BarChart3, BookOpen, Flame } from "lucide-vue-next";
@@ -35,16 +36,11 @@ const { data: weeklyTrend, isLoading: isLoadingWeeklyTrend } = useQuery({
   queryKey: ["weekly-trend"],
   queryFn: getWeeklyTrend,
 });
-
-const { data: monthlyOverview } = useQuery({
-  queryKey: ["monthly-overview"],
-  queryFn: getMonthlyOverView,
-});
 </script>
 
 <template>
   <HeadlineComponent text="Stats" />
-  {{ monthlyOverview }}
+
   <div class="bg-white rounded-lg shadow-md p-6 mb-6">
     <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
       <BarChart3 class="w-5 h-5" />
@@ -147,4 +143,5 @@ const { data: monthlyOverview } = useQuery({
       </div>
     </div>
   </div>
+  <MonthlyOverviewComponent />
 </template>
