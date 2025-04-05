@@ -84,13 +84,17 @@ onUnmounted(() => {
           </div>
           <div class="hidden justify-end pr-16 sm:flex lg:pr-0">
             <a
-              href="/#"
+              href="/api/login"
               class="px-7 py-3 text-base font-medium text-dark hover:text-primary dark:text-white"
             >Sign in</a>
             <a
-              href="/#"
+              href="/api/register"
               class="rounded-md bg-primary px-7 py-3 text-base font-medium text-white hover:bg-primary/90"
             >Sign Up</a>
+            <a
+              href="/api/logout"
+              class="rounded-md bg-primary px-7 py-3 text-base font-medium text-white hover:bg-primary/90"
+            >Logout</a>
           </div>
         </div>
       </div>
