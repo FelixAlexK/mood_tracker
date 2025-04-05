@@ -273,10 +273,6 @@ export const moodsRoute = new Hono()
   })
 
   .get("/stats/monthly-overview", async (context) => {
-    // Get the current date and calculate the start of the year
-    const today = new Date();
-    const startOfYear = new Date(today.getFullYear(), 0, 1); // January 1st of the current year
-
     // Fetch mood entries grouped by month and mood type
     const moods = await db
       .select({
@@ -286,9 +282,7 @@ export const moodsRoute = new Hono()
         count: count(), // Count the number of moods per type per month
       })
       .from(moodsTable)
-      .where(
-        between(moodsTable.createdAt, startOfYear, today), // Filter by date range (current year)
-      )
+
       .groupBy(moodsTable.createdAt, moodsTable.type, moodsTable.emoji)
       .orderBy(desc(moodsTable.createdAt));
 
