@@ -27,7 +27,7 @@ async function handleLogin() {
 async function handleRegister() {
   try {
     isLoading.value = true;
-    toast.success("Logged in successfully");
+    toast.success("Registered successfully");
     router.push("/api/register");
   }
   catch {
