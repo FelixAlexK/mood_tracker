@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { MoodEntry } from "@/types";
 
-import HeadlineComponent from "@/components/headline-component.vue";
 import MoodCardComponent from "@/components/mood-card-component.vue";
 import PaginationComponent from "@/components/pagination-component.vue";
 import { getMoods } from "@/lib/api";
@@ -36,10 +35,24 @@ const variables = useMutationState<MoodEntry>({
 });
 
 const totalPages = computed(() => Math.ceil((data.value?.total || 0) / PAGE_SIZE));
+
+// Group moods by creation date
+const groupedMoods = computed(() => {
+  if (!data.value?.moods)
+    return {};
+
+  return data.value.moods.reduce((groups: Record<string, MoodEntry[]>, mood: MoodEntry) => {
+    const date = mood.createdAt ? new Date(mood.createdAt).toLocaleDateString() : "Unknown Date"; // Format date as "MM/DD/YYYY"
+    if (!groups[date]) {
+      groups[date] = [];
+    }
+    groups[date].push(mood);
+    return groups;
+  }, {});
+});
 </script>
 
 <template>
-  <HeadlineComponent text="Tracked Moods" />
   <section>
     <PaginationComponent
       :page="page"
@@ -54,20 +67,27 @@ const totalPages = computed(() => Math.ceil((data.value?.total || 0) / PAGE_SIZE
     <div v-else-if="isError">
       An error has occurred: {{ error }}
     </div>
-    <div v-else-if="data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <MoodCardComponent
-        v-for="mood in data?.moods"
-        :key="mood.id"
-        :mood="mood"
-        :variables="variables"
-      />
 
-      <MoodCardComponent
-        v-for="mood in variables"
-        v-show="variables"
-        :key="mood.id"
-        :mood="mood"
-      />
+    <div v-else-if="data">
+      <div v-for="(moods, date) in groupedMoods" :key="date" class="mb-6">
+        <h2 class="text-xl font-bold mb-4">
+          {{ date }}
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <MoodCardComponent
+            v-for="mood in moods"
+            :key="mood.id"
+            :mood="mood"
+          />
+
+          <MoodCardComponent
+            v-for="mood in variables"
+            v-show="variables"
+            :key="mood.id"
+            :mood="mood"
+          />
+        </div>
+      </div>
     </div>
 
     <PaginationComponent

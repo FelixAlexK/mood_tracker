@@ -1,41 +1,16 @@
-<!-- eslint-disable antfu/no-import-node-modules-by-path -->
-<!-- eslint-disable antfu/no-import-dist -->
 <script setup lang="ts">
-import HeadlineComponent from "@/components/headline-component.vue";
+import AccountStats from "@/components/stats/account-stats-component.vue";
 import MonthlyOverviewComponent from "@/components/stats/monthly-overview-component.vue";
-import { getMoodDistribution, getMostCommonMood, getStreak, getTotalEntries, getWeeklyTrend } from "@/lib/api";
+import { moodDistributionQueryOptions, weeklyTrendQueryOptions } from "@/lib/api";
 import { getDayName } from "@/lib/utils";
 import { useQuery } from "@tanstack/vue-query";
-import { BarChart3, BookOpen, Flame } from "lucide-vue-next";
+import { BarChart3 } from "lucide-vue-next";
 
 const page = 0;
 const limit = 3; // Number of items per page
 
-const { data: totalEntries, isLoading: isLoadingTotal } = useQuery({
-  queryKey: ["total-entries"],
-  queryFn: getTotalEntries,
-});
-
-const { data: mostCommon, isLoading: isLoadingMostCommon } = useQuery({
-  queryKey: ["most-common"],
-  queryFn: getMostCommonMood,
-});
-
-// Fetch mood distribution with pagination
-const { data: distribution, isLoading: isLoadingDist } = useQuery({
-  queryKey: ["mood-distribution", page],
-  queryFn: () => getMoodDistribution({ page, limit }),
-
-});
-const { data: streak, isLoading: isLoadingStreak } = useQuery({
-  queryKey: ["streak"],
-  queryFn: getStreak,
-});
-
-const { data: weeklyTrend, isLoading: isLoadingWeeklyTrend } = useQuery({
-  queryKey: ["weekly-trend"],
-  queryFn: getWeeklyTrend,
-});
+const { data: weeklyTrend, isLoading: isLoadingWeeklyTrend } = useQuery(weeklyTrendQueryOptions);
+const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributionQueryOptions(page, limit));
 </script>
 
 <template>
@@ -45,49 +20,15 @@ const { data: weeklyTrend, isLoading: isLoadingWeeklyTrend } = useQuery({
       Mood Insights
     </h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-      <div class="bg-blue-50 rounded-lg p-4">
-        <h3 class="text-sm font-semibold text-gray-600 mb-1">
-          Most Common Mood
-        </h3>
-        <span v-if="isLoadingMostCommon">Loading...</span>
-        <div v-else-if="mostCommon?.count ?? 0 > 0" class="flex items-center gap-2">
-          <span class="text-2xl">{{ mostCommon?.emoji }}</span>
-          <span class="text-lg font-medium capitalize">{{ mostCommon?.type }}</span>
-        </div>
-        <span v-else class="text-2xl">-</span>
-      </div>
+    <AccountStats />
 
-      <div class="bg-purple-50 rounded-lg p-4">
-        <h3 class="text-sm font-semibold text-gray-600 mb-1">
-          Total Entries
-        </h3>
-        <span v-if="isLoadingTotal">Loading...</span>
-        <div v-else class="flex items-center gap-2">
-          <BookOpen class="w-5 h-5 text-purple-600" />
-          <span class="text-lg font-medium">{{ totalEntries?.total }} entries</span>
-        </div>
-      </div>
-
-      <div class="bg-green-50 rounded-lg p-4">
-        <h3 class="text-sm font-semibold text-gray-600 mb-1">
-          Latest Streak
-        </h3>
-        <span v-if="isLoadingStreak">Loading...</span>
-        <div v-else class="flex items-center gap-2">
-          <Flame class="w-5 h-5 text-orange-500" />
-          <span class="text-lg font-medium">{{ streak }} days</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="space-y-4">
+    <div class="space-y-4 mt-6">
       <div>
         <h3 class="text-sm font-semibold text-gray-600 mb-2">
           Mood Distribution
         </h3>
         <span v-if="isLoadingDist">Loading...</span>
-        <div v-else-if="totalEntries?.total ?? 0 > 0" class="grid grid-cols-2 md:grid-cols-3 gap-2">
+        <div v-else-if="distribution" class="grid grid-cols-2 md:grid-cols-3 gap-2">
           <div
             v-for="(mood, index) in distribution"
             :key="index"
@@ -119,7 +60,7 @@ const { data: weeklyTrend, isLoading: isLoadingWeeklyTrend } = useQuery({
           Weekly Trend
         </h3>
         <span v-if="isLoadingWeeklyTrend">Loading...</span>
-        <div v-else-if="totalEntries?.total ?? 0 > 0" class="grid grid-cols-7 gap-1">
+        <div v-else-if="weeklyTrend" class="grid grid-cols-7 gap-1">
           <div
             v-for="(day, index) in weeklyTrend"
             :key="index"
