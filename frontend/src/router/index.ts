@@ -9,8 +9,8 @@ const queryClient = new QueryClient();
 
 export const routes: RouteRecordRaw[] = [
   { path: "/", component: () => import("../views/home-view.vue"), name: "Mood Tracker" },
-  { path: "/moods", component: () => import("../views/my-moods.vue"), name: "" },
-  { path: "/mood/:id", component: () => import("../views/mood-detail.vue"), name: "", props: true },
+  { path: "/moods", component: () => import("../views/all-moods-view.vue") },
+  { path: "/mood/:id", component: () => import("../views/mood-detail-view.vue"), name: "", props: true },
   { path: "/stats", component: () => import("../views/stats-view.vue"), name: "Stats" },
   { path: "/about", component: () => import("../views/about-view.vue"), name: "About" },
   { path: "/profile", component: () => import("../views/profile.view.vue"), name: "Profile" },
