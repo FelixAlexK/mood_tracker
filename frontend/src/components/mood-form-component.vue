@@ -6,6 +6,9 @@ import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import { Send } from "lucide-vue-next";
 import { ref } from "vue";
 
+import { useToast } from "../composables/use-toast";
+
+const toast = useToast();
 const queryClient = useQueryClient();
 
 const selectedType = ref<typeof MOOD_TYPES[number]["type"]>(MOOD_TYPES[0].type);
@@ -14,6 +17,16 @@ const note = ref("");
 const { mutate } = useMutation({
   mutationKey: ["create-mood"],
   mutationFn: postMood,
+
+  onSuccess: (data) => {
+    // Show success toast
+    toast.success(`${data.emoji} Mood tracked successfully!`);
+  },
+
+  onError: (error) => {
+    // Show error toast
+    toast.error(`Failed to track mood: ${error.message}`);
+  },
 
   onSettled: () => {
     // Refetch the moods after mutation
@@ -28,7 +41,7 @@ const form = useForm({
   },
   onSubmit: async ({ value }) => {
     mutate({
-      userID: "user123", // In a real app, this would come from auth
+      // In a real app, this would come from auth
       type: selectedType.value,
       emoji: MOOD_TYPES.find(m => m.type === selectedType.value)?.emoji || "😊",
       note: value.note.trim() || null,
