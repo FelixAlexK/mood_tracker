@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { MoodEntry } from "@/types";
 
-import HeadlineComponent from "@/components/headline-component.vue";
 import MoodCardComponent from "@/components/mood-card-component.vue";
 import PaginationComponent from "@/components/pagination-component.vue";
 import { getMoods } from "@/lib/api";
