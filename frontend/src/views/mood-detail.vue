@@ -34,7 +34,6 @@ const { mutate: patch } = useMutation({
   mutationKey: ["update-mood"],
   mutationFn: (mood: { id: string; mood: UpdateMood }) => updateMood(mood),
   onSuccess: (data) => {
-    console.log("Update successful:", data);
     queryClient.setQueryData(["get-mood-by-id", { id }], data);
     toast.success("Mood updated successfully!");
   },
