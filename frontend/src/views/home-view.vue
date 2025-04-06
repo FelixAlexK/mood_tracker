@@ -25,8 +25,7 @@ const variables = useMutationState<MoodEntry>({
 </script>
 
 <template>
-  <div>
-    <HeadlineComponent text="Mood Tracker" />
+  <div class="mt-16">
     <section>
       <MoodFormComponent />
     </section>
