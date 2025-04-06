@@ -6,7 +6,7 @@ import NavComponent from "./components/nav-component.vue";
   <div>
     <NavComponent />
     <main class="min-h-screen bg-gray-100 p-6">
-      <div class="max-w-2xl mx-auto">
+      <div class="container mx-auto">
         <RouterView />
       </div>
     </main>
