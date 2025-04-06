@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import AccountStats from "@/components/stats/account-stats-component.vue";
-import { mostCommonQueryOptions, streakQueryOptions, totalEntriesQueryOptions, userQueryOptions } from "@/lib/api";
+import { userQueryOptions } from "@/lib/api";
 import { useQuery } from "@tanstack/vue-query";
-import { ArrowLeft, Camera, RefreshCw, Save } from "lucide-vue-next";
+import { ArrowLeft } from "lucide-vue-next";
 
 const { data } = useQuery(userQueryOptions);
 </script>
