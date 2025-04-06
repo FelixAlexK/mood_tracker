@@ -10,9 +10,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { Clock, Edit2, Save, Trash2, X } from "lucide-vue-next";
 import { ref } from "vue";
 
+import { useToast } from "../composables/use-toast";
+
 const { id } = defineProps<{
   id: string;
 }>();
+
+const toast = useToast();
 
 const queryClient = useQueryClient();
 
@@ -30,16 +34,29 @@ const { mutate: patch } = useMutation({
   mutationKey: ["update-mood"],
   mutationFn: (mood: { id: string; mood: UpdateMood }) => updateMood(mood),
   onSuccess: (data) => {
+    console.log("Update successful:", data);
     queryClient.setQueryData(["get-mood-by-id", { id }], data);
+    toast.success("Mood updated successfully!");
+  },
+
+  onError: (error) => {
+    toast.error(`Failed to update mood: ${error.message}`);
   },
   onSettled: () => queryClient.invalidateQueries({ queryKey: ["get-mood-by-id", { id }] }),
+
 });
+
 const { mutate: deleteMutation } = useMutation({
   mutationKey: ["delete-mood"],
   mutationFn: () => deleteMood({ id }),
   onSuccess: () => {
     queryClient.invalidateQueries({ queryKey: ["get-mood-by-id", { id }] });
     router.go(-1);
+    toast.success("Mood deleted successfully!");
+  },
+
+  onError: (error) => {
+    toast.error(`Failed to delete mood: ${error.message}`);
   },
 });
 
@@ -75,17 +92,23 @@ function handleDelete() {
 <template>
   <HeadlineComponent text="Mood" />
   <div class="bg-white rounded-lg shadow-md p-6">
-    <div class="flex justify-between items-start mb-6">
+    <div v-if="!data">
+      <!-- Show a loading state while data is being fetched -->
+      <p class="text-gray-500 italic">
+        Loading mood details...
+      </p>
+    </div>
+    <div v-else class="flex justify-between items-start mb-6">
       <div>
         <div class="flex items-center gap-3 mb-2">
-          <span class="text-4xl">{{ isEditing ? selectedEmoji : data?.mood.emoji }}</span>
+          <span class="text-4xl">{{ isEditing ? selectedEmoji : data?.mood?.emoji || '❤️' }}</span>
           <h2 class="text-2xl font-bold text-gray-800 capitalize">
-            {{ isEditing ? selectedType : data?.mood.type }}
+            {{ isEditing ? selectedType : data?.mood?.type || '-' }}
           </h2>
         </div>
         <div class="flex items-center text-gray-500 text-sm">
           <Clock class="w-4 h-4 mr-1" />
-          <span>{{ formattedDate(data?.mood.createdAt ?? null) }}</span>
+          <span>{{ formattedDate(data?.mood?.createdAt || null) }}</span>
         </div>
       </div>
       <div class="flex gap-2">
@@ -160,8 +183,8 @@ function handleDelete() {
     </div>
 
     <div v-else>
-      <p v-if="data?.mood.note" class="text-gray-700 mt-4 whitespace-pre-wrap">
-        {{ data?.mood.note }}
+      <p v-if="data?.mood?.note" class="text-gray-700 mt-4 whitespace-pre-wrap">
+        {{ data?.mood?.note || '-' }}
       </p>
       <p v-else class="text-gray-500 italic mt-4">
         No note added
