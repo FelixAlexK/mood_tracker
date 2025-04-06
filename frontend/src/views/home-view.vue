@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import ButtonComponent from "@/components/button-component.vue";
-import HeadlineComponent from "@/components/headline-component.vue";
 import MoodCardComponent from "@/components/mood-card-component.vue";
 import MoodFormComponent from "@/components/mood-form-component.vue";
 import { getMoods } from "@/lib/api";
