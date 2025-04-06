@@ -15,6 +15,7 @@ const PAGE = 1;
 const { data } = useQuery({
   queryKey: ["get-moods"],
   queryFn: () => getMoods({ page: PAGE, pageSize: PAGE_SIZE }),
+
 });
 
 const variables = useMutationState<MoodEntry>({
