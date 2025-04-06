@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import AccountStats from "@/components/stats/account-stats-component.vue";
 import MonthlyOverviewComponent from "@/components/stats/monthly-overview-component.vue";
-import { moodDistributionQueryOptions, mostCommonQueryOptions, streakQueryOptions, totalEntriesQueryOptions, weeklyTrendQueryOptions } from "@/lib/api";
+import { moodDistributionQueryOptions, weeklyTrendQueryOptions } from "@/lib/api";
 import { getDayName } from "@/lib/utils";
 import { useQuery } from "@tanstack/vue-query";
-import { BarChart3, BookOpen, Flame } from "lucide-vue-next";
+import { BarChart3 } from "lucide-vue-next";
 
 const page = 0;
 const limit = 3; // Number of items per page
