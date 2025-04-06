@@ -122,3 +122,32 @@ export async function getCurrentUser() {
   const data = await result.json();
   return data.user;
 }
+
+export const totalEntriesQueryOptions = queryOptions({
+  queryKey: ["total-entries"],
+  queryFn: getTotalEntries,
+});
+
+export const mostCommonQueryOptions = queryOptions({
+  queryKey: ["most-common"],
+  queryFn: getMostCommonMood,
+});
+
+// Fetch mood distribution with pagination
+export function moodDistributionQueryOptions(page: number, limit: number) {
+  return queryOptions({
+    queryKey: ["mood-distribution", page],
+    queryFn: () => getMoodDistribution({ page, limit }),
+
+  });
+}
+
+export const streakQueryOptions = queryOptions({
+  queryKey: ["streak"],
+  queryFn: getStreak,
+});
+
+export const weeklyTrendQueryOptions = queryOptions({
+  queryKey: ["weekly-trend"],
+  queryFn: getWeeklyTrend,
+});
