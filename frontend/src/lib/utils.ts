@@ -1,10 +1,10 @@
 export const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-export function formattedDate(createdAt: number | null) {
+export function formattedDate(createdAt: string | null) {
   if (!createdAt)
     return "";
 
-  const d = new Date(createdAt);
+  const d = new Date(Date.parse(createdAt));
   const localizedTime = new Intl.DateTimeFormat(navigator.language, {
     timeZone: userTimezone,
     dateStyle: "medium",
