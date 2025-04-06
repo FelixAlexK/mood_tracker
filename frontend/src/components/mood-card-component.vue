@@ -21,7 +21,7 @@ const { mood } = defineProps<{
     </p>
     <div class="absolute bottom-2 left-4 flex items-center text-gray-500 text-sm ">
       <Clock class="w-4 h-4 mr-1" />
-      <span>{{ formattedDate(Number(mood.createdAt)) }}</span>
+      <span>{{ formattedDate(mood.createdAt) }}</span>
     </div>
   </div>
 </template>
