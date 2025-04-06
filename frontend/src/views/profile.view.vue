@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { userQueryOptions } from "@/lib/api";
+import AccountStats from "@/components/stats/account-stats-component.vue";
+import { mostCommonQueryOptions, streakQueryOptions, totalEntriesQueryOptions, userQueryOptions } from "@/lib/api";
 import { useQuery } from "@tanstack/vue-query";
 import { ArrowLeft, Camera, RefreshCw, Save } from "lucide-vue-next";
 
@@ -37,36 +38,7 @@ const { data } = useQuery(userQueryOptions);
       </div>
 
       <div class="mt-8 pt-6 border-t">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">
-          Account Statistics
-        </h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="bg-gray-50 rounded-lg p-4">
-            <div class="text-sm text-gray-600 mb-1">
-              Total Entries
-            </div>
-            <div class="text-2xl font-bold text-gray-800">
-              {{ 10 }}
-            </div>
-          </div>
-          <div class="bg-gray-50 rounded-lg p-4">
-            <div class="text-sm text-gray-600 mb-1">
-              Current Streak
-            </div>
-            <div class="text-2xl font-bold text-gray-800">
-              {{ 1 }} days
-            </div>
-          </div>
-          <div class="bg-gray-50 rounded-lg p-4">
-            <div class="text-sm text-gray-600 mb-1">
-              Most Common Mood
-            </div>
-            <div class="text-2xl font-bold text-gray-800 flex items-center gap-2">
-              {{ '❤️' }}
-              <span class="capitalize">{{ 'Love' }}</span>
-            </div>
-          </div>
-        </div>
+        <AccountStats />
       </div>
     </div>
   </div>
