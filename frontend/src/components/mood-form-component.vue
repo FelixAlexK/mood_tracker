@@ -23,9 +23,9 @@ const { mutate } = useMutation({
     toast.success(`${data.emoji} Mood tracked successfully!`);
   },
 
-  onError: (error) => {
+  onError: () => {
     // Show error toast
-    toast.error(`Failed to track mood: ${error.message}`);
+    toast.error(`Please log in to track your mood!`);
   },
 
   onSettled: () => {
