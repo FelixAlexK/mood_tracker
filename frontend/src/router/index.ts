@@ -23,6 +23,8 @@ const router = createRouter({
     // always scroll to top
     return { top: 0, behavior: "instant" };
   },
+
+  linkExactActiveClass: "border-b-2 border-blue-500 text-blue-500",
 });
 
 router.beforeEach(async (to, _from) => {
