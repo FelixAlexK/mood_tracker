@@ -37,21 +37,37 @@ onUnmounted(() => {
             Home
           </router-link>
           <router-link
+            v-if="authStore.isLoggedIn"
             to="/stats"
             class="flex items-center px-2 py-2 ml-4 text-gray-700 hover:text-blue-500 transition-colors"
           >
             <BarChart3 class="w-5 h-5 mr-1" />
             Stats
           </router-link>
+          <span
+            v-else
+            class="flex items-center px-2 py-2 ml-4 text-gray-400 cursor-not-allowed"
+          >
+            <BarChart3 class="w-5 h-5 mr-1" />
+            Stats
+          </span>
         </div>
         <div class="flex items-center gap-4">
           <router-link
+            v-if="authStore.isLoggedIn"
             to="/profile"
             class="flex items-center px-2 py-2 text-gray-700 hover:text-blue-500 transition-colors"
           >
             <User class="w-5 h-5 mr-1" />
             Profile
           </router-link>
+          <span
+            v-else
+            class="flex items-center px-2 py-2 ml-4 text-gray-400 cursor-not-allowed"
+          >
+            <User class="w-5 h-5 mr-1" />
+            Profile
+          </span>
           <a
             v-if="authStore.isLoggedIn"
             class="flex items-center px-2 py-2 text-red-500 hover:text-red-600 transition-colors"
