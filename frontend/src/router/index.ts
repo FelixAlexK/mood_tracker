@@ -8,13 +8,12 @@ import { createRouter, createWebHistory } from "vue-router";
 const queryClient = new QueryClient();
 
 export const routes: RouteRecordRaw[] = [
-  { path: "/", component: () => import("../views/home-view.vue"), name: "Mood Tracker" },
-  { path: "/moods", component: () => import("../views/all-moods-view.vue") },
-  { path: "/mood/:id", component: () => import("../views/mood-detail-view.vue"), name: "", props: true },
-  { path: "/stats", component: () => import("../views/stats-view.vue"), name: "Stats" },
-  { path: "/about", component: () => import("../views/about-view.vue"), name: "About" },
-  { path: "/profile", component: () => import("../views/profile.view.vue"), name: "Profile" },
-  { path: "/auth", component: () => import("../views/auth-view.vue"), name: "Auth" },
+  { path: "/", component: () => import("../views/home-view.vue"), name: "Mood Tracker", meta: { requiresAuth: true } },
+  { path: "/moods", component: () => import("../views/all-moods-view.vue"), meta: { requiresAuth: true } },
+  { path: "/mood/:id", component: () => import("../views/mood-detail-view.vue"), name: "", props: true, meta: { requiresAuth: true } },
+  { path: "/stats", component: () => import("../views/stats-view.vue"), name: "Stats", meta: { requiresAuth: true } },
+  { path: "/about", component: () => import("../views/about-view.vue"), name: "About", meta: { requiresAuth: false } },
+  { path: "/profile", component: () => import("../views/profile.view.vue"), name: "Profile", meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({
@@ -26,7 +25,7 @@ const router = createRouter({
   },
 });
 
-router.beforeEach(async (_to, _from) => {
+router.beforeEach(async (to, _from) => {
   let user = queryClient.getQueryData(userQueryOptions.queryKey);
   const authStore = useAuthStore();
 
@@ -39,10 +38,10 @@ router.beforeEach(async (_to, _from) => {
     user = undefined;
   }
 
-  if (user) {
+  if (to.meta.requiresAuth && user) {
     authStore.setLoggedIn(true);
   }
-  else {
+  else if (!user) {
     authStore.setLoggedIn(false);
   }
 });
