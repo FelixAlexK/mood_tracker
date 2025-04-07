@@ -11,7 +11,7 @@ export const api = client.api;
 export async function postMood(mood: Omit<MoodEntry, "id" | "createdAt" | "userID">) {
   const result = await api.moods.$post({ json: mood });
   if (!result.ok) {
-    throw new Error("Failed to create new mood");
+    throw new Error("Failed to create mood");
   }
   const data = await result.json();
   return data;
@@ -32,7 +32,7 @@ export async function getMood({ id }: { id: string }) {
   if (!result.ok) {
     throw new Error("Failed to fetch mood");
   }
-  const data = await result.json() as { mood: MoodEntry };
+  const data = await result.json();
 
   return data;
 }
@@ -49,62 +49,62 @@ export async function updateMood({ id, mood }: { id: string; mood: UpdateMood })
   if (!result.ok) {
     throw new Error("Failed to update mood");
   }
-  const data = await result.json() as { mood: MoodEntry };
+  const data = await result.json();
   return data;
 }
 
 export async function getMostCommonMood() {
-  const result = await api.moods.stats["most-common"].$get();
+  const result = await api.stats["most-common"].$get();
   if (!result.ok) {
     throw new Error("Failed to fetch most common mood");
   }
   const data = await result.json();
-  return data.stats;
+  return data;
 }
 
 export async function getTotalEntries() {
-  const result = await api.moods.stats["total-entries"].$get();
+  const result = await api.stats["total-entries"].$get();
   if (!result.ok) {
     throw new Error("Failed to fetch total entries");
   }
   const data = await result.json();
-  return data.stats;
+  return data;
 }
 
 export async function getStreak() {
-  const result = await api.moods.stats.streak.$get();
+  const result = await api.stats.streak.$get();
   if (!result.ok) {
     throw new Error("Failed to fetch streak");
   }
   const data = await result.json();
-  return data.streak;
+  return data;
 }
 
 export async function getMoodDistribution({ page, limit }: { page?: number; limit?: number }) {
-  const result = await api.moods.stats["mood-distribution"].$get({ query: { page: page?.toString(), limit: limit?.toString() } });
+  const result = await api.stats["mood-distribution"].$get({ query: { page: page?.toString(), limit: limit?.toString() } });
   if (!result.ok) {
     throw new Error("Failed to fetch mood distribution");
   }
   const data = await result.json();
-  return data.distribution;
+  return data;
 }
 
 export async function getWeeklyTrend() {
-  const result = await api.moods.stats["weekly-trend"].$get();
+  const result = await api.stats["weekly-trend"].$get();
   if (!result.ok) {
     throw new Error("Failed to fetch mood distribution count");
   }
   const data = await result.json();
-  return data.weeklyTrend;
+  return data;
 }
 
 export async function getMonthlyOverView() {
-  const result = await api.moods.stats["monthly-overview"].$get();
+  const result = await api.stats["monthly-overview"].$get();
   if (!result.ok) {
     throw new Error("Failed to fetch mood distribution count");
   }
   const data = await result.json();
-  return data.monthlyOverview;
+  return data;
 }
 
 export const userQueryOptions = queryOptions({
@@ -153,12 +153,12 @@ export const weeklyTrendQueryOptions = queryOptions({
 });
 
 export async function getTimeOfDayAnalysis() {
-  const result = await api.moods.stats["time-of-day-analysis"].$get();
+  const result = await api.stats["time-of-day-analysis"].$get();
   if (!result.ok) {
     throw new Error("Failed to fetch time of day analysis");
   }
   const data = await result.json();
-  return data.analysis;
+  return data;
 }
 
 export const timeOfDayAnalysisQueryOptions = queryOptions({
