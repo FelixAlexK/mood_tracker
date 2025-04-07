@@ -155,7 +155,7 @@ export const weeklyTrendQueryOptions = queryOptions({
 export async function getTimeOfDayAnalysis() {
   const result = await api.moods.stats["time-of-day-analysis"].$get();
   if (!result.ok) {
-    throw new Error("Failed to fetch user");
+    throw new Error("Failed to fetch time of day analysis");
   }
   const data = await result.json();
   return data.analysis;
