@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getTimeOfDayAnalysis, timeOfDayAnalysisQueryOptions } from "@/lib/api";
 import { useQuery } from "@tanstack/vue-query";
+import { Clock } from "lucide-vue-next";
 
 const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOfDayAnalysisQueryOptions);
 </script>
