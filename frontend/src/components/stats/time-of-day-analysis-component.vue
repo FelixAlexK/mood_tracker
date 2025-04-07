@@ -1,0 +1,47 @@
+<script setup lang="ts">
+import { getTimeOfDayAnalysis, timeOfDayAnalysisQueryOptions } from "@/lib/api";
+import { useQuery } from "@tanstack/vue-query";
+
+const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOfDayAnalysisQueryOptions);
+</script>
+
+<template>
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+      <Clock class="w-5 h-5" />
+      Time of Day Analysis
+    </h2>
+    <span v-if="isLoadingTimeAnalysis">Loading...</span>
+    <div v-else-if="timeAnalysis" class="space-y-4">
+      <div
+        v-for="period in timeAnalysis"
+        :key="period.timeOfDay"
+        class="bg-gray-50 rounded-lg p-4"
+      >
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-medium">{{ period.timeOfDay }}</span>
+          <span class="text-sm text-gray-600">{{ period.percentage }}%</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="flex-grow h-2 bg-blue-200 rounded-full">
+            <div
+              class="h-full bg-blue-500 rounded-full"
+              :style="{ width: `${period.percentage}%` }"
+            />
+          </div>
+        </div>
+        <div class="mt-2 flex gap-2">
+          <span
+            class="text-lg"
+          >
+            {{ period.topMood.count }}x {{ period.topMood.emoji }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+
+</style>
