@@ -327,4 +327,85 @@ export const moodsRoute = new Hono()
     });
 
     return context.json({ monthlyOverview });
+  })
+
+  .get("/stats/time-of-day-analysis", getUser, async (context) => {
+    const user = context.var.user;
+
+    // Fetch all mood entries for the user
+    const moods = await db
+      .select({
+        createdAt: moodsTable.createdAt,
+        type: moodsTable.type,
+        emoji: moodsTable.emoji,
+      })
+      .from(moodsTable)
+      .where(eq(moodsTable.userID, user.id));
+
+    if (!moods || moods.length === 0) {
+      return context.json({ message: "No moods found", analysis: [] });
+    }
+
+    // Define time ranges
+    const timeRanges = {
+      morning: { start: 6, end: 12, label: "Morning" },
+      afternoon: { start: 12, end: 18, label: "Afternoon" },
+      evening: { start: 18, end: 24, label: "Evening" },
+      night: { start: 0, end: 6, label: "Night" },
+    };
+
+    // Initialize counts and mood tracking for each time range
+    const timeOfDayCounts: Record<string, { count: number; moods: Record<string, { count: number; emoji: string }> }> = {
+      Morning: { count: 0, moods: {} },
+      Afternoon: { count: 0, moods: {} },
+      Evening: { count: 0, moods: {} },
+      Night: { count: 0, moods: {} },
+    };
+
+    // Categorize moods by time of day and track mood counts
+    moods.forEach((mood) => {
+      const hour = new Date(mood.createdAt).getHours();
+
+      let timeOfDay: keyof typeof timeOfDayCounts | null = null;
+      if (hour >= timeRanges.morning.start && hour < timeRanges.morning.end) {
+        timeOfDay = "Morning";
+      }
+      else if (hour >= timeRanges.afternoon.start && hour < timeRanges.afternoon.end) {
+        timeOfDay = "Afternoon";
+      }
+      else if (hour >= timeRanges.evening.start && hour < timeRanges.evening.end) {
+        timeOfDay = "Evening";
+      }
+      else if (hour >= timeRanges.night.start || hour < timeRanges.night.end) {
+        timeOfDay = "Night";
+      }
+
+      if (timeOfDay) {
+        timeOfDayCounts[timeOfDay].count++;
+        if (!timeOfDayCounts[timeOfDay].moods[mood.type]) {
+          timeOfDayCounts[timeOfDay].moods[mood.type] = { count: 0, emoji: mood.emoji };
+        }
+        timeOfDayCounts[timeOfDay].moods[mood.type].count++;
+      }
+    });
+
+    // Calculate total moods
+    const totalMoods = moods.length;
+
+    // Format the response
+    const analysis = Object.entries(timeOfDayCounts).map(([timeOfDay, data]) => {
+      const topMood = Object.entries(data.moods).reduce(
+        (top: { type: string | null; count: number; emoji: string }, [type, moodData]) =>
+          moodData.count > top.count ? { type, count: moodData.count, emoji: moodData.emoji } : top,
+        { type: null, count: 0, emoji: "" },
+      );
+
+      return {
+        timeOfDay,
+        percentage: ((data.count / totalMoods) * 100).toFixed(0), // Calculate percentage
+        topMood,
+      };
+    });
+
+    return context.json({ analysis });
   });

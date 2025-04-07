@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AccountStats from "@/components/stats/account-stats-component.vue";
 import MonthlyOverviewComponent from "@/components/stats/monthly-overview-component.vue";
+import TimeOfDayAnalysisComponent from "@/components/stats/time-of-day-analysis-component.vue";
 import { moodDistributionQueryOptions, weeklyTrendQueryOptions } from "@/lib/api";
 import { getDayName } from "@/lib/utils";
 import { useQuery } from "@tanstack/vue-query";
@@ -82,5 +83,7 @@ const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributi
       </div>
     </div>
   </div>
-  <MonthlyOverviewComponent />
+  <!-- <MonthlyOverviewComponent /> -->
+
+  <TimeOfDayAnalysisComponent />
 </template>
