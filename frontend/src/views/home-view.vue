@@ -4,9 +4,12 @@ import MoodCardComponent from "@/components/mood-card-component.vue";
 import MoodFormComponent from "@/components/mood-form-component.vue";
 import { getMoods } from "@/lib/api";
 import router from "@/router";
+import { useAuthStore } from "@/stores/auth-store";
 import { useMutationState, useQuery } from "@tanstack/vue-query";
 
 import type { MoodEntry } from "../types";
+
+const authStore = useAuthStore();
 
 const PAGE_SIZE = 6;
 const PAGE = 1;
@@ -28,7 +31,7 @@ const variables = useMutationState<MoodEntry>({
     <section>
       <MoodFormComponent />
     </section>
-    <section>
+    <section v-if="authStore.isLoggedIn">
       <h3 class="block text-gray-700 text-sm font-bold mb-2 pt-4">
         Latest Moods
       </h3>
