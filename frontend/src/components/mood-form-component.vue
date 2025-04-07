@@ -3,6 +3,7 @@ import { postMood } from "@/lib/api";
 import { MOOD_TYPES } from "@/types";
 import { useForm } from "@tanstack/vue-form";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
+import { format } from "date-fns";
 import { Send } from "lucide-vue-next";
 import { ref } from "vue";
 
@@ -19,13 +20,11 @@ const { mutate } = useMutation({
   mutationFn: postMood,
 
   onSuccess: (data) => {
-    // Show success toast
-    toast.success(`${data.emoji} Mood tracked successfully!`);
+    toast.success(`${data.emoji} Mood successfully created!`);
   },
 
-  onError: () => {
-    // Show error toast
-    toast.error(`Please log in to track your mood!`);
+  onError: (error) => {
+    toast.error(`${error.message}`);
   },
 
   onSettled: () => {
