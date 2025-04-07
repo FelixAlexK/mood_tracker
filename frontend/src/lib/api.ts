@@ -151,3 +151,17 @@ export const weeklyTrendQueryOptions = queryOptions({
   queryKey: ["weekly-trend"],
   queryFn: getWeeklyTrend,
 });
+
+export async function getTimeOfDayAnalysis() {
+  const result = await api.moods.stats["time-of-day-analysis"].$get();
+  if (!result.ok) {
+    throw new Error("Failed to fetch user");
+  }
+  const data = await result.json();
+  return data.analysis;
+}
+
+export const timeOfDayAnalysisQueryOptions = queryOptions({
+  queryKey: ["time-of-day-analysis"],
+  queryFn: getTimeOfDayAnalysis,
+});
