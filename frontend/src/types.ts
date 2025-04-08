@@ -16,4 +16,12 @@ export const MOOD_TYPES = [
   { type: "tired", emoji: "😴" },
 ] as const;
 
+export type UserType = {
+  picture: null | string;
+  family_name: string;
+  given_name: string;
+  email: string;
+  id: string;
+};
+
 export type UpdateMood = Omit<MoodEntry, "id" | "createdAt" | "userID">;
