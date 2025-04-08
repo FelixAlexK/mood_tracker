@@ -42,12 +42,12 @@ const calendarOptions = computed(() => ({
 </script>
 
 <template>
-  <div class="bg-white rounded-lg shadow-md p-6">
+  <div class="bg-white rounded-lg shadow-md p-6 ">
     <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
       <Calendar class="w-5 h-5" />
       Monthly Overview
     </h2>
     <span v-if="isMonthlyOverviewLoading">Loading...</span>
-    <FullCalendar v-else :options="calendarOptions" />
+    <FullCalendar v-else class="h-fit" :options="calendarOptions" />
   </div>
 </template>
