@@ -53,7 +53,7 @@ const groupedMoods = computed(() => {
 </script>
 
 <template>
-  <section>
+  <div class="max-w-3xl mx-auto">
     <PaginationComponent
       :page="page"
       :total-pages="totalPages"
@@ -97,5 +97,5 @@ const groupedMoods = computed(() => {
       @next-page="nextPage"
       @go-to-page="goToPage"
     />
-  </section>
+  </div>
 </template>
