@@ -220,10 +220,6 @@ export const statsRoute = new Hono()
             .from(moodsTable)
             .where(eq(moodsTable.userID, user.id));
 
-        if (!moods || moods.length === 0) {
-            context.notFound();
-        }
-
         // Define time ranges
         const timeRanges = {
             morning: { start: 6, end: 12, label: "Morning" },
@@ -272,16 +268,19 @@ export const statsRoute = new Hono()
 
         // Format the response
         const timeOfDayMoodReport = Object.entries(timeOfDayCounts).map(([timeOfDay, data]) => {
-            const topMood = Object.entries(data.moods).reduce(
-                (top: { type: string | null; count: number; emoji: string }, [type, moodData]) =>
-                    moodData.count > top.count ? { type, count: moodData.count, emoji: moodData.emoji } : top,
-                { type: null, count: 0, emoji: "" },
-            );
+            // Get all moods sorted by count for the time of day
+            const sortedMoods = Object.entries(data.moods)
+                .map(([type, moodData]) => ({
+                    type,
+                    count: moodData.count,
+                    emoji: moodData.emoji,
+                }))
+                .sort((a, b) => b.count - a.count); // Sort by count in descending order
 
             return {
                 timeOfDay,
                 percentage: ((data.count / totalMoods) * 100).toFixed(0), // Calculate percentage
-                topMood,
+                topMoods: sortedMoods, // Include all moods sorted by frequency
             };
         });
 
