@@ -61,9 +61,9 @@ const { mutate: deleteMutation } = useMutation({
 
 function startEditing() {
   isEditing.value = true;
-  selectedType.value = data.value?.mood.type || "";
-  selectedEmoji.value = data.value?.mood.emoji || "";
-  editedNote.value = data.value?.mood.note || "";
+  selectedType.value = data.value?.type || "";
+  selectedEmoji.value = data.value?.emoji || "";
+  editedNote.value = data.value?.note || "";
 }
 
 function selectMood(type: string, emoji: string) {
@@ -100,14 +100,14 @@ function handleDelete() {
     <div v-else class="flex justify-between items-start mb-6">
       <div>
         <div class="flex items-center gap-3 mb-2">
-          <span class="text-4xl">{{ isEditing ? selectedEmoji : data?.mood?.emoji || '❤️' }}</span>
+          <span class="text-4xl">{{ isEditing ? selectedEmoji : data?.emoji || '❤️' }}</span>
           <h2 class="text-2xl font-bold text-gray-800 capitalize">
-            {{ isEditing ? selectedType : data?.mood?.type || '-' }}
+            {{ isEditing ? selectedType : data?.type || '-' }}
           </h2>
         </div>
         <div class="flex items-center text-gray-500 text-sm">
           <Clock class="w-4 h-4 mr-1" />
-          <span>{{ formattedDate(data?.mood?.createdAt || null) }}</span>
+          <span>{{ formattedDate(data?.createdAt || null) }}</span>
         </div>
       </div>
       <div class="flex gap-2">
@@ -182,8 +182,8 @@ function handleDelete() {
     </div>
 
     <div v-else>
-      <p v-if="data?.mood?.note" class="text-gray-700 mt-4 whitespace-pre-wrap">
-        {{ data?.mood?.note || '-' }}
+      <p v-if="data?.note" class="text-gray-700 mt-4 whitespace-pre-wrap">
+        {{ data?.note || '-' }}
       </p>
       <p v-else class="text-gray-500 italic mt-4">
         No note added
