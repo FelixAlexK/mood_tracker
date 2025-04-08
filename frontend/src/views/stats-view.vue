@@ -9,7 +9,7 @@ import { ArrowLeft } from "lucide-vue-next";
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto">
+  <div class="max-w-6xl mx-auto">
     <HeadlineComponent
       text="Mood Statistics"
       back-text="Back to Tracker"
