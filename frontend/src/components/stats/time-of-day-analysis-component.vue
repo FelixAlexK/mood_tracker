@@ -33,9 +33,12 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
         </div>
         <div class="mt-3 flex gap-2">
           <span
+            v-for="mood in period.topMoods"
+            :key="mood.type"
             class="text-lg"
+            :title="mood.type"
           >
-            {{ period.topMood.emoji }}
+            {{ mood.emoji }}
           </span>
         </div>
       </div>
