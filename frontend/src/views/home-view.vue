@@ -7,7 +7,6 @@ import { getMoods } from "@/lib/api";
 import router from "@/router";
 import { useAuthStore } from "@/stores/auth-store";
 import { useMutationState, useQuery } from "@tanstack/vue-query";
-import { ArrowLeft } from "lucide-vue-next";
 
 import type { MoodEntry } from "../types";
 
