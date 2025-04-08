@@ -89,14 +89,7 @@ export const statsRoute = new Hono()
         return context.json(streakCount);
     })
 
-    .get("/mood-distribution", getUser, zValidator("query", z.object({
-        page: z.string().optional(),
-        limit: z.string().optional(), // Optional offset query parameter
-    })), async (context) => {
-        const query = context.req.valid("query");
-        const page = Number.parseInt(query.page ?? "0"); // Default offset to 0 if not provided
-        const limit = Number.parseInt(query.limit ?? "3");
-
+    .get("/mood-distribution", getUser, async (context) => {
         const user = context.var.user;
 
         const total = await db
@@ -117,11 +110,10 @@ export const statsRoute = new Hono()
             .where(eq(moodsTable.userID, user.id))
             .groupBy(moodsTable.type, moodsTable.emoji) // Group by mood type and emoji
             .orderBy(desc(count())) // Order by count in descending order
-            .offset(page) // Apply the offset
-            .limit(limit); // Limit the number of results to 3 (or any desired value)
+            .limit(3); // Limit the number of results to 3
 
         if (distribution.length === 0) {
-            return context.notFound();
+            context.notFound();
         }
 
         const totalMoods = total.count;
@@ -229,7 +221,7 @@ export const statsRoute = new Hono()
             .where(eq(moodsTable.userID, user.id));
 
         if (!moods || moods.length === 0) {
-            return context.notFound();
+            context.notFound();
         }
 
         // Define time ranges
