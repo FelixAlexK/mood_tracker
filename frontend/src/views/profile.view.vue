@@ -9,7 +9,7 @@ const { data } = useQuery(userQueryOptions);
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto">
+  <div class="max-w-3xl mx-auto">
     <HeadlineComponent
       text="Profile"
       back-text="Back to Tracker"
