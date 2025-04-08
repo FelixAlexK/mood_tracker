@@ -42,9 +42,11 @@ router.beforeEach(async (to, _from) => {
 
   if (to.meta.requiresAuth && user) {
     authStore.setLoggedIn(true);
+    authStore.setUser(user);
   }
   else if (!user) {
     authStore.setLoggedIn(false);
+    authStore.setUser(undefined);
   }
 });
 
