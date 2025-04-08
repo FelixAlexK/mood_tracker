@@ -3,12 +3,26 @@ import NavComponent from "./components/nav-component.vue";
 </script>
 
 <template>
-  <div>
+  <header>
     <NavComponent />
-    <main class="min-h-screen bg-gray-100 p-6">
-      <div class="container mx-auto">
-        <RouterView />
-      </div>
-    </main>
-  </div>
+  </header>
+  <main class="min-h-screen bg-gray-100 p-6">
+    <RouterView v-slot="{ Component }">
+      <template v-if="Component">
+        <Transition mode="out-in">
+          <KeepAlive>
+            <Suspense>
+              <!-- main content -->
+              <component :is="Component" />
+
+              <!-- loading state -->
+              <template #fallback>
+                Loading...
+              </template>
+            </Suspense>
+          </KeepAlive>
+        </Transition>
+      </template>
+    </RouterView>
+  </main>
 </template>
