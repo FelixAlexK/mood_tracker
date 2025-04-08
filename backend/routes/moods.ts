@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import { and, between, count, desc, eq } from "drizzle-orm";
+import { and, count, desc, eq } from "drizzle-orm";
 import {
   Hono,
 } from "hono";

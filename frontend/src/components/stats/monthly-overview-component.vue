@@ -3,7 +3,7 @@ import { getMonthlyOverView } from "@/lib/api";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import FullCalendar from "@fullcalendar/vue3";
 import { useQuery } from "@tanstack/vue-query";
-import { BarChart3, Calendar } from "lucide-vue-next";
+import { Calendar } from "lucide-vue-next";
 import { computed } from "vue";
 
 const { data: monthlyOverview, isLoading: isMonthlyOverviewLoading } = useQuery({

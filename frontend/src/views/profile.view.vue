@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import HeadlineComponent from "@/components/headline-component.vue";
 import AccountStats from "@/components/stats/account-stats-component.vue";
 import { userQueryOptions } from "@/lib/api";
 import { useQuery } from "@tanstack/vue-query";
@@ -8,19 +9,16 @@ const { data } = useQuery(userQueryOptions);
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto">
-    <div class="flex items-center justify-between mb-6">
-      <h1 class="text-3xl font-bold text-gray-800">
-        Profile
-      </h1>
-      <router-link
-        to="/"
-        class="text-blue-500 hover:text-blue-600 transition-colors flex items-center gap-2"
-      >
+  <div class="max-w-7xl mx-auto">
+    <HeadlineComponent
+      text="Profile"
+      back-text="Back to Tracker"
+      back-path="/"
+    >
+      <template #icon>
         <ArrowLeft class="w-5 h-5" />
-        Back to Tracker
-      </router-link>
-    </div>
+      </template>
+    </HeadlineComponent>
 
     <div class="bg-white rounded-lg shadow-md p-6">
       <div v-if="data" class="flex items-center gap-6 mb-8">

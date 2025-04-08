@@ -3,7 +3,6 @@ import { postMood } from "@/lib/api";
 import { MOOD_TYPES } from "@/types";
 import { useForm } from "@tanstack/vue-form";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
-import { format } from "date-fns";
 import { Send } from "lucide-vue-next";
 import { ref } from "vue";
 

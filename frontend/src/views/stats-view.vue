@@ -5,7 +5,7 @@ import DistributionComponent from "@/components/stats/distribution-component.vue
 import MonthlyOverviewComponent from "@/components/stats/monthly-overview-component.vue";
 import TimeOfDayAnalysisComponent from "@/components/stats/time-of-day-analysis-component.vue";
 import WeeklyTrendComponent from "@/components/stats/weekly-trend-component.vue";
-import { ArrowLeft, BarChart3 } from "lucide-vue-next";
+import { ArrowLeft } from "lucide-vue-next";
 </script>
 
 <template>

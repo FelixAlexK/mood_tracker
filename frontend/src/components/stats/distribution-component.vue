@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { moodDistributionQueryOptions } from "@/lib/api";
 import { useQuery } from "@tanstack/vue-query";
-import { ArrowLeft, PieChart } from "lucide-vue-next";
+import { PieChart } from "lucide-vue-next";
 
 const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributionQueryOptions());
 </script>

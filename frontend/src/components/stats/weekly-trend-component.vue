@@ -2,7 +2,7 @@
 import { weeklyTrendQueryOptions } from "@/lib/api";
 import { getDayName } from "@/lib/utils";
 import { useQuery } from "@tanstack/vue-query";
-import { ArrowLeft, TrendingUp } from "lucide-vue-next";
+import { TrendingUp } from "lucide-vue-next";
 
 const { data: weeklyTrend, isLoading: isLoadingWeeklyTrend } = useQuery(weeklyTrendQueryOptions);
 </script>
