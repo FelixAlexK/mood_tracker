@@ -80,8 +80,8 @@ export async function getStreak() {
   return data;
 }
 
-export async function getMoodDistribution({ page, limit }: { page?: number; limit?: number }) {
-  const result = await api.stats["mood-distribution"].$get({ query: { page: page?.toString(), limit: limit?.toString() } });
+export async function getMoodDistribution() {
+  const result = await api.stats["mood-distribution"].$get();
   if (!result.ok) {
     throw new Error("Failed to fetch mood distribution");
   }
@@ -134,10 +134,10 @@ export const mostCommonQueryOptions = queryOptions({
 });
 
 // Fetch mood distribution with pagination
-export function moodDistributionQueryOptions(page: number, limit: number) {
+export function moodDistributionQueryOptions() {
   return queryOptions({
-    queryKey: ["mood-distribution", page],
-    queryFn: () => getMoodDistribution({ page, limit }),
+    queryKey: ["mood-distribution"],
+    queryFn: getMoodDistribution,
 
   });
 }
