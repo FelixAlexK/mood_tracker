@@ -7,7 +7,7 @@ const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributi
 </script>
 
 <template>
-  <div class="bg-white shadow-md rounded-lg p-4 mb-6">
+  <div class="bg-white shadow-md rounded-lg p-4 ">
     <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
       <PieChart class="w-5 h-5" />
       Mood Distribution
