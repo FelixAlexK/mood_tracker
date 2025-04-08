@@ -23,19 +23,19 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
           <span class="font-medium">{{ period.timeOfDay }}</span>
           <span class="text-sm text-gray-600">{{ period.percentage }}%</span>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
           <div class="flex-grow h-2 bg-blue-200 rounded-full">
             <div
-              class="h-full bg-blue-500 rounded-full"
+              class="h-full bg-blue-500 rounded-full transition-all duration-500"
               :style="{ width: `${period.percentage}%` }"
             />
           </div>
         </div>
-        <div class="mt-2 flex gap-2">
+        <div class="mt-3 flex gap-2">
           <span
             class="text-lg"
           >
-            {{ period.topMood.count }}x {{ period.topMood.emoji }}
+            {{ period.topMood.emoji }}
           </span>
         </div>
       </div>
