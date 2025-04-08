@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { text, backText = "Back to Tracker", backPath = "/" } = defineProps<{
+const { text, backText, backPath } = defineProps<{
   text: string;
   backText?: string;
   backPath?: string;
@@ -13,6 +13,7 @@ const { text, backText = "Back to Tracker", backPath = "/" } = defineProps<{
         {{ text }}
       </h1>
       <router-link
+        v-if="backPath && backText"
         :to="backPath"
         class="text-blue-500 hover:text-blue-600 transition-colors flex items-center gap-2"
       >
