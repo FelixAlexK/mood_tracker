@@ -25,4 +25,4 @@ export type UserType = {
   id: string;
 };
 
-export type UpdateMood = Omit<MoodEntry, "id" | "createdAt" | "userID">;
+export type UpdateMood = Omit<MoodEntry, "id" | "createdAt" | "userID" | "newest">;
