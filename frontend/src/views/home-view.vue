@@ -52,7 +52,7 @@ const variables = useMutationState<MoodEntry>({
           :mood="mood"
         />
       </div>
-      <ButtonComponent :disabled="(data?.total ?? 0) <= 6" class="mt-4" text="See All" @click="router.push({ path: '/moods' })" />
+      <ButtonComponent :disabled="(data?.total ?? 0) <= 1" class="mt-4" text="See All" @click="router.push({ path: '/moods' })" />
     </div>
   </div>
 </template>
