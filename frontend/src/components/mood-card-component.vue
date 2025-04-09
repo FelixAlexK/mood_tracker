@@ -15,10 +15,13 @@ function handleRouterPush() {
 </script>
 
 <template>
-  <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer flex flex-col h-full" @click="handleRouterPush">
+  <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer flex flex-col h-full relative" @click="handleRouterPush">
     <div class="flex items-center justify-between mb-2 ">
       <span class="text-2xl block">{{ mood.emoji }}</span>
       <span class="text-sm capitalize">{{ mood.type }}</span>
+    </div>
+    <div v-if="mood.newest" class="bg-pink-400  rounded-b-xl shadow-md shadow-pink-600/50   absolute top-0 left-1/2  transform -translate-x-1/2  text-white font-bold text-sm py-0.5 px-4">
+      NEW
     </div>
 
     <p class="text-gray-700 my-2 line-clamp-2 ">
