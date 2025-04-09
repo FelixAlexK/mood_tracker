@@ -5,6 +5,7 @@ export type MoodEntry = {
   emoji: string;
   note: string | null;
   createdAt: string | null;
+  newest: boolean;
 };
 
 export const MOOD_TYPES = [
