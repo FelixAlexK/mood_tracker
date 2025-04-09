@@ -52,13 +52,26 @@ export const moodsRoute = new Hono()
     const validatedMood = insertMoodsSchema.parse({
       ...mood,
       userID: user.id,
+      newest: true,
     });
 
-    const result = await db
-      .insert(moodsTable)
-      .values(validatedMood)
-      .returning()
-      .then(res => res[0]);
+    const [result] = await db.transaction(async (tx) => {
+      try {
+        await tx
+          .update(moodsTable)
+          .set({ newest: false })
+          .where(and(eq(moodsTable.userID, user.id), eq(moodsTable.newest, true)));
+
+        return tx
+          .insert(moodsTable)
+          .values(validatedMood)
+          .returning();
+      }
+      catch (error) {
+        console.error("Transaction failed:", error);
+        throw error; // Re-throw to ensure rollback
+      }
+    });
 
     return context.json(result);
   })
