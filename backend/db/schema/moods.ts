@@ -10,6 +10,7 @@ export const moods = sqliteTable("moods_table", {
   emoji: text().notNull(),
   note: text(),
   createdAt: int("created_at", { mode: "timestamp_ms" }).notNull().default(sql`(unixepoch() * 1000)`), // Store UNIX timestamp in milliseconds
+  newest: int({ mode: "boolean" }).notNull().default(false),
 });
 
 // Schema for inserting a user - can be used to validate API requests
