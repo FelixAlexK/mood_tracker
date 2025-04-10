@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
+    "dev": "bunx --bun vite",
+    "build": "bunx --bun vite build",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build"
