@@ -7,7 +7,6 @@ import { useToast } from "@/composables/use-toast";
 import { getMoods, postMood } from "@/lib/api";
 import router from "@/router";
 import { useAuthStore } from "@/stores/auth-store";
-import { useForm } from "@tanstack/vue-form";
 import { useMutation, useMutationState, useQuery, useQueryClient } from "@tanstack/vue-query";
 
 import type { MoodEntry } from "../types";
