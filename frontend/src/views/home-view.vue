@@ -3,14 +3,19 @@ import ButtonComponent from "@/components/button-component.vue";
 import HeadlineComponent from "@/components/headline-component.vue";
 import MoodCardComponent from "@/components/mood-card-component.vue";
 import MoodFormComponent from "@/components/mood-form-component.vue";
-import { getMoods } from "@/lib/api";
+import { useToast } from "@/composables/use-toast";
+import { getMoods, postMood } from "@/lib/api";
 import router from "@/router";
 import { useAuthStore } from "@/stores/auth-store";
-import { useMutationState, useQuery } from "@tanstack/vue-query";
+import { useForm } from "@tanstack/vue-form";
+import { useMutation, useMutationState, useQuery, useQueryClient } from "@tanstack/vue-query";
 
 import type { MoodEntry } from "../types";
 
 const authStore = useAuthStore();
+
+const toast = useToast();
+const queryClient = useQueryClient();
 
 const PAGE_SIZE = 1;
 const PAGE = 1;
@@ -25,6 +30,34 @@ const variables = useMutationState<MoodEntry>({
   filters: { mutationKey: ["create-mood"], status: "pending" },
   select: mutation => mutation.state.variables as MoodEntry,
 });
+
+const { mutate } = useMutation({
+  mutationKey: ["create-mood"],
+  mutationFn: postMood,
+
+  onSuccess: (data) => {
+    toast.success(`${data.emoji} Mood successfully created!`);
+  },
+
+  onError: (error) => {
+    toast.error(`${error.message}`);
+  },
+
+  onSettled: () => {
+    // Refetch the moods after mutation
+    queryClient.invalidateQueries({ queryKey: ["get-moods"] });
+  },
+
+});
+
+async function handleSubmit(value: { note: string | null; type: string; emoji: string }) {
+  mutate({
+    type: value.type,
+    emoji: value.emoji,
+    note: value.note ? value.note.trim() : null,
+    newest: false,
+  });
+}
 </script>
 
 <template>
@@ -33,10 +66,12 @@ const variables = useMutationState<MoodEntry>({
       :text="`Welcome ${authStore.user?.given_name ?? ''}!`"
     />
 
-    <MoodFormComponent />
+    <div>
+      <MoodFormComponent @submit="handleSubmit" />
+    </div>
 
     <div v-if="authStore.isLoggedIn">
-      <h3 class="block text-gray-700 text-sm font-bold mb-2 pt-4">
+      <h3 class="block text-lg font-medium mb-2 pt-4">
         Latest Entry
       </h3>
       <div class="">

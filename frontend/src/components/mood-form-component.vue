@@ -1,104 +1,92 @@
 <script setup lang="ts">
-import { postMood } from "@/lib/api";
 import { MOOD_TYPES } from "@/types";
 import { useForm } from "@tanstack/vue-form";
-import { useMutation, useQueryClient } from "@tanstack/vue-query";
-import { Send } from "lucide-vue-next";
+import { Send, X } from "lucide-vue-next";
 import { ref } from "vue";
 
-import { useToast } from "../composables/use-toast";
+import ButtonComponent from "./button-component.vue";
+import WrapperCardComponent from "./wrapper-card-component.vue";
 
-const toast = useToast();
-const queryClient = useQueryClient();
+const emit = defineEmits<{
+  (e: "submit", value: { note: string | null; type: string; emoji: string }): void;
+  (e: "cancel"): void;
+}>();
 
 const selectedType = ref<typeof MOOD_TYPES[number]["type"]>(MOOD_TYPES[0].type);
 const note = ref("");
 
-const { mutate } = useMutation({
-  mutationKey: ["create-mood"],
-  mutationFn: postMood,
-
-  onSuccess: (data) => {
-    toast.success(`${data.emoji} Mood successfully created!`);
-  },
-
-  onError: (error) => {
-    toast.error(`${error.message}`);
-  },
-
-  onSettled: () => {
-    // Refetch the moods after mutation
-    queryClient.invalidateQueries({ queryKey: ["get-moods"] });
-  },
-
-});
-
 const form = useForm({
   defaultValues: {
     note: "",
+
   },
   onSubmit: async ({ value }) => {
-    mutate({
-      // In a real app, this would come from auth
+    emit("submit", {
       type: selectedType.value,
       emoji: MOOD_TYPES.find(m => m.type === selectedType.value)?.emoji || "😊",
       note: value.note.trim() || null,
     });
+
     note.value = "";
   },
 });
 </script>
 
 <template>
-  <form class="bg-white rounded-lg shadow-md p-6 mb-6" @submit.prevent.stop="form.handleSubmit">
-    <div class="mb-4">
-      <label class="block text-gray-700 text-sm font-bold mb-2">
-        How are you feeling?
-      </label>
-      <div class="grid grid-cols-3 gap-2">
-        <button
-          v-for="{ type, emoji } in MOOD_TYPES"
-          :key="type"
-          type="button"
-          class="p-3 rounded-lg text-center transition-all" :class="[
-            selectedType === type
-              ? 'bg-blue-100 ring-2 ring-blue-500'
-              : 'bg-gray-50 hover:bg-gray-100',
-          ]"
-          @click="selectedType = type"
-        >
-          <span class="text-2xl mb-1 block">{{ emoji }}</span>
-          <span class="text-sm capitalize">{{ type }}</span>
-        </button>
-      </div>
-    </div>
-
-    <form.Field
-      name="note"
-    >
-      <template #default="{ field }">
-        <div class="mb-4">
-          <label for="note" class="block text-gray-700 text-sm font-bold mb-2">
-            Add a note (optional)
-          </label>
-          <textarea
-            :name="field.name"
-            :value="field.state.value"
-            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            rows="3"
-            placeholder="How are you feeling today?"
-            @input="(e) => field.handleChange((e.target as HTMLTextAreaElement)?.value || '')"
-          />
+  <WrapperCardComponent>
+    <form class="" @submit.prevent.stop="form.handleSubmit">
+      <div class="mb-4">
+        <label class="block text-xl font-medium mb-2">
+          How are you feeling?
+        </label>
+        <div class="grid grid-cols-3 gap-2">
+          <button
+            v-for="{ type, emoji } in MOOD_TYPES"
+            :key="type"
+            type="button"
+            class="p-3 rounded-lg text-center transition-all cursor-pointer" :class="[
+              selectedType === type
+                ? 'bg-gray-200 ring-2 ring-gray-500'
+                : 'bg-gray-200 hover:bg-gray-200/50',
+            ]"
+            @click="selectedType = type"
+          >
+            <span class=" mb-1 block">{{ emoji }}</span>
+            <span class="">{{ type }}</span>
+          </button>
         </div>
-      </template>
-    </form.Field>
+      </div>
 
-    <button
-      type="submit"
-      class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
-    >
-      <Send class="w-4 h-4" />
-      Save Mood
-    </button>
-  </form>
+      <form.Field
+        name="note"
+      >
+        <template #default="{ field }">
+          <div class="mb-4 mt-8">
+            <label for="note" class="block text-lg mb-2">
+              Add a note (optional)
+            </label>
+            <textarea
+              :name="field.name"
+              :value="field.state.value"
+              class="w-full px-3 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+              rows="3"
+              @input="(e) => field.handleChange((e.target as HTMLTextAreaElement)?.value || '')"
+            />
+          </div>
+        </template>
+      </form.Field>
+      <div class="flex gap-3">
+        <ButtonComponent primary class="mt-4" text="Save Mood" type="submit">
+          <template #icon>
+            <Send class="w-4 h-4" />
+          </template>
+        </ButtonComponent>
+        <ButtonComponent class="mt-4" text="Cancel" @click="emit('cancel')">
+          <template #icon>
+            <X class="w-4 h-4" />
+          </template>
+        </ButtonComponent>
+      </div>
+    </form>
+  </WrapperCardComponent>
 </template>

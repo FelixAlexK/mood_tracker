@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import HeadlineComponent from "@/components/headline-component.vue";
 import AccountStats from "@/components/stats/account-stats-component.vue";
+import WrapperCardComponent from "@/components/wrapper-card-component.vue";
 import { userQueryOptions } from "@/lib/api";
 import { useQuery } from "@tanstack/vue-query";
 import { ArrowLeft } from "lucide-vue-next";
@@ -19,8 +20,7 @@ const { data } = useQuery(userQueryOptions);
         <ArrowLeft class="w-5 h-5" />
       </template>
     </HeadlineComponent>
-
-    <div class="bg-white rounded-lg shadow-md p-6">
+    <WrapperCardComponent>
       <div v-if="data" class="flex items-center gap-6 mb-8">
         <img
           :src="data.picture || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=faces'"
@@ -29,7 +29,7 @@ const { data } = useQuery(userQueryOptions);
         >
 
         <div>
-          <h2 class="text-2xl font-bold text-gray-800">
+          <h2 class="text-xl font-semibold capitalize">
             {{ data.given_name }}
           </h2>
         </div>
@@ -38,6 +38,6 @@ const { data } = useQuery(userQueryOptions);
       <div class="mt-8 pt-6 border-t">
         <AccountStats />
       </div>
-    </div>
+    </wrappercardcomponent>
   </div>
 </template>

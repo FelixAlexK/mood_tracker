@@ -3,13 +3,15 @@ import { moodDistributionQueryOptions } from "@/lib/api";
 import { useQuery } from "@tanstack/vue-query";
 import { PieChart } from "lucide-vue-next";
 
+import WrapperCardComponent from "../wrapper-card-component.vue";
+
 const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributionQueryOptions());
 </script>
 
 <template>
-  <div class="bg-white shadow-md rounded-lg p-4 ">
-    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-      <PieChart class="w-5 h-5" />
+  <WrapperCardComponent>
+    <h2 class="text-xl capitalize font-semibold mb-4 flex items-center gap-2">
+      <PieChart />
       Mood Distribution
     </h2>
     <span v-if="isLoadingDist">Loading...</span>
@@ -17,23 +19,22 @@ const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributi
       <div
         v-for="(mood, index) in distribution"
         :key="index"
-        class="bg-gray-50 rounded-lg p-4"
+        class="bg-gray-200 rounded-lg p-4"
       >
         <div class="flex items-center justify-between mb-2">
           <div class="flex items-center gap-2">
-            <span class="text-2xl">{{ mood.emoji }}</span>
-            <span class="font-medium capitalize">{{ mood.type }}</span>
+            <span class="text-xl">{{ mood.emoji }}</span>
+            <span class="capitalize text-xl font-semibold">{{ mood.type }}</span>
           </div>
-          <span class="text-sm text-gray-600">{{ mood.percentage }}%</span>
+          <span class="">{{ mood.percentage }}%</span>
         </div>
-        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+        <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
           <div
-            class="h-full bg-blue-500 rounded-full transition-all duration-500"
+            class="h-full c rounded-full transition-all duration-500"
             :style="{ width: `${mood.percentage}%` }"
           />
         </div>
       </div>
     </div>
-    <span v-else class="text-2xl">-</span>
-  </div>
+  </WrapperCardComponent>
 </template>

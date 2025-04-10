@@ -3,13 +3,15 @@ import { timeOfDayAnalysisQueryOptions } from "@/lib/api";
 import { useQuery } from "@tanstack/vue-query";
 import { Clock } from "lucide-vue-next";
 
+import WrapperCardComponent from "../wrapper-card-component.vue";
+
 const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOfDayAnalysisQueryOptions);
 </script>
 
 <template>
-  <div class="bg-white rounded-lg shadow-md p-6">
-    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-      <Clock class="w-5 h-5" />
+  <WrapperCardComponent>
+    <h2 class=" mb-4 flex items-center gap-2 text-xl capitalize font-semibold">
+      <Clock />
       Time of Day Analysis
     </h2>
     <span v-if="isLoadingTimeAnalysis">Loading...</span>
@@ -17,16 +19,16 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
       <div
         v-for="period in timeAnalysis"
         :key="period.timeOfDay"
-        class="bg-gray-50 rounded-lg p-4"
+        class="bg-gray-200 rounded-lg p-4"
       >
         <div class="flex items-center justify-between mb-2">
-          <span class="font-medium">{{ period.timeOfDay }}</span>
-          <span class="text-sm text-gray-600">{{ period.percentage }}%</span>
+          <span class=" capitalize text-xl font-semibold">{{ period.timeOfDay }}</span>
+          <span class="">{{ period.percentage }}%</span>
         </div>
-        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-          <div class="flex-grow h-2 bg-blue-200 rounded-full">
+        <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+          <div class="flex-grow h-2 bg-gray-100 rounded-full">
             <div
-              class="h-full bg-blue-500 rounded-full transition-all duration-500"
+              class="h-full bg-gray-500 rounded-full transition-all duration-500"
               :style="{ width: `${period.percentage}%` }"
             />
           </div>
@@ -35,7 +37,7 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
           <span
             v-for="mood in period.topMoods"
             :key="mood.type"
-            class="text-lg"
+            class=""
             :title="mood.type"
           >
             {{ mood.emoji }}
@@ -43,7 +45,7 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
         </div>
       </div>
     </div>
-  </div>
+  </WrapperCardComponent>
 </template>
 
 <style scoped>

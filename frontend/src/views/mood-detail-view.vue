@@ -2,12 +2,13 @@
 import type { UpdateMood } from "@/types";
 
 import HeadlineComponent from "@/components/headline-component.vue";
+import MoodFormComponent from "@/components/mood-form-component.vue";
+import WrapperCardComponent from "@/components/wrapper-card-component.vue";
 import { deleteMood, getMood, updateMood } from "@/lib/api";
 import { formattedDate } from "@/lib/utils";
 import router from "@/router";
-import { MOOD_TYPES } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
-import { ArrowLeft, Clock, Edit2, Save, Trash2, X } from "lucide-vue-next";
+import { ArrowLeft, Clock, Edit2, Trash2 } from "lucide-vue-next";
 import { ref } from "vue";
 
 import { useToast } from "../composables/use-toast";
@@ -66,13 +67,15 @@ function startEditing() {
   editedNote.value = data.value?.note || "";
 }
 
-function selectMood(type: string, emoji: string) {
-  selectedType.value = type;
-  selectedEmoji.value = emoji;
+function cancelEditing() {
+  isEditing.value = false;
+  selectedType.value = "";
+  selectedEmoji.value = "";
+  editedNote.value = "";
 }
 
-function saveChanges() {
-  patch({ id, mood: { type: selectedType.value, emoji: selectedEmoji.value, note: editedNote.value.trim() || null } });
+function saveChanges(value: { note: string | null; type: string; emoji: string }) {
+  patch({ id, mood: { type: value.type, emoji: value.emoji, note: value.note } });
   isEditing.value = false;
 }
 
@@ -91,14 +94,14 @@ function handleDelete() {
       :text="`Still ${data?.type || 'Unknown'}?`"
       back-text="Back to Tracker"
       back-path="/"
+      class="capitalize"
     >
       <template #icon>
         <ArrowLeft class="w-5 h-5" />
       </template>
     </HeadlineComponent>
 
-    <!-- Mood Details Card -->
-    <div class="bg-white rounded-lg shadow-lg p-8">
+    <WrapperCardComponent>
       <div v-if="!data" class="text-center">
         <!-- Loading State -->
         <p class="text-gray-500 italic">
@@ -151,58 +154,11 @@ function handleDelete() {
         </div>
 
         <!-- Edit Mode -->
-        <div v-if="isEditing" class="bg-gray-50 p-4 rounded-lg shadow-inner">
-          <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2">
-              How were you feeling?
-            </label>
-            <div class="grid grid-cols-3 gap-2">
-              <button
-                v-for="{ type, emoji } in MOOD_TYPES"
-                :key="type"
-                type="button"
-                class="p-3 rounded-lg text-center transition-all"
-                :class="[
-                  selectedType === type
-                    ? 'bg-blue-100 ring-2 ring-blue-500'
-                    : 'bg-gray-50 hover:bg-gray-100',
-                ]"
-                @click="selectMood(type, emoji)"
-              >
-                <span class="text-2xl mb-1 block">{{ emoji }}</span>
-                <span class="text-sm capitalize">{{ type }}</span>
-              </button>
-            </div>
-          </div>
 
-          <div class="mb-6">
-            <label class="block text-gray-700 text-sm font-bold mb-2">Note</label>
-            <textarea
-              v-model="editedNote"
-              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              rows="4"
-              placeholder="How were you feeling?"
-            />
-          </div>
-
-          <div class="flex gap-3">
-            <button
-              class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
-              @click="saveChanges"
-            >
-              <Save class="w-4 h-4" />
-              Save Changes
-            </button>
-            <button
-              class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
-              @click="isEditing = false;"
-            >
-              <X class="w-4 h-4" />
-              Cancel
-            </button>
-          </div>
-        </div>
+        <MoodFormComponent v-if="isEditing" class="shadow-none hover:shadow-none" @submit="saveChanges" @cancel="cancelEditing" />
       </div>
-    </div>
+    </wrappercardcomponent>
+
+    <!-- Mood Details Card -->
   </div>
 </template>

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { MoodEntry } from "@/types";
 
+import HeadlineComponent from "@/components/headline-component.vue";
 import MoodCardComponent from "@/components/mood-card-component.vue";
 import PaginationComponent from "@/components/pagination-component.vue";
 import { getMoods } from "@/lib/api";
 import { keepPreviousData, useMutationState, useQuery } from "@tanstack/vue-query";
+import { ArrowLeft } from "lucide-vue-next";
 import { computed, ref } from "vue";
 
 const PAGE_SIZE = 25;
@@ -54,6 +56,15 @@ const groupedMoods = computed(() => {
 
 <template>
   <div class="max-w-3xl mx-auto">
+    <HeadlineComponent
+      text="Overview"
+      back-text="Back to Tracker"
+      back-path="/"
+    >
+      <template #icon>
+        <ArrowLeft class="w-5 h-5" />
+      </template>
+    </HeadlineComponent>
     <PaginationComponent
       :page="page"
       :total-pages="totalPages"

@@ -31,7 +31,7 @@ onUnmounted(() => {
         <div class="flex gap-4">
           <router-link
             to="/"
-            class="flex items-center px-2 py-2 text-gray-700 hover:text-blue-500 transition-colors"
+            class="flex items-center px-2 py-2  hover:text-gray-500 transition-colors"
           >
             <Home class="w-5 h-5 mr-1" />
             Home
@@ -39,14 +39,14 @@ onUnmounted(() => {
           <router-link
             v-if="authStore.isLoggedIn"
             to="/stats"
-            class="flex items-center px-2 py-2  text-gray-700 hover:text-blue-500 transition-colors"
+            class="flex items-center px-2 py-2   hover:text-gray-500 transition-colors"
           >
             <BarChart3 class="w-5 h-5 mr-1" />
             Stats
           </router-link>
           <span
             v-else
-            class="flex items-center px-2 py-2  text-gray-400 cursor-not-allowed"
+            class="flex items-center px-2 py-2 text-gray-400 cursor-not-allowed"
           >
             <BarChart3 class="w-5 h-5 mr-1" />
             Stats
@@ -56,7 +56,7 @@ onUnmounted(() => {
           <router-link
             v-if="authStore.isLoggedIn"
             to="/profile"
-            class="flex items-center px-2 py-2 text-gray-700 hover:text-blue-500 transition-colors"
+            class="flex items-center px-2 py-2  hover:text-gray-500 transition-colors"
           >
             <User class="w-5 h-5 mr-1" />
             Profile

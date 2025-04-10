@@ -4,13 +4,15 @@ import { getDayName } from "@/lib/utils";
 import { useQuery } from "@tanstack/vue-query";
 import { TrendingUp } from "lucide-vue-next";
 
+import WrapperCardComponent from "../wrapper-card-component.vue";
+
 const { data: weeklyTrend, isLoading: isLoadingWeeklyTrend } = useQuery(weeklyTrendQueryOptions);
 </script>
 
 <template>
-  <div class="bg-white rounded-lg shadow-md p-6">
-    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-      <TrendingUp class="w-5 h-5" />
+  <WrapperCardComponent>
+    <h2 class=" mb-4 flex items-center gap-2 text-xl capitalize font-semibold">
+      <TrendingUp />
       Weekly Trend
     </h2>
     <span v-if="isLoadingWeeklyTrend">Loading...</span>
@@ -20,17 +22,17 @@ const { data: weeklyTrend, isLoading: isLoadingWeeklyTrend } = useQuery(weeklyTr
         :key="index"
         class="text-center"
       >
-        <div class="text-xs text-gray-500 mb-2">
+        <div class="text-xs font-medium mb-1 text-gray-700">
           {{ getDayName(day.date) }}
         </div>
         <div
           class="aspect-square rounded-lg flex items-center justify-center"
-          :class="day.count > 0 ? 'bg-blue-50 ring-2 ring-blue-500' : 'bg-gray-50'"
+          :class="day.count > 0 ? 'bg-gray-200 ring-2 ring-gray-500' : 'bg-gray-200 hover:bg-gray-200/50'"
         >
           <span v-if="day.count > 0" class="text-xl">{{ day.emoji }}</span>
-          <span v-else class="text-xs text-gray-400">-</span>
+          <span v-else>-</span>
         </div>
       </div>
     </div>
-  </div>
+  </WrapperCardComponent>
 </template>

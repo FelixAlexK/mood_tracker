@@ -79,7 +79,7 @@ const displayedPages = computed(() => {
         v-for="(p, index) in displayedPages"
         :key="index"
         class="min-w-[2.5rem] h-10 rounded-lg transition-colors flex items-center justify-center"
-        :class="p === page ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'"
+        :class="p === page ? 'bg-gray-500 text-white' : 'hover:bg-gray-200'"
         @click="emit('goToPage', p)"
       >
         {{ p === -1 ? '...' : p }}
