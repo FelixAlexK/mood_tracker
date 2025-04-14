@@ -30,7 +30,7 @@ const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributi
         </div>
         <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
           <div
-            class="h-full c rounded-full transition-all duration-500"
+            class="h-full bg-gray-500 rounded-full transition-all duration-500"
             :style="{ width: `${mood.percentage}%` }"
           />
         </div>
