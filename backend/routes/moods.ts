@@ -26,8 +26,8 @@ export const moodsRoute = new Hono()
     const moods = await db
       .select()
       .from(moodsTable)
-      .orderBy(desc(moodsTable.createdAt), desc(moodsTable.id))
-      .where(eq(moodsTable.userID, user.id))
+      .orderBy(desc(moodsTable.created_at), desc(moodsTable.id))
+      .where(eq(moodsTable.user_id, user.id))
       .limit(pageSize)
       .offset((page - 1) * pageSize);
 
@@ -51,29 +51,38 @@ export const moodsRoute = new Hono()
 
     const validatedMood = insertMoodsSchema.parse({
       ...mood,
-      userID: user.id,
+      user_id: user.id,
       newest: true,
     });
 
-    const [result] = await db.transaction(async (tx) => {
-      try {
-        await tx
-          .update(moodsTable)
-          .set({ newest: false })
-          .where(and(eq(moodsTable.userID, user.id), eq(moodsTable.newest, true)));
+    const operations = Promise.allSettled([
+      db
+        .update(moodsTable)
+        .set({ newest: false })
+        .where(and(eq(moodsTable.user_id, user.id), eq(moodsTable.newest, true)))
+        .returning()
+        .then(res => res[0]),
 
-        return tx
-          .insert(moodsTable)
-          .values(validatedMood)
-          .returning();
-      }
-      catch (error) {
-        console.error("Transaction failed:", error);
-        throw error; // Re-throw to ensure rollback
-      }
-    });
+      db
+        .insert(moodsTable)
+        .values(validatedMood)
+        .returning()
+        .then(res => res[0]),
+    ]);
 
-    return context.json(result);
+    const promiseResult = await operations;
+
+    // Filter fulfilled promises and extract the insert result
+    const insertResult = promiseResult
+      .filter(op => op.status === "fulfilled")
+      .map(op => op.value)
+      .find(result => result?.user_id === user.id); // Ensure it's the inserted mood
+
+    if (!insertResult) {
+      return context.json({ error: "Failed to insert mood" }, 500);
+    }
+
+    return context.json(insertResult);
   })
 
   .get("/:id{[0-9]+}", getUser, async (context) => {
@@ -84,7 +93,7 @@ export const moodsRoute = new Hono()
     const mood = await db
       .select()
       .from(moodsTable)
-      .where(and(eq(moodsTable.userID, user.id), eq(moodsTable.id, id)))
+      .where(and(eq(moodsTable.user_id, user.id), eq(moodsTable.id, id)))
       .then(res => res[0]);
 
     if (!mood) {
@@ -100,7 +109,7 @@ export const moodsRoute = new Hono()
 
     const mood = await db
       .delete(moodsTable)
-      .where(and(eq(moodsTable.userID, user.id), eq(moodsTable.id, id)))
+      .where(and(eq(moodsTable.user_id, user.id), eq(moodsTable.id, id)))
       .returning()
       .then(res => res[0]);
 
@@ -124,7 +133,7 @@ export const moodsRoute = new Hono()
     const updatedMood = await db
       .update(moodsTable)
       .set(validatedMood)
-      .where(and(eq(moodsTable.userID, user.id), eq(moodsTable.id, id)))
+      .where(and(eq(moodsTable.user_id, user.id), eq(moodsTable.id, id)))
       .returning()
       .then(res => res[0]);
 
