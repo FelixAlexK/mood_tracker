@@ -14,7 +14,7 @@ const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributi
       <PieChart class="w-5 lg:w-6 aspect-square h-auto" />
       Mood Distribution
     </h2>
-    <span v-if="isLoadingDist">Loading...</span>
+    <span v-if="isLoadingDist || !distribution">Loading...</span>
     <div v-else-if="distribution" class="space-y-4">
       <div
         v-for="(mood, index) in distribution"

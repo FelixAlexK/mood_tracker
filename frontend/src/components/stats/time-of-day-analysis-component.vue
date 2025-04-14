@@ -14,7 +14,7 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
       <Clock class="w-5 lg:w-6 aspect-square h-auto" />
       Time of Day Analysis
     </h2>
-    <span v-if="isLoadingTimeAnalysis">Loading...</span>
+    <span v-if="isLoadingTimeAnalysis || !timeAnalysis">Loading...</span>
     <div v-else-if="timeAnalysis" class="space-y-4">
       <div
         v-for="period in timeAnalysis"
@@ -23,13 +23,13 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
       >
         <div class="flex items-center justify-between mb-2">
           <span class=" capitalize max-lg:text-lg text-xl font-semibold">{{ period.timeOfDay }}</span>
-          <span class="max-lg:text-sm">{{ period.percentage }}%</span>
+          <span class="max-lg:text-sm">{{ period.percentage !== 'NaN' ? period.percentage : 0 }}%</span>
         </div>
         <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
           <div class="flex-grow h-2 bg-gray-100 rounded-full">
             <div
               class="h-full bg-gray-500 rounded-full transition-all duration-500"
-              :style="{ width: `${period.percentage}%` }"
+              :style="{ width: `${period.percentage !== 'NaN' ? period.percentage : 0}%` }"
             />
           </div>
         </div>

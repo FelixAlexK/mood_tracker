@@ -14,7 +14,7 @@ const { data: streak, isLoading: isLoadingStreak } = useQuery(streakQueryOptions
       <h4 class="max-lg:text-xs text-sm font-medium mb-1 text-gray-700">
         Most Common Mood
       </h4>
-      <span v-if="isLoadingMostCommon">Loading...</span>
+      <span v-if="isLoadingMostCommon && (mostCommon?.count ?? 0 > 0)">Loading...</span>
       <div v-else-if="mostCommon?.count ?? 0 > 0" class="flex items-center gap-2">
         <span class="max-lg:text-lg text-xl ">{{ mostCommon?.emoji }}</span>
         <span class="max-lg:text-lg text-xl capitalize font-semibold">{{ mostCommon?.type }}</span>
@@ -26,7 +26,7 @@ const { data: streak, isLoading: isLoadingStreak } = useQuery(streakQueryOptions
       <h4 class="max-lg:text-xs text-sm font-medium mb-1 text-gray-700">
         Total Entries
       </h4>
-      <span v-if="isLoadingTotal">Loading...</span>
+      <span v-if="isLoadingTotal && (mostCommon?.count ?? 0 > 0)">Loading...</span>
       <div v-else class="flex items-center gap-2">
         <BookOpen class="w-5 lg:w-6 aspect-square h-auto text-purple-600" />
         <span class="max-lg:text-lg text-xl capitalize font-semibold">{{ totalEntries?.total }} entries</span>
@@ -37,10 +37,10 @@ const { data: streak, isLoading: isLoadingStreak } = useQuery(streakQueryOptions
       <h4 class="max-lg:text-xs text-sm font-medium mb-1 text-gray-700">
         Latest Streak
       </h4>
-      <span v-if="isLoadingStreak">Loading...</span>
+      <span v-if="isLoadingStreak && (mostCommon?.count ?? 0 > 0)">Loading...</span>
       <div v-else class="flex items-center gap-2">
         <Flame class="w-5 lg:w-6 aspect-square h-auto text-orange-500" />
-        <span class="max-lg:text-lg text-xl capitalize font-semibold">{{ streak }} days</span>
+        <span class="max-lg:text-lg text-xl capitalize font-semibold">{{ streak ?? 0 }} days</span>
       </div>
     </div>
   </div>
