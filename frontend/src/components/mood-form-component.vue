@@ -27,7 +27,10 @@ const form = useForm({
       note: value.note.trim() || null,
     });
 
-    note.value = "";
+    // Reset form fields after submission
+    selectedType.value = MOOD_TYPES[0].type; // Reset to the first mood type
+    note.value = ""; // Clear the note field
+    form.reset(); // Reset the form state
   },
 });
 </script>
