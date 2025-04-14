@@ -6,9 +6,9 @@ import process from "node:process";
 export default defineConfig({
   out: "./drizzle",
   schema: "./backend/db/schema/*",
-  dialect: "sqlite",
+  dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE_URL as string,
+    url: process.env.DATABASE_URL!,
 
   },
 }) satisfies Config;
