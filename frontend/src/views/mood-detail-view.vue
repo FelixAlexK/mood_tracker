@@ -119,7 +119,7 @@ function handleDelete() {
               </h2>
               <div class="flex items-center text-gray-500 text-sm mt-1">
                 <Clock class="w-4 h-4 mr-1" />
-                <span>{{ formattedDate(data?.createdAt || null) }}</span>
+                <span>{{ formattedDate(data?.created_at || null) }}</span>
               </div>
             </div>
           </div>
