@@ -1,7 +1,7 @@
-import { Database } from "bun:sqlite";
-import { drizzle } from "drizzle-orm/bun-sqlite";
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
 
-const sqlite = new Database(Bun.env.DATABASE_URL!, { create: true });
-const db = drizzle({ client: sqlite });
+const sql = neon(process.env.DATABASE_URL!);
+const db = drizzle({ client: sql, logger: true, casing: "snake_case" });
 
 export default db;
