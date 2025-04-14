@@ -18,8 +18,8 @@ export const statsRoute = new Hono()
         emoji: moodsTable.emoji,
       })
       .from(moodsTable)
-      .where(eq(moodsTable.userID, user.id))
-      .groupBy(moodsTable.type)
+      .where(eq(moodsTable.user_id, user.id))
+      .groupBy(moodsTable.type, moodsTable.emoji)
       .orderBy(desc(count()))
       .limit(1)
       .then(res => res[0]);
@@ -35,7 +35,7 @@ export const statsRoute = new Hono()
         total: count(),
       })
       .from(moodsTable)
-      .where(eq(moodsTable.userID, user.id))
+      .where(eq(moodsTable.user_id, user.id))
       .limit(1)
       .then(res => res[0]);
 
@@ -48,11 +48,11 @@ export const statsRoute = new Hono()
     // Fetch all mood entries ordered by date (descending)
     const moods = await db
       .select({
-        createdAt: moodsTable.createdAt,
+        created_at: moodsTable.created_at,
       })
       .from(moodsTable)
-      .where(eq(moodsTable.userID, user.id))
-      .orderBy(desc(moodsTable.createdAt));
+      .where(eq(moodsTable.user_id, user.id))
+      .orderBy(desc(moodsTable.created_at));
 
     if (!moods || moods.length === 0) {
       return context.notFound();
@@ -61,8 +61,8 @@ export const statsRoute = new Hono()
     // Calculate the streak
     let streakCount = 1; // Start with a streak of 1 (today counts as 1 if there's an entry)
     const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
-    let previousDate = moods[0]?.createdAt
-      ? new Date(moods[0].createdAt).toISOString().split("T")[0]
+    let previousDate = moods[0]?.created_at
+      ? new Date(moods[0].created_at).toISOString().split("T")[0]
       : "";
 
     if (today !== previousDate) {
@@ -70,7 +70,7 @@ export const statsRoute = new Hono()
     }
 
     for (let i = 1; i < moods.length; i++) {
-      const currentDate = moods[i].createdAt ? new Date(moods[i].createdAt ?? "").toISOString().split("T")[0] : "";
+      const currentDate = moods[i].created_at ? new Date(moods[i].created_at ?? "").toISOString().split("T")[0] : "";
       const previous = new Date(previousDate);
       const current = new Date(currentDate);
 
@@ -105,7 +105,7 @@ export const statsRoute = new Hono()
         count: count(), // Count of occurrences
       })
       .from(moodsTable)
-      .where(eq(moodsTable.userID, user.id))
+      .where(eq(moodsTable.user_id, user.id))
       .groupBy(moodsTable.type, moodsTable.emoji) // Group by mood type and emoji
       .orderBy(desc(count())) // Order by count in descending order
       .limit(3); // Limit the number of results to 3
@@ -134,17 +134,17 @@ export const statsRoute = new Hono()
     // Fetch mood entries from the past 7 days, grouped by day and mood type
     const moods = await db
       .select({
-        date: moodsTable.createdAt, // Group by date
+        date: moodsTable.created_at, // Group by date
         type: moodsTable.type, // Mood type
         emoji: moodsTable.emoji, // Emoji associated with the mood
         count: count(), // Count the number of moods per type per day
       })
       .from(moodsTable)
       .where(
-        and(between(moodsTable.createdAt, startOfWeek, today), eq(moodsTable.userID, user.id)), // Filter by date range
+        and(between(moodsTable.created_at, startOfWeek, today), eq(moodsTable.user_id, user.id)), // Filter by date range
       )
-      .groupBy(moodsTable.createdAt, moodsTable.type, moodsTable.emoji)
-      .orderBy(desc(moodsTable.createdAt));
+      .groupBy(moodsTable.created_at, moodsTable.type, moodsTable.emoji)
+      .orderBy(desc(moodsTable.created_at));
 
     // Create an array for the past 7 days
     const sevenDayTrend = Array.from({ length: 7 }, (_, i) => {
@@ -180,19 +180,19 @@ export const statsRoute = new Hono()
     // Fetch mood entries grouped by month and mood type
     const moods = await db
       .select({
-        createdAt: moodsTable.createdAt, // Extract year-month
+        created_at: moodsTable.created_at, // Extract year-month
         type: moodsTable.type, // Mood type
         emoji: moodsTable.emoji, // Emoji associated with the mood
         count: count(), // Count the number of moods per type per month
       })
       .from(moodsTable)
-      .where(eq(moodsTable.userID, user.id))
-      .groupBy(moodsTable.createdAt, moodsTable.type, moodsTable.emoji)
-      .orderBy(desc(moodsTable.createdAt));
+      .where(eq(moodsTable.user_id, user.id))
+      .groupBy(moodsTable.created_at, moodsTable.type, moodsTable.emoji)
+      .orderBy(desc(moodsTable.created_at));
 
     // Flatten the data into a single array
     const monthlyMoodStats = moods.map((mood) => {
-      const date = new Date(mood.createdAt ?? 0).toISOString().split("T")[0]; // Format the date to YYYY-MM-DD
+      const date = new Date(mood.created_at ?? 0).toISOString().split("T")[0]; // Format the date to YYYY-MM-DD
 
       return {
         date,
@@ -211,12 +211,12 @@ export const statsRoute = new Hono()
     // Fetch all mood entries for the user
     const moods = await db
       .select({
-        createdAt: moodsTable.createdAt,
+        created_at: moodsTable.created_at,
         type: moodsTable.type,
         emoji: moodsTable.emoji,
       })
       .from(moodsTable)
-      .where(eq(moodsTable.userID, user.id));
+      .where(eq(moodsTable.user_id, user.id));
 
     // Define time ranges
     const timeRanges = {
@@ -236,7 +236,7 @@ export const statsRoute = new Hono()
 
     // Categorize moods by time of day and track mood counts
     moods.forEach((mood) => {
-      const hour = new Date(mood.createdAt).getHours();
+      const hour = new Date(mood.created_at).getHours();
 
       let timeOfDay: keyof typeof timeOfDayCounts | null = null;
       if (hour >= timeRanges.morning.start && hour < timeRanges.morning.end) {
