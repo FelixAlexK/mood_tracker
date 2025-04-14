@@ -1,16 +1,15 @@
-import { sql } from "drizzle-orm";
-import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { boolean, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const moods = sqliteTable("moods_table", {
-  id: int().primaryKey({ autoIncrement: true }),
-  userID: text("user_id").notNull(),
+export const moods = pgTable("moods_table", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  user_id: text().notNull(),
   type: text().notNull(),
   emoji: text().notNull(),
   note: text(),
-  createdAt: int("created_at", { mode: "timestamp_ms" }).notNull().default(sql`(unixepoch() * 1000)`), // Store UNIX timestamp in milliseconds
-  newest: int({ mode: "boolean" }).notNull().default(false),
+  created_at: timestamp({ withTimezone: true }).defaultNow().notNull(), // Store UNIX timestamp in milliseconds
+  newest: boolean().notNull().default(false),
 });
 
 // Schema for inserting a user - can be used to validate API requests
