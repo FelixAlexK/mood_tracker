@@ -4,7 +4,7 @@
   "module": "index.ts",
   "scripts": {
     "start": "bun backend/index.ts",
-    "dev": "NODE_ENV=development bun --watch backend/index.ts ",
+    "dev": "bun --watch backend/index.ts ",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "prepare": "husky",
