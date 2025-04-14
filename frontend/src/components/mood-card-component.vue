@@ -32,7 +32,7 @@ function handleRouterPush() {
 
     <div class="flex items-center mt-auto text-sm text-gray-500">
       <Clock class="w-4 h-4 mr-1 " />
-      <time :datetime="mood.createdAt ?? ''">{{ formattedDate(mood.createdAt) }}</time>
+      <time :datetime="mood.created_at ?? ''">{{ formattedDate(mood.created_at) }}</time>
     </div>
   </WrapperCardComponent>
 </template>
