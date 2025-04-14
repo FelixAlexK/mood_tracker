@@ -8,7 +8,7 @@ const client = hc<ApiRoutes>("/");
 
 export const api = client.api;
 
-export async function postMood(mood: Omit<MoodEntry, "id" | "createdAt" | "userID">) {
+export async function postMood(mood: Omit<MoodEntry, "id" | "created_at" | "user_id">) {
   const result = await api.moods.$post({ json: mood });
   if (!result.ok) {
     throw new Error("Failed to create mood");
