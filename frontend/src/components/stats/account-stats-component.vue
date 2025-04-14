@@ -11,36 +11,36 @@ const { data: streak, isLoading: isLoadingStreak } = useQuery(streakQueryOptions
 <template>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     <div class="bg-gray-100 rounded-lg shadow-md p-6">
-      <h4 class="text-sm font-medium mb-1 text-gray-700">
+      <h4 class="max-lg:text-xs text-sm font-medium mb-1 text-gray-700">
         Most Common Mood
       </h4>
       <span v-if="isLoadingMostCommon">Loading...</span>
       <div v-else-if="mostCommon?.count ?? 0 > 0" class="flex items-center gap-2">
-        <span class="text-xl ">{{ mostCommon?.emoji }}</span>
-        <span class="text-xl capitalize font-semibold">{{ mostCommon?.type }}</span>
+        <span class="max-lg:text-lg text-xl ">{{ mostCommon?.emoji }}</span>
+        <span class="max-lg:text-lg text-xl capitalize font-semibold">{{ mostCommon?.type }}</span>
       </div>
-      <span v-else class="text-2xl">-</span>
+      <span v-else class="max-lg:text-xl text-2xl">-</span>
     </div>
 
     <div class="bg-gray-200 rounded-lg shadow-md p-6">
-      <h4 class="text-sm font-medium mb-1 text-gray-700">
+      <h4 class="max-lg:text-xs text-sm font-medium mb-1 text-gray-700">
         Total Entries
       </h4>
       <span v-if="isLoadingTotal">Loading...</span>
       <div v-else class="flex items-center gap-2">
-        <BookOpen class="text-xl text-purple-600" />
-        <span class="text-xl capitalize font-semibold">{{ totalEntries?.total }} entries</span>
+        <BookOpen class="w-5 lg:w-6 aspect-square h-auto text-purple-600" />
+        <span class="max-lg:text-lg text-xl capitalize font-semibold">{{ totalEntries?.total }} entries</span>
       </div>
     </div>
 
     <div class="bg-gray-300 rounded-lg shadow-md p-6">
-      <h4 class="text-sm font-medium mb-1 text-gray-700">
+      <h4 class="max-lg:text-xs text-sm font-medium mb-1 text-gray-700">
         Latest Streak
       </h4>
       <span v-if="isLoadingStreak">Loading...</span>
       <div v-else class="flex items-center gap-2">
-        <Flame class="text-xl text-orange-500" />
-        <span class="text-xl capitalize font-semibold">{{ streak }} days</span>
+        <Flame class="w-5 lg:w-6 aspect-square h-auto text-orange-500" />
+        <span class="max-lg:text-lg text-xl capitalize font-semibold">{{ streak }} days</span>
       </div>
     </div>
   </div>

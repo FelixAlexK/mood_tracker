@@ -36,7 +36,7 @@ const form = useForm({
   <WrapperCardComponent>
     <form class="" @submit.prevent.stop="form.handleSubmit">
       <div class="mb-4">
-        <label class="block text-xl font-medium mb-2">
+        <label class="block max-lg:text-lg text-xl font-medium mb-2">
           How are you feeling?
         </label>
         <div class="grid grid-cols-3 gap-2">
@@ -51,8 +51,8 @@ const form = useForm({
             ]"
             @click="selectedType = type"
           >
-            <span class=" mb-1 block">{{ emoji }}</span>
-            <span class="">{{ type }}</span>
+            <span class="max-lg:text-sm mb-1 block">{{ emoji }}</span>
+            <span class="capitalize max-lg:text-sm">{{ type }}</span>
           </button>
         </div>
       </div>
@@ -62,7 +62,7 @@ const form = useForm({
       >
         <template #default="{ field }">
           <div class="mb-4 mt-8">
-            <label for="note" class="block text-lg mb-2">
+            <label for="note" class="block max-lg:text-base  text-lg mb-2">
               Add a note (optional)
             </label>
             <textarea

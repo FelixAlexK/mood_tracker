@@ -17,7 +17,7 @@ const { data } = useQuery(userQueryOptions);
       back-path="/"
     >
       <template #icon>
-        <ArrowLeft class="w-5 h-5" />
+        <ArrowLeft class="w-5 lg:w-6 aspect-square h-auto" />
       </template>
     </HeadlineComponent>
     <WrapperCardComponent>
@@ -29,14 +29,14 @@ const { data } = useQuery(userQueryOptions);
         >
 
         <div>
-          <h2 class="text-xl font-semibold capitalize">
+          <h2 class="text-xl max-lg:text-lg font-semibold capitalize">
             {{ data.given_name }}
           </h2>
         </div>
       </div>
 
       <div class="mt-8 pt-6 border-t">
-        <AccountStats />
+        <AccountStats class="" />
       </div>
     </wrappercardcomponent>
   </div>

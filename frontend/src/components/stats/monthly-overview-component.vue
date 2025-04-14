@@ -45,11 +45,11 @@ const calendarOptions = computed(() => ({
 
 <template>
   <WrapperCardComponent>
-    <h2 class=" mb-4 flex items-center gap-2 text-xl capitalize font-semibold">
-      <Calendar />
+    <h2 class=" mb-4 flex items-center gap-2 max-lg:text-lg text-xl capitalize font-semibold">
+      <Calendar class="w-5 lg:w-6 aspect-square h-auto" />
       Monthly Overview
     </h2>
     <span v-if="isMonthlyOverviewLoading">Loading...</span>
-    <FullCalendar v-else class="h-fit" :options="calendarOptions" />
+    <FullCalendar v-else class="h-fit max-lg:text-sm" :options="calendarOptions" />
   </WrapperCardComponent>
 </template>

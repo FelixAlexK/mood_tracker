@@ -10,8 +10,8 @@ const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributi
 
 <template>
   <WrapperCardComponent>
-    <h2 class="text-xl capitalize font-semibold mb-4 flex items-center gap-2">
-      <PieChart />
+    <h2 class="max-lg:text-lg text-xl capitalize font-semibold mb-4 flex items-center gap-2">
+      <PieChart class="w-5 lg:w-6 aspect-square h-auto" />
       Mood Distribution
     </h2>
     <span v-if="isLoadingDist">Loading...</span>
@@ -23,10 +23,10 @@ const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributi
       >
         <div class="flex items-center justify-between mb-2">
           <div class="flex items-center gap-2">
-            <span class="text-xl">{{ mood.emoji }}</span>
-            <span class="capitalize text-xl font-semibold">{{ mood.type }}</span>
+            <span class="max-lg:text-lg text-xl">{{ mood.emoji }}</span>
+            <span class="capitalize max-lg:text-lg text-xl font-semibold">{{ mood.type }}</span>
           </div>
-          <span class="">{{ mood.percentage }}%</span>
+          <span class="max-lg:text-sm">{{ mood.percentage }}%</span>
         </div>
         <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
           <div

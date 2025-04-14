@@ -15,9 +15,13 @@ export function formattedDate(createdAt: string | null) {
   return localizedTime;
 }
 
-export function getDayName(dateString: string) {
+export function getDayName(dateString: string, short: boolean = false) {
   const date = new Date(dateString);
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+  const shortDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  if (short)
+    return shortDays[date.getDay()];
 
   return days[date.getDay()];
 }

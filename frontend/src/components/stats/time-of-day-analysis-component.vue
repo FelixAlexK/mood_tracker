@@ -10,8 +10,8 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
 
 <template>
   <WrapperCardComponent>
-    <h2 class=" mb-4 flex items-center gap-2 text-xl capitalize font-semibold">
-      <Clock />
+    <h2 class=" mb-4 flex items-center gap-2 max-lg:text-lg text-xl capitalize font-semibold">
+      <Clock class="w-5 lg:w-6 aspect-square h-auto" />
       Time of Day Analysis
     </h2>
     <span v-if="isLoadingTimeAnalysis">Loading...</span>
@@ -22,8 +22,8 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
         class="bg-gray-200 rounded-lg p-4"
       >
         <div class="flex items-center justify-between mb-2">
-          <span class=" capitalize text-xl font-semibold">{{ period.timeOfDay }}</span>
-          <span class="">{{ period.percentage }}%</span>
+          <span class=" capitalize max-lg:text-lg text-xl font-semibold">{{ period.timeOfDay }}</span>
+          <span class="max-lg:text-sm">{{ period.percentage }}%</span>
         </div>
         <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
           <div class="flex-grow h-2 bg-gray-100 rounded-full">
@@ -33,7 +33,7 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
             />
           </div>
         </div>
-        <div class="mt-3 flex gap-2">
+        <div class="mt-3 max-lg:text-sm flex gap-2">
           <span
             v-for="mood in period.topMoods"
             :key="mood.type"
@@ -47,7 +47,3 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
     </div>
   </WrapperCardComponent>
 </template>
-
-<style scoped>
-
-</style>

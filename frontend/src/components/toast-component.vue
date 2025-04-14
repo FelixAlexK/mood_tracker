@@ -50,12 +50,12 @@ onMounted(() => {
   >
     <div
       v-if="show"
-      class="fixed top-4 right-4 bg-white shadow-lg rounded-lg p-4 max-w-sm flex items-center gap-3"
+      class="fixed  top-4 right-4 bg-white max-lg:text-sm shadow-lg rounded-lg p-4 max-w-sm flex items-center gap-3 z-50"
       :class="typeClasses[type]"
     >
       <component
         :is="icons[type]"
-        class="w-5 h-5 flex-shrink-0"
+        class="w-5 lg:w-6 aspect-square h-auto flex-shrink-0 "
         :class="iconClasses[type]"
       />
       <p class="text-gray-700">

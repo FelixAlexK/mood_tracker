@@ -71,14 +71,14 @@ const displayedPages = computed(() => {
       class="p-2 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       @click="emit('prevPage')"
     >
-      <ChevronLeft class="w-5 h-5" />
+      <ChevronLeft class="w-5 lg:w-6 aspect-square h-auto" />
     </button>
 
     <div class="flex gap-1">
       <button
         v-for="(p, index) in displayedPages"
         :key="index"
-        class="min-w-[2.5rem] h-10 rounded-lg transition-colors flex items-center justify-center"
+        class="min-w-[2.5rem] h-10 max-lg:text-sm rounded-lg transition-colors flex items-center justify-center"
         :class="p === page ? 'bg-gray-500 text-white' : 'hover:bg-gray-200'"
         @click="emit('goToPage', p)"
       >
@@ -91,7 +91,7 @@ const displayedPages = computed(() => {
       class="p-2 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       @click="emit('nextPage')"
     >
-      <ChevronRight class="w-5 h-5" />
+      <ChevronRight class="w-5 lg:w-6 aspect-square h-auto" />
     </button>
   </div>
 </template>

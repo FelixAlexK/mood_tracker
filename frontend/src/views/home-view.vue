@@ -70,7 +70,7 @@ async function handleSubmit(value: { note: string | null; type: string; emoji: s
     </div>
 
     <div v-if="authStore.isLoggedIn">
-      <h3 class="block text-lg font-medium mb-2 pt-4">
+      <h3 class="block max-lg:text-base text-lg font-medium mb-2 pt-8">
         Latest Entry
       </h3>
       <div class="">

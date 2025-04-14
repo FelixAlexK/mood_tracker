@@ -44,7 +44,7 @@ const groupedMoods = computed(() => {
     return {};
 
   return data.value.moods.reduce((groups: Record<string, MoodEntry[]>, mood: MoodEntry) => {
-    const date = mood.createdAt ? new Date(mood.createdAt).toLocaleDateString() : "Unknown Date"; // Format date as "MM/DD/YYYY"
+    const date = mood.created_at ? new Date(mood.created_at).toLocaleDateString() : "Unknown Date"; // Format date as "MM/DD/YYYY"
     if (!groups[date]) {
       groups[date] = [];
     }
@@ -62,7 +62,7 @@ const groupedMoods = computed(() => {
       back-path="/"
     >
       <template #icon>
-        <ArrowLeft class="w-5 h-5" />
+        <ArrowLeft class="w-5 lg:w-6 aspect-square h-auto" />
       </template>
     </HeadlineComponent>
     <PaginationComponent
@@ -81,7 +81,7 @@ const groupedMoods = computed(() => {
 
     <div v-else-if="data">
       <div v-for="(moods, date) in groupedMoods" :key="date" class="mb-6">
-        <h2 class="text-xl font-bold mb-4">
+        <h2 class="max-lg:text-lg text-xl font-bold mb-4">
           {{ date }}
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

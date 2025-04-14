@@ -11,8 +11,8 @@ const { data: weeklyTrend, isLoading: isLoadingWeeklyTrend } = useQuery(weeklyTr
 
 <template>
   <WrapperCardComponent>
-    <h2 class=" mb-4 flex items-center gap-2 text-xl capitalize font-semibold">
-      <TrendingUp />
+    <h2 class=" mb-4 flex items-center gap-2 max-lg:text-lg text-xl capitalize font-semibold">
+      <TrendingUp class="w-5 lg:w-6 aspect-square h-auto" />
       Weekly Trend
     </h2>
     <span v-if="isLoadingWeeklyTrend">Loading...</span>
@@ -22,15 +22,15 @@ const { data: weeklyTrend, isLoading: isLoadingWeeklyTrend } = useQuery(weeklyTr
         :key="index"
         class="text-center"
       >
-        <div class="text-xs font-medium mb-1 text-gray-700">
-          {{ getDayName(day.date) }}
+        <div class="max-lg:text-sm  font-medium mb-1 text-gray-700">
+          {{ getDayName(day.date, true) }}
         </div>
         <div
           class="aspect-square rounded-lg flex items-center justify-center"
           :class="day.count > 0 ? 'bg-gray-200 ring-2 ring-gray-500' : 'bg-gray-200 hover:bg-gray-200/50'"
         >
-          <span v-if="day.count > 0" class="text-xl">{{ day.emoji }}</span>
-          <span v-else>-</span>
+          <span v-if="day.count > 0" class="max-lg:text-lg text-xl">{{ day.emoji }}</span>
+          <span v-else class="max-lg:text-lg text-xl">-</span>
         </div>
       </div>
     </div>
