@@ -1,10 +1,10 @@
 export type MoodEntry = {
   id: number;
-  userID: string;
+  user_id: string;
   type: string;
   emoji: string;
   note: string | null;
-  createdAt: string | null;
+  created_at: string | null;
   newest: boolean;
 };
 
@@ -25,4 +25,4 @@ export type UserType = {
   id: string;
 };
 
-export type UpdateMood = Omit<MoodEntry, "id" | "createdAt" | "userID" | "newest">;
+export type UpdateMood = Omit<MoodEntry, "id" | "created_at" | "user_id" | "newest">;
