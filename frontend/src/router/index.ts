@@ -24,7 +24,7 @@ const router = createRouter({
     return { top: 0, behavior: "instant" };
   },
 
-  linkExactActiveClass: "border-b-2 border-gray-500 text-gray-500",
+  // linkExactActiveClass: "border-b-2 border-gray-500 text-gray-500",
 });
 
 router.beforeEach(async (to, _from) => {
