@@ -68,7 +68,7 @@ const displayedPages = computed(() => {
   <div class="flex justify-center items-center gap-2 my-8">
     <button
       :disabled="page === 1"
-      class="p-2 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      class="p-2 rounded-lg hover:bg-mt-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       @click="emit('prevPage')"
     >
       <ChevronLeft class="w-5 lg:w-6 aspect-square h-auto" />
@@ -79,7 +79,7 @@ const displayedPages = computed(() => {
         v-for="(p, index) in displayedPages"
         :key="index"
         class="min-w-[2.5rem] h-10 max-lg:text-sm rounded-lg transition-colors flex items-center justify-center"
-        :class="p === page ? 'bg-gray-500 text-white' : 'hover:bg-gray-200'"
+        :class="p === page ? 'bg-mt-500 text-mt-100' : 'hover:bg-mt-200'"
         @click="emit('goToPage', p)"
       >
         {{ p === -1 ? '...' : p }}
@@ -88,7 +88,7 @@ const displayedPages = computed(() => {
 
     <button
       :disabled="page === totalPages"
-      class="p-2 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      class="p-2 rounded-lg hover:bg-mt-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       @click="emit('nextPage')"
     >
       <ChevronRight class="w-5 lg:w-6 aspect-square h-auto" />

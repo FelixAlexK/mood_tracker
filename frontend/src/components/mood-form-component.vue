@@ -49,13 +49,13 @@ const form = useForm({
             type="button"
             class="p-3 rounded-lg text-center transition-all cursor-pointer" :class="[
               selectedType === type
-                ? 'bg-gray-200 ring-2 ring-gray-500'
-                : 'bg-gray-200 hover:bg-gray-200/50',
+                ? 'bg-mt-600/30 ring-2 ring-mt-500'
+                : 'bg-mt-100 hover:bg-mt-100/50',
             ]"
             @click="selectedType = type"
           >
-            <span class="max-lg:text-sm mb-1 block">{{ emoji }}</span>
-            <span class="capitalize max-lg:text-sm">{{ type }}</span>
+            <span class="max-lg:text-3xl text-4xl mb-1 block drop-shadow-lg">{{ emoji }}</span>
+            <span class="capitalize max-lg:text-sm font-semibold">{{ type }}</span>
           </button>
         </div>
       </div>
@@ -71,7 +71,7 @@ const form = useForm({
             <textarea
               :name="field.name"
               :value="field.state.value"
-              class="w-full px-3 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+              class="w-full px-3 py-2 bg-mt-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-mt-600"
               rows="3"
               @input="(e) => field.handleChange((e.target as HTMLTextAreaElement)?.value || '')"
             />

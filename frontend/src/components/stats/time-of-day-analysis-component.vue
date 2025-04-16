@@ -19,25 +19,23 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
       <div
         v-for="period in timeAnalysis"
         :key="period.timeOfDay"
-        class="bg-gray-200 rounded-lg p-4"
+        class="bg-mt-600/30 shadow-lg rounded-lg p-4"
       >
         <div class="flex items-center justify-between mb-2">
           <span class=" capitalize max-lg:text-lg text-xl font-semibold">{{ period.timeOfDay }}</span>
-          <span class="max-lg:text-sm">{{ period.percentage !== 'NaN' ? period.percentage : 0 }}%</span>
+          <span class="max-lg:text-sm text-mt-600">{{ period.percentage !== 'NaN' ? period.percentage : 0 }}%</span>
         </div>
-        <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-          <div class="flex-grow h-2 bg-gray-100 rounded-full">
-            <div
-              class="h-full bg-gray-500 rounded-full transition-all duration-500"
-              :style="{ width: `${period.percentage !== 'NaN' ? period.percentage : 0}%` }"
-            />
-          </div>
+        <div class="h-2 bg-mt-100 rounded-full overflow-hidden flex-grow ">
+          <div
+            class="h-full bg-mt-500 rounded-full transition-all duration-500"
+            :style="{ width: `${period.percentage !== 'NaN' ? period.percentage : 0}%` }"
+          />
         </div>
-        <div class="mt-3 max-lg:text-sm flex gap-2">
+        <div class="mt-3  flex gap-2 ">
           <span
             v-for="mood in period.topMoods"
             :key="mood.type"
-            class=""
+            class="max-lg:text-xl text-2xl drop-shadow-lg"
             :title="mood.type"
           >
             {{ mood.emoji }}

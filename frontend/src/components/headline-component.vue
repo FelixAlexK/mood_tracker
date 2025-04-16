@@ -15,7 +15,7 @@ const { text, backText, backPath } = defineProps<{
       <router-link
         v-if="backPath && backText"
         :to="backPath"
-        class="hover:text-gray-600 cursor-pointer text-nowrap transition-colors flex items-center gap-2 max-lg:text-xl text-2xl font-semibold"
+        class="hover:text-mt-600 cursor-pointer text-nowrap transition-colors flex items-center gap-2 max-lg:text-xl text-2xl font-semibold"
       >
         <slot v-if="$slots.icon" name="icon" />
         {{ backText }}

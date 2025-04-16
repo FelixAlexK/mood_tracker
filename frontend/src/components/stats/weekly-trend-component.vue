@@ -22,15 +22,15 @@ const { data: weeklyTrend, isLoading: isLoadingWeeklyTrend } = useQuery(weeklyTr
         :key="index"
         class="text-center"
       >
-        <div class="max-lg:text-sm  font-medium mb-1 text-gray-700">
+        <div class="max-lg:text-sm  font-medium mb-1 ">
           {{ getDayName(day.date, true) }}
         </div>
         <div
-          class="aspect-square rounded-lg flex items-center justify-center"
-          :class="day.count > 0 ? 'bg-gray-200 ring-2 ring-gray-500' : 'bg-gray-200 hover:bg-gray-200/50'"
+          class="aspect-square rounded-lg flex items-center justify-center shadow-lg"
+          :class="day.count > 0 ? 'bg-mt-200 ring-2 ring-mt-500' : 'bg-mt-100 hover:bg-mt-100/50'"
         >
-          <span v-if="day.count > 0" class="max-lg:text-lg text-xl">{{ day.emoji }}</span>
-          <span v-else class="max-lg:text-lg text-xl">-</span>
+          <span v-if="day.count > 0" class="max-lg:text-xl text-2xl drop-shadow-lg">{{ day.emoji }}</span>
+          <span v-else class="max-lg:text-xl text-2xl text-mt-600">-</span>
         </div>
       </div>
     </div>

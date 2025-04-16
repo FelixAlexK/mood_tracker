@@ -6,7 +6,7 @@ import NavComponent from "./components/nav-component.vue";
   <header>
     <NavComponent />
   </header>
-  <main class="min-h-screen bg-gray-50 p-6 text-gray-950">
+  <main class="min-h-screen bg-mt-100 p-6 text-gray-950">
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
         <Transition mode="out-in">

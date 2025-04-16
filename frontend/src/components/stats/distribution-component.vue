@@ -19,18 +19,18 @@ const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributi
       <div
         v-for="(mood, index) in distribution"
         :key="index"
-        class="bg-gray-200 rounded-lg p-4"
+        class="bg-mt-600/30 shadow-lg rounded-lg p-4"
       >
         <div class="flex items-center justify-between mb-2">
           <div class="flex items-center gap-2">
-            <span class="max-lg:text-lg text-xl">{{ mood.emoji }}</span>
+            <span class="max-lg:text-xl text-2xl drop-shadow-lg">{{ mood.emoji }}</span>
             <span class="capitalize max-lg:text-lg text-xl font-semibold">{{ mood.type }}</span>
           </div>
-          <span class="max-lg:text-sm">{{ mood.percentage }}%</span>
+          <span class="max-lg:text-sm text-mt-600">{{ mood.percentage }}%</span>
         </div>
-        <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+        <div class="h-2 bg-mt-100 rounded-full overflow-hidden">
           <div
-            class="h-full bg-gray-500 rounded-full transition-all duration-500"
+            class="h-full bg-mt-500 rounded-full transition-all duration-500"
             :style="{ width: `${mood.percentage}%` }"
           />
         </div>

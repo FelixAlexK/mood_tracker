@@ -12,12 +12,12 @@ defineEmits(["click"]);
 <template>
   <button
     :type="type"
-    class="w-full max-lg:text-base  text-nowrap text-lg text-gray-100 py-2 font-bold px-4 rounded-lg transition-colors flex items-center justify-center gap-2 "
+    class="w-full max-lg:text-base drop-shadow-lg  text-nowrap text-lg text-mt-100 py-2 font-bold px-4 rounded-lg transition-colors flex items-center justify-center gap-2 "
     :class="{
 
-      'bg-gray-600 hover:bg-gray-500/70': primary,
-      'bg-gray-400 hover:bg-gray-400/70': !primary,
-      'cursor-not-allowed opacity-50': disabled,
+      'bg-mt-600 hover:bg-mt-600/95': primary,
+      'bg-mt-400 hover:bg-mt-400/95': !primary,
+      'cursor-not-allowed opacity-50 drop-shadow-none': disabled,
       'cursor-pointer': !disabled,
 
     }"

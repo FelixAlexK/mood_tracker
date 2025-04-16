@@ -47,24 +47,26 @@ onUnmounted(() => {
         <div class="flex gap-4">
           <router-link
             to="/"
-            class="flex items-center px-2 py-2  hover:text-gray-500 transition-colors"
+            class="flex items-center px-2 py-2  hover:text-mt-600 transition-colors"
+            exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
-            <Home class="w-5 h-5 mr-1" />
+            <Home class="max-lg:text-xl text-2xl drop-shadow-lg" />
             Home
           </router-link>
           <router-link
             v-if="authStore.isLoggedIn"
             to="/stats"
-            class="flex items-center px-2 py-2   hover:text-gray-500 transition-colors"
+            class="flex items-center px-2 py-2   hover:text-mt-600 transition-colors"
+            exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
-            <BarChart3 class="w-5 h-5 mr-1" />
+            <BarChart3 class="max-lg:text-xl text-2xl drop-shadow-lg" />
             Stats
           </router-link>
           <span
             v-else
             class="flex items-center px-2 py-2 text-gray-400 cursor-not-allowed"
           >
-            <BarChart3 class="w-5 h-5 mr-1" />
+            <BarChart3 class="max-lg:text-xl text-2xl drop-shadow-lg" />
             Stats
           </span>
         </div>
@@ -72,16 +74,17 @@ onUnmounted(() => {
           <router-link
             v-if="authStore.isLoggedIn"
             to="/profile"
-            class="flex items-center px-2 py-2  hover:text-gray-500 transition-colors"
+            class="flex items-center px-2 py-2  hover:text-mt-600 transition-colors"
+            exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
-            <User class="w-5 h-5 mr-1" />
+            <User class="max-lg:text-xl text-2xl drop-shadow-lg" />
             Profile
           </router-link>
           <span
             v-else
             class="flex items-center px-2 py-2  text-gray-400 cursor-not-allowed"
           >
-            <User class="w-5 h-5 mr-1" />
+            <User class="max-lg:text-xl text-2xl drop-shadow-lg" />
             Profile
           </span>
           <a
@@ -89,7 +92,7 @@ onUnmounted(() => {
             class="flex items-center px-2 py-2 text-red-500 hover:text-red-600 transition-colors"
             href="/api/logout"
           >
-            <LogOut class="w-5 h-5 mr-1" />
+            <LogOut class="max-lg:text-xl text-2xl drop-shadow-lg" />
             Logout
           </a>
           <a
@@ -97,13 +100,13 @@ onUnmounted(() => {
             class="flex items-center px-2 py-2 text-green-500 hover:text-green-600 transition-colors"
             href="/api/login"
           >
-            <LogIn class="w-5 h-5 mr-1" />
+            <LogIn class="max-lg:text-xl text-2xl drop-shadow-lg" />
             Login
           </a>
         </div>
       </div>
       <div class="h-16 flex items-center justify-end lg:hidden cursor-pointer">
-        <Menu class="w-5 h-5" @click="open = true" />
+        <Menu class="max-lg:text-xl text-2xl drop-shadow-lg" @click="open = true" />
       </div>
     </div>
   </nav>
@@ -117,39 +120,42 @@ onUnmounted(() => {
         <nav class="flex flex-col items-start justify-center h-full gap-4 p-16">
           <router-link
             to="/"
-            class="flex items-center px-2 py-2  hover:text-gray-500 transition-colors"
+            class="flex items-center px-2 py-2  hover:text-mt-600 transition-colors"
+            exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
-            <Home class="w-5 h-5 mr-1" />
+            <Home class="max-lg:text-xl text-2xl drop-shadow-lg" />
             Home
           </router-link>
           <router-link
             v-if="authStore.isLoggedIn"
             to="/stats"
-            class="flex items-center px-2 py-2   hover:text-gray-500 transition-colors"
+            class="flex items-center px-2 py-2   hover:text-mt-600 transition-colors"
+            exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
-            <BarChart3 class="w-5 h-5 mr-1" />
+            <BarChart3 class="max-lg:text-xl text-2xl drop-shadow-lg" />
             Stats
           </router-link>
           <span
             v-else
-            class="flex items-center px-2 py-2 text-gray-400 cursor-not-allowed"
+            class="flex items-center px-2 py-2 text-mt-600/50 cursor-not-allowed"
           >
-            <BarChart3 class="w-5 h-5 mr-1" />
+            <BarChart3 class="max-lg:text-xl text-2xl drop-shadow-lg" />
             Stats
           </span>
           <router-link
             v-if="authStore.isLoggedIn"
             to="/profile"
-            class="flex items-center px-2 py-2  hover:text-gray-500 transition-colors"
+            class="flex items-center px-2 py-2  hover:text-mt-600 transition-colors"
+            exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
-            <User class="w-5 h-5 mr-1" />
+            <User class="max-lg:text-xl text-2xl drop-shadow-lg" />
             Profile
           </router-link>
           <span
             v-else
-            class="flex items-center px-2 py-2  text-gray-400 cursor-not-allowed"
+            class="flex items-center px-2 py-2  text-mt-600/50 cursor-not-allowed"
           >
-            <User class="w-5 h-5 mr-1" />
+            <User class="max-lg:text-xl text-2xl drop-shadow-lg" />
             Profile
           </span>
           <a
@@ -157,7 +163,7 @@ onUnmounted(() => {
             class="flex items-center px-2 py-2 text-red-500 hover:text-red-600 transition-colors"
             href="/api/logout"
           >
-            <LogOut class="w-5 h-5 mr-1" />
+            <LogOut class="max-lg:text-xl text-2xl drop-shadow-lg" />
             Logout
           </a>
           <a
@@ -165,7 +171,7 @@ onUnmounted(() => {
             class="flex items-center px-2 py-2 text-green-500 hover:text-green-600 transition-colors"
             href="/api/login"
           >
-            <LogIn class="w-5 h-5 mr-1" />
+            <LogIn class="max-lg:text-xl text-2xl drop-shadow-lg" />
             Login
           </a>
         </nav>

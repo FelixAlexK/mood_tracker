@@ -104,7 +104,7 @@ function handleDelete() {
     <WrapperCardComponent>
       <div v-if="!data" class="text-center">
         <!-- Loading State -->
-        <p class="text-gray-500 italic">
+        <p class=" italic">
           Loading mood details...
         </p>
       </div>
@@ -112,12 +112,12 @@ function handleDelete() {
         <!-- Mood Details Section -->
         <div class="flex items-center justify-between mb-6">
           <div class="flex items-center gap-4">
-            <span class="max-lg:text-3xl text-4xl">{{ data?.emoji || '❤️' }}</span>
+            <span class="max-lg:text-3xl text-4xl drop-shadow-lg">{{ data?.emoji || '❤️' }}</span>
             <div>
               <h2 class="max-lg:text-lg text-xl font-bold text-gray-800 capitalize">
                 {{ data?.type || '-' }}
               </h2>
-              <div class="flex items-center text-gray-500 max-lg:text-xs text-sm mt-1">
+              <div class="flex items-center text-mt-600 max-lg:text-xs text-sm mt-1">
                 <Clock class="w-5 lg:w-6 aspect-square h-auto mr-1 " />
                 <span>{{ formattedDate(data?.created_at || null) }}</span>
               </div>
@@ -142,13 +142,13 @@ function handleDelete() {
 
         <!-- Note Section -->
         <div class="mb-6">
-          <h3 class="max-lg:text-base text-lg font-bold text-gray-700 mb-2">
+          <h3 class="max-lg:text-base text-lg font-bold  mb-2">
             Your Note
           </h3>
-          <p v-if="data?.note" class="text-gray-700 whitespace-pre-wrap max-lg:text-sm">
+          <p v-if="data?.note" class="text-mt-600 whitespace-pre-wrap max-lg:text-sm">
             {{ data?.note }}
           </p>
-          <p v-else class="text-gray-500 italic max-lg:text-sm">
+          <p v-else class="text-mt-600 italic max-lg:text-sm">
             No note added
           </p>
         </div>
