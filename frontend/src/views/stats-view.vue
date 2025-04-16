@@ -16,7 +16,7 @@ import { ArrowLeft } from "lucide-vue-next";
       back-path="/"
     >
       <template #icon>
-        <ArrowLeft class="w-5 lg:w-6 aspect-square h-auto" />
+        <ArrowLeft class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
       </template>
     </HeadlineComponent>
 
