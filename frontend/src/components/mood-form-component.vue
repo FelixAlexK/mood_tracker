@@ -38,23 +38,23 @@ const form = useForm({
 <template>
   <WrapperCardComponent>
     <form class="" @submit.prevent.stop="form.handleSubmit">
-      <div class="mb-4">
+      <div class="">
         <label class="block max-lg:text-lg text-xl font-medium mb-2">
           How are you feeling?
         </label>
-        <div class="grid grid-cols-3 gap-2">
+        <div class="grid grid-cols-3 gap-4">
           <button
             v-for="{ type, emoji } in MOOD_TYPES"
             :key="type"
             type="button"
-            class="p-3 rounded-lg text-center transition-all cursor-pointer" :class="[
+            class="p-4 rounded-lg text-center transition-all cursor-pointer" :class="[
               selectedType === type
                 ? 'bg-mt-600/30 ring-2 ring-mt-500'
                 : 'bg-mt-100 hover:bg-mt-100/50',
             ]"
             @click="selectedType = type"
           >
-            <span class="max-lg:text-3xl text-4xl mb-1 block drop-shadow-lg">{{ emoji }}</span>
+            <span class="max-lg:text-3xl text-4xl mb-4 block drop-shadow-lg">{{ emoji }}</span>
             <span class="capitalize max-lg:text-sm font-semibold">{{ type }}</span>
           </button>
         </div>
@@ -64,29 +64,29 @@ const form = useForm({
         name="note"
       >
         <template #default="{ field }">
-          <div class="mb-4 mt-8">
-            <label for="note" class="block max-lg:text-base  text-lg mb-2">
+          <div class="mt-8 mb-4">
+            <label for="note" class="block max-lg:text-base text-lg mb-4">
               Add a note (optional)
             </label>
             <textarea
               :name="field.name"
               :value="field.state.value"
-              class="w-full px-3 py-2 bg-mt-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-mt-600"
+              class="w-full p-4 bg-mt-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-mt-600"
               rows="3"
               @input="(e) => field.handleChange((e.target as HTMLTextAreaElement)?.value || '')"
             />
           </div>
         </template>
       </form.Field>
-      <div class="flex gap-3">
-        <ButtonComponent primary class="mt-4" text="Save Mood" type="submit">
+      <div class="flex gap-4">
+        <ButtonComponent primary class="" text="Save Mood" type="submit">
           <template #icon>
-            <Send class="w-4 h-4" />
+            <Send class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
           </template>
         </ButtonComponent>
-        <ButtonComponent class="mt-4" text="Cancel" @click="emit('cancel')">
+        <ButtonComponent class="" text="Cancel" @click="emit('cancel')">
           <template #icon>
-            <X class="w-4 h-4" />
+            <X class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
           </template>
         </ButtonComponent>
       </div>

@@ -7,15 +7,15 @@ const { text, backText, backPath } = defineProps<{
 </script>
 
 <template>
-  <section class="pt-24 pb-12 mx-auto  ">
-    <div class="flex max-lg:flex-col-reverse  lg:items-center lg:justify-between mb-6">
+  <section class="pt-32 pb-16 mx-auto  ">
+    <div class="flex max-lg:flex-col-reverse  lg:items-center lg:justify-between">
       <h1 class=" font-bold max-lg:text-3xl text-wrap text-4xl">
         {{ text }}
       </h1>
       <router-link
         v-if="backPath && backText"
         :to="backPath"
-        class="hover:text-mt-600 cursor-pointer text-nowrap transition-colors flex items-center gap-2 max-lg:text-xl text-2xl font-semibold"
+        class="hover:text-mt-600 cursor-pointer text-nowrap transition-colors flex items-center max-lg:text-xl text-2xl font-semibold"
       >
         <slot v-if="$slots.icon" name="icon" />
         {{ backText }}

@@ -18,7 +18,7 @@ function handleRouterPush() {
 
 <template>
   <WrapperCardComponent @click="handleRouterPush">
-    <div class="flex items-center justify-between mb-2 ">
+    <div class="flex items-center justify-between  mb-8">
       <span class=" block max-lg:text-3xl text-4xl drop-shadow-lg">{{ mood.emoji }}</span>
       <span class="max-lg:text-sm font-semibold capitalize ">{{ mood.type }}</span>
     </div>
@@ -26,13 +26,13 @@ function handleRouterPush() {
       NEW
     </div>
 
-    <p class="max-lg:text-lg text-xl mb-8 mt-4 line-clamp-2 ">
-      {{ mood.note ?? '' }}
+    <p class="max-lg:text-lg text-xl mb-4 line-clamp-2 ">
+      {{ mood.note ?? 'asds' }}
     </p>
 
-    <div class="flex items-center mt-auto max-lg:text-xs text-sm text-mt-600">
-      <Clock class="w-4 h-4 mr-1 " />
-      <time :datetime="mood.created_at ?? ''">{{ formattedDate(mood.created_at) }}</time>
+    <div class="flex items-center mt-auto  text-mt-600">
+      <Clock class="aspect-square w-4 h-auto drop-shadow-lg mr-2" />
+      <time class="max-lg:text-xs text-sm" :datetime="mood.created_at ?? ''">{{ formattedDate(mood.created_at) }}</time>
     </div>
   </WrapperCardComponent>
 </template>

@@ -97,7 +97,7 @@ function handleDelete() {
       class="capitalize"
     >
       <template #icon>
-        <ArrowLeft class="w-5 lg:w-6 aspect-square h-auto" />
+        <ArrowLeft class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
       </template>
     </HeadlineComponent>
 
@@ -110,39 +110,39 @@ function handleDelete() {
       </div>
       <div v-else>
         <!-- Mood Details Section -->
-        <div class="flex items-center justify-between mb-6">
-          <div class="flex items-center gap-4">
-            <span class="max-lg:text-3xl text-4xl drop-shadow-lg">{{ data?.emoji || '❤️' }}</span>
+        <div class="flex items-center justify-between mb-8">
+          <div class="flex  ">
+            <span class="max-lg:text-3xl text-4xl drop-shadow-lg mr-2">{{ data?.emoji || '❤️' }}</span>
             <div>
-              <h2 class="max-lg:text-lg text-xl font-bold text-gray-800 capitalize">
+              <h2 class="max-lg:text-lg text-xl font-bold text-gray-800 capitalize mb-4">
                 {{ data?.type || '-' }}
               </h2>
-              <div class="flex items-center text-mt-600 max-lg:text-xs text-sm mt-1">
-                <Clock class="w-5 lg:w-6 aspect-square h-auto mr-1 " />
+              <div class="flex items-center text-mt-600 max-lg:text-xs text-sm ">
+                <Clock class="aspect-square w-4 h-auto drop-shadow-lg mr-2" />
                 <span>{{ formattedDate(data?.created_at || null) }}</span>
               </div>
             </div>
           </div>
           <!-- Action Buttons -->
-          <div class="flex gap-8 lg:gap-4 flex-col lg:flex-row">
+          <div class="flex gap-4  flex-col lg:flex-row">
             <button
               class="text-blue-500 hover:text-blue-600 transition-colors"
               @click="startEditing"
             >
-              <Edit2 class="w-5 lg:w-6 aspect-square h-auto" />
+              <Edit2 class="max-lg:text-xl text-2xl drop-shadow-lg " />
             </button>
             <button
               class="text-red-500 hover:text-red-600 transition-colors"
               @click="handleDelete"
             >
-              <Trash2 class="w-5 lg:w-6 aspect-square h-auto" />
+              <Trash2 class="max-lg:text-xl text-2xl drop-shadow-lg  " />
             </button>
           </div>
         </div>
 
         <!-- Note Section -->
-        <div class="mb-6">
-          <h3 class="max-lg:text-base text-lg font-bold  mb-2">
+        <div class="">
+          <h3 class="max-lg:text-base text-lg font-bold  mb-4">
             Your Note
           </h3>
           <p v-if="data?.note" class="text-mt-600 whitespace-pre-wrap max-lg:text-sm">

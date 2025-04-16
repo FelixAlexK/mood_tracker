@@ -45,8 +45,8 @@ const calendarOptions = computed(() => ({
 
 <template>
   <WrapperCardComponent>
-    <h2 class=" mb-4 flex items-center gap-2 max-lg:text-lg text-xl capitalize font-semibold">
-      <Calendar class="w-5 lg:w-6 aspect-square h-auto" />
+    <h2 class=" mb-8 flex items-center  max-lg:text-lg text-xl capitalize font-semibold">
+      <Calendar class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
       Monthly Overview
     </h2>
     <span v-if="isMonthlyOverviewLoading">Loading...</span>

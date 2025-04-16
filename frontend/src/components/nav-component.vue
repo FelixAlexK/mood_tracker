@@ -50,7 +50,7 @@ onUnmounted(() => {
             class="flex items-center px-2 py-2  hover:text-mt-600 transition-colors"
             exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
-            <Home class="max-lg:text-xl text-2xl drop-shadow-lg" />
+            <Home class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
             Home
           </router-link>
           <router-link
@@ -59,14 +59,14 @@ onUnmounted(() => {
             class="flex items-center px-2 py-2   hover:text-mt-600 transition-colors"
             exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
-            <BarChart3 class="max-lg:text-xl text-2xl drop-shadow-lg" />
+            <BarChart3 class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
             Stats
           </router-link>
           <span
             v-else
             class="flex items-center px-2 py-2 text-gray-400 cursor-not-allowed"
           >
-            <BarChart3 class="max-lg:text-xl text-2xl drop-shadow-lg" />
+            <BarChart3 class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
             Stats
           </span>
         </div>
@@ -77,7 +77,7 @@ onUnmounted(() => {
             class="flex items-center px-2 py-2  hover:text-mt-600 transition-colors"
             exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
-            <User class="max-lg:text-xl text-2xl drop-shadow-lg" />
+            <User class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
             Profile
           </router-link>
           <span
@@ -92,7 +92,7 @@ onUnmounted(() => {
             class="flex items-center px-2 py-2 text-red-500 hover:text-red-600 transition-colors"
             href="/api/logout"
           >
-            <LogOut class="max-lg:text-xl text-2xl drop-shadow-lg" />
+            <LogOut class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
             Logout
           </a>
           <a
@@ -100,7 +100,7 @@ onUnmounted(() => {
             class="flex items-center px-2 py-2 text-green-500 hover:text-green-600 transition-colors"
             href="/api/login"
           >
-            <LogIn class="max-lg:text-xl text-2xl drop-shadow-lg" />
+            <LogIn class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
             Login
           </a>
         </div>
@@ -123,7 +123,7 @@ onUnmounted(() => {
             class="flex items-center px-2 py-2  hover:text-mt-600 transition-colors"
             exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
-            <Home class="max-lg:text-xl text-2xl drop-shadow-lg" />
+            <Home class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
             Home
           </router-link>
           <router-link
@@ -132,14 +132,14 @@ onUnmounted(() => {
             class="flex items-center px-2 py-2   hover:text-mt-600 transition-colors"
             exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
-            <BarChart3 class="max-lg:text-xl text-2xl drop-shadow-lg" />
+            <BarChart3 class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
             Stats
           </router-link>
           <span
             v-else
             class="flex items-center px-2 py-2 text-mt-600/50 cursor-not-allowed"
           >
-            <BarChart3 class="max-lg:text-xl text-2xl drop-shadow-lg" />
+            <BarChart3 class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
             Stats
           </span>
           <router-link
@@ -148,7 +148,7 @@ onUnmounted(() => {
             class="flex items-center px-2 py-2  hover:text-mt-600 transition-colors"
             exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
-            <User class="max-lg:text-xl text-2xl drop-shadow-lg" />
+            <User class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
             Profile
           </router-link>
           <span
@@ -163,7 +163,7 @@ onUnmounted(() => {
             class="flex items-center px-2 py-2 text-red-500 hover:text-red-600 transition-colors"
             href="/api/logout"
           >
-            <LogOut class="max-lg:text-xl text-2xl drop-shadow-lg" />
+            <LogOut class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
             Logout
           </a>
           <a
@@ -171,7 +171,7 @@ onUnmounted(() => {
             class="flex items-center px-2 py-2 text-green-500 hover:text-green-600 transition-colors"
             href="/api/login"
           >
-            <LogIn class="max-lg:text-xl text-2xl drop-shadow-lg" />
+            <LogIn class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
             Login
           </a>
         </nav>

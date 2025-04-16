@@ -17,15 +17,15 @@ const { data } = useQuery(userQueryOptions);
       back-path="/"
     >
       <template #icon>
-        <ArrowLeft class="max-lg:text-xl text-2xl drop-shadow-lg" />
+        <ArrowLeft class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
       </template>
     </HeadlineComponent>
     <WrapperCardComponent>
-      <div v-if="data" class="flex items-center gap-6 mb-8 ">
+      <div v-if="data" class="flex items-center mb-8 ">
         <img
           :src="data.picture || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=faces'"
           alt="Profile picture"
-          class="w-32 h-auto aspect-auto rounded-full drop-shadow-lg   object-cover  shadow-lg shadow-mt-600/90 "
+          class="w-32 h-auto aspect-auto rounded-full drop-shadow-lg mr-8   object-cover  shadow-lg shadow-mt-600/90 "
         >
 
         <div>
@@ -36,7 +36,7 @@ const { data } = useQuery(userQueryOptions);
         </div>
       </div>
 
-      <div class="mt-8 pt-6 border-t">
+      <div class="pt-8 border-t">
         <AccountStats class="" />
       </div>
     </wrappercardcomponent>

@@ -62,7 +62,7 @@ const groupedMoods = computed(() => {
       back-path="/"
     >
       <template #icon>
-        <ArrowLeft class="w-5 lg:w-6 aspect-square h-auto" />
+        <ArrowLeft class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
       </template>
     </HeadlineComponent>
     <PaginationComponent
@@ -80,7 +80,7 @@ const groupedMoods = computed(() => {
     </div>
 
     <div v-else-if="data">
-      <div v-for="(moods, date) in groupedMoods" :key="date" class="mb-6">
+      <div v-for="(moods, date) in groupedMoods" :key="date" class="mb-8">
         <h2 class="max-lg:text-lg text-xl font-bold mb-4">
           {{ date }}
         </h2>

@@ -11,22 +11,22 @@ const { data: weeklyTrend, isLoading: isLoadingWeeklyTrend } = useQuery(weeklyTr
 
 <template>
   <WrapperCardComponent>
-    <h2 class=" mb-4 flex items-center gap-2 max-lg:text-lg text-xl capitalize font-semibold">
-      <TrendingUp class="w-5 lg:w-6 aspect-square h-auto" />
+    <h2 class=" mb-8 flex items-center max-lg:text-lg text-xl capitalize font-semibold">
+      <TrendingUp class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
       Weekly Trend
     </h2>
     <span v-if="isLoadingWeeklyTrend || !weeklyTrend">Loading...</span>
-    <div v-else-if="weeklyTrend" class="grid grid-cols-7 gap-2">
+    <div v-else-if="weeklyTrend" class="grid grid-cols-7 gap-4">
       <div
         v-for="(day, index) in weeklyTrend"
         :key="index"
         class="text-center"
       >
-        <div class="max-lg:text-sm  font-medium mb-1 ">
+        <div class="max-lg:text-sm  font-medium mb-4 ">
           {{ getDayName(day.date, true) }}
         </div>
         <div
-          class="aspect-square rounded-lg flex items-center justify-center shadow-lg"
+          class="aspect-square rounded-lg flex items-center justify-center shadow-lg "
           :class="day.count > 0 ? 'bg-mt-200 ring-2 ring-mt-500' : 'bg-mt-100 hover:bg-mt-100/50'"
         >
           <span v-if="day.count > 0" class="max-lg:text-xl text-2xl drop-shadow-lg">{{ day.emoji }}</span>

@@ -12,7 +12,7 @@ defineEmits(["click"]);
 <template>
   <button
     :type="type"
-    class="w-full max-lg:text-base drop-shadow-lg  text-nowrap text-lg text-mt-100 py-2 font-bold px-4 rounded-lg transition-colors flex items-center justify-center gap-2 "
+    class="w-full max-lg:text-base drop-shadow-lg  text-nowrap text-lg text-mt-100 py-2 font-bold  rounded-lg transition-colors flex items-center justify-center gap-2 "
     :class="{
 
       'bg-mt-600 hover:bg-mt-600/95': primary,

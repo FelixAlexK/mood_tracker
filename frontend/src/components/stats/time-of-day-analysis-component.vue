@@ -10,18 +10,18 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
 
 <template>
   <WrapperCardComponent>
-    <h2 class=" mb-4 flex items-center gap-2 max-lg:text-lg text-xl capitalize font-semibold">
-      <Clock class="w-5 lg:w-6 aspect-square h-auto" />
+    <h2 class=" mb-8 flex items-center  max-lg:text-lg text-xl capitalize font-semibold">
+      <Clock class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
       Time of Day Analysis
     </h2>
     <span v-if="isLoadingTimeAnalysis || !timeAnalysis">Loading...</span>
-    <div v-else-if="timeAnalysis" class="space-y-4">
+    <div v-else-if="timeAnalysis" class="grid grid-cols-1 gap-4">
       <div
         v-for="period in timeAnalysis"
         :key="period.timeOfDay"
-        class="bg-mt-600/30 shadow-lg rounded-lg p-4"
+        class="bg-mt-600/30 shadow-lg rounded-lg p-8"
       >
-        <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center justify-between mb-4">
           <span class=" capitalize max-lg:text-lg text-xl font-semibold">{{ period.timeOfDay }}</span>
           <span class="max-lg:text-sm text-mt-600">{{ period.percentage !== 'NaN' ? period.percentage : 0 }}%</span>
         </div>
@@ -31,11 +31,11 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
             :style="{ width: `${period.percentage !== 'NaN' ? period.percentage : 0}%` }"
           />
         </div>
-        <div class="mt-3  flex gap-2 ">
+        <div class="flex  mt-4">
           <span
             v-for="mood in period.topMoods"
             :key="mood.type"
-            class="max-lg:text-xl text-2xl drop-shadow-lg"
+            class="max-lg:text-xl text-2xl drop-shadow-lg mr-2"
             :title="mood.type"
           >
             {{ mood.emoji }}
