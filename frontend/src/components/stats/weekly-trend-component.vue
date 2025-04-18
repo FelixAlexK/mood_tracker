@@ -16,7 +16,7 @@ const { data: weeklyTrend, isLoading: isLoadingWeeklyTrend } = useQuery(weeklyTr
       Weekly Trend
     </h2>
     <span v-if="isLoadingWeeklyTrend || !weeklyTrend">Loading...</span>
-    <div v-else-if="weeklyTrend" class="grid grid-cols-7 gap-4">
+    <div v-else-if="weeklyTrend" class="grid grid-cols-7 gap-4 px-4 lg:px-8">
       <div
         v-for="(day, index) in weeklyTrend"
         :key="index"

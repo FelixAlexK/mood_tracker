@@ -47,7 +47,7 @@ const form = useForm({
             v-for="{ type, emoji } in MOOD_TYPES"
             :key="type"
             type="button"
-            class="p-4 rounded-lg text-center transition-all cursor-pointer" :class="[
+            class="p-2 lg:p-4 rounded-lg text-center transition-all cursor-pointer" :class="[
               selectedType === type
                 ? 'bg-mt-600/30 ring-2 ring-mt-500'
                 : 'bg-mt-100 hover:bg-mt-100/50',

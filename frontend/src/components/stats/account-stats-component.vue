@@ -10,7 +10,7 @@ const { data: streak, isLoading: isLoadingStreak } = useQuery(streakQueryOptions
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-    <div class="bg-mt-600/30 rounded-lg shadow-md p-8">
+    <div class="bg-mt-600/30 rounded-lg shadow-md p-4 lg:p-8">
       <h4 class="max-lg:text-xs text-sm font-medium mb-4 text-mt-600">
         Most Common Mood
       </h4>
@@ -22,7 +22,7 @@ const { data: streak, isLoading: isLoadingStreak } = useQuery(streakQueryOptions
       <span v-else class="max-lg:text-xl text-2xl">-</span>
     </div>
 
-    <div class="bg-mt-600/30 rounded-lg shadow-md p-8">
+    <div class="bg-mt-600/30 rounded-lg shadow-md p-4 lg:p-8">
       <h4 class="max-lg:text-xs text-sm font-medium mb-4 text-mt-600">
         Total Entries
       </h4>
@@ -33,7 +33,7 @@ const { data: streak, isLoading: isLoadingStreak } = useQuery(streakQueryOptions
       </div>
     </div>
 
-    <div class="bg-mt-600/30 rounded-lg shadow-md p-8">
+    <div class="bg-mt-600/30 rounded-lg shadow-md p-4 lg:p-8">
       <h4 class="max-lg:text-xs text-sm font-medium mb-4 text-mt-600">
         Latest Streak
       </h4>

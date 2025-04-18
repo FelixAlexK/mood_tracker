@@ -42,7 +42,7 @@ onUnmounted(() => {
 
 <template>
   <nav class="bg-transparent backdrop-blur-lg shadow-sm fixed top-0 right-0 left-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
+    <div class="max-w-7xl mx-auto px-4  lg:px-8 ">
       <div class="flex justify-between h-16 max-lg:hidden">
         <div class="flex gap-4">
           <router-link

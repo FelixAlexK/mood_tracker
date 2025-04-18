@@ -19,7 +19,7 @@ const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributi
       <div
         v-for="(mood, index) in distribution"
         :key="index"
-        class="bg-mt-600/30 shadow-lg rounded-lg p-8"
+        class="bg-mt-600/30 shadow-lg rounded-lg p-4 lg:p-8"
       >
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center gap-2">

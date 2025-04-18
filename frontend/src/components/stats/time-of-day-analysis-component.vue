@@ -19,7 +19,7 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
       <div
         v-for="period in timeAnalysis"
         :key="period.timeOfDay"
-        class="bg-mt-600/30 shadow-lg rounded-lg p-8"
+        class="bg-mt-600/30 shadow-lg rounded-lg p-4 lg:p-8"
       >
         <div class="flex items-center justify-between mb-4">
           <span class=" capitalize max-lg:text-lg text-xl font-semibold">{{ period.timeOfDay }}</span>
