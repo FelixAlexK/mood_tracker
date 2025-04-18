@@ -1,3 +1,4 @@
+import { fromZonedTime, toZonedTime } from "date-fns-tz";
 import { and, between, count, desc, eq } from "drizzle-orm";
 import {
   Hono,
@@ -125,11 +126,15 @@ export const statsRoute = new Hono()
 
   .get("/weekly-trend", getUser, async (context) => {
     const user = context.var.user;
+    const userTimeZone = context.req.header("x-user-timezone") || "UTC"; // Get user's time zone from headers
 
     // Get today's date and calculate the start of the week (7 days ago)
-    const today = new Date();
-    const startOfWeek = new Date();
+    const today = toZonedTime(new Date(), userTimeZone);
+    const startOfWeek = new Date(today);
     startOfWeek.setDate(today.getDate() - 6); // 7 days including today
+
+    const startOfWeekUTC = fromZonedTime(startOfWeek, userTimeZone);
+    const todayUTC = fromZonedTime(today, userTimeZone);
 
     // Fetch mood entries from the past 7 days, grouped by day and mood type
     const moods = await db
@@ -141,14 +146,14 @@ export const statsRoute = new Hono()
       })
       .from(moodsTable)
       .where(
-        and(between(moodsTable.created_at, startOfWeek, today), eq(moodsTable.user_id, user.id)), // Filter by date range
+        and(between(moodsTable.created_at, startOfWeekUTC, todayUTC), eq(moodsTable.user_id, user.id)), // Filter by date range
       )
       .groupBy(moodsTable.created_at, moodsTable.type, moodsTable.emoji)
       .orderBy(desc(moodsTable.created_at));
 
     // Create an array for the past 7 days
     const sevenDayTrend = Array.from({ length: 7 }, (_, i) => {
-      const date = new Date();
+      const date = new Date(today);
       date.setDate(today.getDate() - i);
       return {
         date: date.toISOString().split("T")[0],
@@ -207,6 +212,7 @@ export const statsRoute = new Hono()
 
   .get("/time-of-day-analysis", getUser, async (context) => {
     const user = context.var.user;
+    const userTimeZone = context.req.header("x-user-timezone") || "UTC"; // Get user's time zone from headers
 
     // Fetch all mood entries for the user
     const moods = await db
@@ -236,7 +242,8 @@ export const statsRoute = new Hono()
 
     // Categorize moods by time of day and track mood counts
     moods.forEach((mood) => {
-      const hour = new Date(mood.created_at).getHours();
+      const zonedTime = toZonedTime(new Date(mood.created_at), userTimeZone);
+      const hour = zonedTime.getHours();
 
       let timeOfDay: keyof typeof timeOfDayCounts | null = null;
       if (hour >= timeRanges.morning.start && hour < timeRanges.morning.end) {

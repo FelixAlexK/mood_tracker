@@ -90,10 +90,15 @@ export async function getMoodDistribution() {
 }
 
 export async function getWeeklyTrend() {
-  const result = await api.stats["weekly-trend"].$get();
+  const result = await api.stats["weekly-trend"].$get({}, {
+    headers: {
+      "x-user-timezone": Intl.DateTimeFormat().resolvedOptions().timeZone,
+    },
+  });
   if (!result.ok) {
     throw new Error("Failed to fetch mood distribution count");
   }
+
   const data = await result.json();
   return data;
 }
@@ -153,7 +158,11 @@ export const weeklyTrendQueryOptions = queryOptions({
 });
 
 export async function getTimeOfDayAnalysis() {
-  const result = await api.stats["time-of-day-analysis"].$get();
+  const result = await api.stats["time-of-day-analysis"].$get({}, {
+    headers: {
+      "x-user-timezone": Intl.DateTimeFormat().resolvedOptions().timeZone,
+    },
+  });
   if (!result.ok) {
     throw new Error("Failed to fetch time of day analysis");
   }
