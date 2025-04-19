@@ -29,7 +29,7 @@ const { data: streak, isLoading: isLoadingStreak } = useQuery(streakQueryOptions
       <span v-if="isLoadingTotal && (mostCommon?.count ?? 0 > 0)">Loading...</span>
       <div v-else class="flex items-center ">
         <BookOpen class="max-lg:text-xl text-2xl drop-shadow-lg text-purple-600 mr-2" />
-        <span class="max-lg:text-lg text-xl capitalize font-semibold">{{ totalEntries?.total }} entries</span>
+        <span class="max-lg:text-lg text-xl capitalize font-semibold">{{ totalEntries?.count }} entries</span>
       </div>
     </div>
 
