@@ -1,121 +1,119 @@
+import { differenceInDays, startOfDay } from "date-fns";
 import { fromZonedTime, toZonedTime } from "date-fns-tz";
 import { and, between, count, desc, eq } from "drizzle-orm";
 import {
   Hono,
 } from "hono";
 
-import db from "../db";
+import db, { preparedCountOfMoods, preparedMostFrequentMood, preparedSelectDistribution, preparedSelectMonthOverview, preparedSelectStreak, preparedSelectTimeOfDay } from "../db";
 import { moods as moodsTable } from "../db/schema/moods";
+import { streaks as streakTable } from "../db/schema/streaks";
 import { getUser } from "../kinde";
+import { streakPostUpdateSchema } from "../types";
 
 export const statsRoute = new Hono()
   .get("/most-common", getUser, async (context) => {
     const user = context.var.user;
 
-    const mostFrequentMood = await db
-      .select({
-        count: count(),
-        type: moodsTable.type,
-        emoji: moodsTable.emoji,
-      })
-      .from(moodsTable)
-      .where(eq(moodsTable.user_id, user.id))
-      .groupBy(moodsTable.type, moodsTable.emoji)
-      .orderBy(desc(count()))
-      .limit(1)
-      .then(res => res[0]);
+    const mostFrequentMood = await preparedMostFrequentMood.execute({
+      user_id: user.id,
+    });
 
-    return context.json(mostFrequentMood);
+    return context.json(mostFrequentMood[0]);
   })
 
   .get("/total-entries", getUser, async (context) => {
     const user = context.var.user;
 
-    const totalMoodsCount = await db
-      .select({
-        total: count(),
-      })
-      .from(moodsTable)
-      .where(eq(moodsTable.user_id, user.id))
-      .limit(1)
-      .then(res => res[0]);
+    const total = await preparedCountOfMoods.execute({ user_id: user.id });
 
-    return context.json(totalMoodsCount);
+    return context.json(total[0]);
   })
 
   .get("/streak", getUser, async (context) => {
     const user = context.var.user;
+    const userTimeZone = context.req.header("x-user-timezone") || "UTC"; // Get user's time zone from headers
 
-    // Fetch all mood entries ordered by date (descending)
-    const moods = await db
-      .select({
-        created_at: moodsTable.created_at,
-      })
-      .from(moodsTable)
-      .where(eq(moodsTable.user_id, user.id))
-      .orderBy(desc(moodsTable.created_at));
+    const now = toZonedTime(new Date(), userTimeZone);
+    const nowUTC = fromZonedTime(now, userTimeZone);
+    const startOfToday = startOfDay(now);
 
-    if (!moods || moods.length === 0) {
-      return context.notFound();
+    const streaks = await preparedSelectStreak.execute({
+      user_id: user.id,
+    });
+
+    let streak = streaks[0];
+
+    if (!streak) {
+      streak = await db
+        .insert(streakTable)
+        .values({ user_id: user.id })
+        .onConflictDoNothing()
+        .returning({
+          updated_at: streakTable.updated_at,
+          streak_count: streakTable.streak_count,
+          longest_streak: streakTable.longest_streak,
+          streak_status: streakTable.streak_status,
+        })
+        .then(res => res[0]);
     }
 
-    // Calculate the streak
-    let streakCount = 1; // Start with a streak of 1 (today counts as 1 if there's an entry)
-    const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
-    let previousDate = moods[0]?.created_at
-      ? new Date(moods[0].created_at).toISOString().split("T")[0]
-      : "";
-
-    if (today !== previousDate) {
-      streakCount = 0; // If the latest entry is not today, streak starts at 0
+    if (!streak.updated_at) {
+      return context.json("Streak not found", 404);
     }
 
-    for (let i = 1; i < moods.length; i++) {
-      const currentDate = moods[i].created_at ? new Date(moods[i].created_at ?? "").toISOString().split("T")[0] : "";
-      const previous = new Date(previousDate);
-      const current = new Date(currentDate);
+    const zonedLastStreakDate = toZonedTime(new Date(streak.updated_at), userTimeZone);
 
-      // Check if the current date is exactly one day before the previous date
-      if (current.getTime() === previous.getTime() - 24 * 60 * 60 * 1000) {
-        streakCount++;
-        previousDate = currentDate; // Update the previous date
-      }
-      else {
-        break; // Stop counting if there's a gap
-      }
+    const canUpdateStreakToday = differenceInDays(startOfToday, zonedLastStreakDate) > 0;
+
+    if (streak.streak_status && !canUpdateStreakToday) {
+      return context.json(streak, 200);
     }
 
-    return context.json(streakCount);
+    const lastUpdateStart = startOfDay(zonedLastStreakDate);
+
+    const isBroken = differenceInDays(startOfToday, lastUpdateStart) > 1;
+
+    const currentStreak = streak.streak_count;
+
+    const newCount = isBroken ? 1 : currentStreak + 1;
+    const newLongest = Math.max(newCount, streak.longest_streak);
+
+    const validStreak = streakPostUpdateSchema.parse({
+      ...streak,
+      streak_count: newCount,
+      longest_streak: newLongest,
+      streak_status: true,
+      updated_at: nowUTC,
+    });
+
+    const updatedStreak = await db
+      .update(streakTable)
+      .set(validStreak)
+      .where(eq(streakTable.user_id, user.id))
+      .returning()
+      .then(res => res[0]);
+
+    return context.json(updatedStreak, 200);
   })
 
   .get("/mood-distribution", getUser, async (context) => {
     const user = context.var.user;
 
-    const total = await db
-      .select({
-        count: count(), // Count of occurrences
-      })
-      .from(moodsTable)
-      .then(res => res[0]);
+    const total = await preparedCountOfMoods.execute({
+      user_id: user.id,
+    });
 
     // Fetch the mood distribution with offset
-    const distribution = await db
-      .select({
-        type: moodsTable.type, // Mood type
-        emoji: moodsTable.emoji, // Emoji associated with the mood
-        count: count(), // Count of occurrences
-      })
-      .from(moodsTable)
-      .where(eq(moodsTable.user_id, user.id))
-      .groupBy(moodsTable.type, moodsTable.emoji) // Group by mood type and emoji
-      .orderBy(desc(count())) // Order by count in descending order
-      .limit(3); // Limit the number of results to 3
+    const distribution = await preparedSelectDistribution.execute({
+      user_id: user.id,
+    });
 
     if (distribution.length === 0) {
       context.notFound();
     }
 
-    const totalMoods = total.count;
+    const totalMoods = total[0].count;
     const moodDistributionWithPercentages = distribution.map(mood => ({
       ...mood,
       percentage: `${((mood.count / totalMoods) * 100).toFixed(2)}`,
@@ -183,17 +181,9 @@ export const statsRoute = new Hono()
     const user = context.var.user;
 
     // Fetch mood entries grouped by month and mood type
-    const moods = await db
-      .select({
-        created_at: moodsTable.created_at, // Extract year-month
-        type: moodsTable.type, // Mood type
-        emoji: moodsTable.emoji, // Emoji associated with the mood
-        count: count(), // Count the number of moods per type per month
-      })
-      .from(moodsTable)
-      .where(eq(moodsTable.user_id, user.id))
-      .groupBy(moodsTable.created_at, moodsTable.type, moodsTable.emoji)
-      .orderBy(desc(moodsTable.created_at));
+    const moods = await preparedSelectMonthOverview.execute({
+      user_id: user.id,
+    });
 
     // Flatten the data into a single array
     const monthlyMoodStats = moods.map((mood) => {
@@ -215,14 +205,9 @@ export const statsRoute = new Hono()
     const userTimeZone = context.req.header("x-user-timezone") || "UTC"; // Get user's time zone from headers
 
     // Fetch all mood entries for the user
-    const moods = await db
-      .select({
-        created_at: moodsTable.created_at,
-        type: moodsTable.type,
-        emoji: moodsTable.emoji,
-      })
-      .from(moodsTable)
-      .where(eq(moodsTable.user_id, user.id));
+    const moods = await preparedSelectTimeOfDay.execute({
+      user_id: user.id,
+    });
 
     // Define time ranges
     const timeRanges = {
@@ -269,7 +254,10 @@ export const statsRoute = new Hono()
     });
 
     // Calculate total moods
-    const totalMoods = moods.length;
+    const totalMoods = await preparedCountOfMoods.execute({
+      user_id: user.id,
+    });
+    const total = totalMoods[0].count;
 
     // Format the response
     const timeOfDayMoodReport = Object.entries(timeOfDayCounts).map(([timeOfDay, data]) => {
@@ -284,7 +272,7 @@ export const statsRoute = new Hono()
 
       return {
         timeOfDay,
-        percentage: ((data.count / totalMoods) * 100).toFixed(0), // Calculate percentage
+        percentage: ((data.count / total) * 100).toFixed(0), // Calculate percentage
         topMoods: sortedMoods, // Include all moods sorted by frequency
       };
     });
