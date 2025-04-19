@@ -1,14 +1,14 @@
 import { zValidator } from "@hono/zod-validator";
-import { and, count, desc, eq } from "drizzle-orm";
+import { and, count, desc, eq, not } from "drizzle-orm";
 import {
   Hono,
 } from "hono";
 import { z } from "zod";
 
-import db from "../db";
+import db, { preparedCountOfMoods, preparedDeleteMood, preparedSelectMoodById } from "../db";
 import { insertMoodsSchema, moods as moodsTable } from "../db/schema/moods";
 import { getUser } from "../kinde";
-import { createPostSchema, updatePostSchema } from "../types";
+import { moodPostUpdateSchema, moodPostValidationSchema } from "../types";
 
 export const moodsRoute = new Hono()
 
@@ -24,7 +24,16 @@ export const moodsRoute = new Hono()
     const pageSize = Number.parseInt(query.pageSize ?? "10");
 
     const moods = await db
-      .select()
+      .select({
+        id: moodsTable.id,
+        type: moodsTable.type,
+        emoji: moodsTable.emoji,
+        created_at: moodsTable.created_at,
+        user_id: moodsTable.user_id,
+        note: moodsTable.note,
+        newest: moodsTable.newest,
+
+      })
       .from(moodsTable)
       .orderBy(desc(moodsTable.created_at), desc(moodsTable.id))
       .where(eq(moodsTable.user_id, user.id))
@@ -32,20 +41,15 @@ export const moodsRoute = new Hono()
       .offset((page - 1) * pageSize);
 
     if (!moods || moods.length === 0) {
-      return context.notFound();
+      context.notFound();
     }
 
-    const moodCount = await db
-      .select({
-        count: count(),
-      })
-      .from(moodsTable)
-      .then(res => res[0]);
+    const count = await preparedCountOfMoods.execute({ user_id: user.id });
 
-    return context.json({ moods, total: moodCount.count, page: query.page, pageSize: query.pageSize });
+    return context.json({ moods, total: count[0], page: query.page, pageSize: query.pageSize });
   })
 
-  .post("/", getUser, zValidator("json", createPostSchema), async (context) => {
+  .post("/", getUser, zValidator("json", moodPostValidationSchema), async (context) => {
     const mood = context.req.valid("json");
     const user = context.var.user;
 
@@ -68,6 +72,7 @@ export const moodsRoute = new Hono()
         .values(validatedMood)
         .returning()
         .then(res => res[0]),
+
     ]);
 
     const promiseResult = await operations;
@@ -90,43 +95,35 @@ export const moodsRoute = new Hono()
 
     const user = context.var.user;
 
-    const mood = await db
-      .select()
-      .from(moodsTable)
-      .where(and(eq(moodsTable.user_id, user.id), eq(moodsTable.id, id)))
-      .then(res => res[0]);
+    const mood = await preparedSelectMoodById.execute({ user_id: user.id, id });
 
     if (!mood) {
       context.notFound();
     }
 
-    return context.json(mood);
+    return context.json(mood[0]);
   })
 
   .delete("/:id{[0-9]+}", getUser, async (context) => {
     const id = Number.parseInt(context.req.param("id"));
     const user = context.var.user;
 
-    const mood = await db
-      .delete(moodsTable)
-      .where(and(eq(moodsTable.user_id, user.id), eq(moodsTable.id, id)))
-      .returning()
-      .then(res => res[0]);
+    const mood = await preparedDeleteMood.execute({ user_id: user.id, id });
 
     if (!mood) {
       context.notFound();
     }
 
-    return context.json(mood);
+    return context.json(mood[0]);
   })
 
-  .patch("/:id{[0-9]+}", getUser, zValidator("json", updatePostSchema), async (context) => {
+  .patch("/:id{[0-9]+}", getUser, zValidator("json", moodPostUpdateSchema), async (context) => {
     const id = Number.parseInt(context.req.param("id"));
     const mood = context.req.valid("json");
 
     const user = context.var.user;
 
-    const validatedMood = updatePostSchema.parse({
+    const validatedMood = moodPostUpdateSchema.parse({
       ...mood,
     });
 
