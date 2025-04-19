@@ -116,7 +116,7 @@ export const statsRoute = new Hono()
     const totalMoods = total[0].count;
     const moodDistributionWithPercentages = distribution.map(mood => ({
       ...mood,
-      percentage: `${((mood.count / totalMoods) * 100).toFixed(2)}`,
+      percentage: ((mood.count / totalMoods) * 100),
     }));
 
     return context.json(moodDistributionWithPercentages);
@@ -272,7 +272,7 @@ export const statsRoute = new Hono()
 
       return {
         timeOfDay,
-        percentage: ((data.count / total) * 100).toFixed(0), // Calculate percentage
+        percentage: ((data.count / total) * 100), // Calculate percentage
         topMoods: sortedMoods, // Include all moods sorted by frequency
       };
     });
