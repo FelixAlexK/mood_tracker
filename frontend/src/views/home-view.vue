@@ -86,7 +86,7 @@ async function handleSubmit(value: { note: string | null; type: string; emoji: s
           :mood="mood"
         />
       </div>
-      <ButtonComponent :disabled="(data?.total ?? 0) <= 1" class="mt-4" text="See All" @click="router.push({ path: '/moods' })" />
+      <ButtonComponent :disabled="(data?.total.count ?? 0) <= 1" class="mt-4" text="See All" @click="router.push({ path: '/moods' })" />
     </div>
   </div>
 </template>
