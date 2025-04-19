@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MOOD_TYPES } from "@/types";
+import { MOOD_TYPES, type MoodEntry } from "@/types";
 import { useForm } from "@tanstack/vue-form";
 import { Send, X } from "lucide-vue-next";
 import { ref } from "vue";
@@ -7,18 +7,19 @@ import { ref } from "vue";
 import ButtonComponent from "./button-component.vue";
 import WrapperCardComponent from "./wrapper-card-component.vue";
 
+const {mood = {} as MoodEntry} = defineProps<{mood?: MoodEntry}>()
+
 const emit = defineEmits<{
   (e: "submit", value: { note: string | null; type: string; emoji: string }): void;
   (e: "cancel"): void;
 }>();
 
 const selectedType = ref<typeof MOOD_TYPES[number]["type"]>(MOOD_TYPES[0].type);
-const note = ref("");
+
 
 const form = useForm({
   defaultValues: {
-    note: "",
-
+    note: mood.note || "",
   },
   onSubmit: async ({ value }) => {
     emit("submit", {
@@ -29,7 +30,6 @@ const form = useForm({
 
     // Reset form fields after submission
     selectedType.value = MOOD_TYPES[0].type; // Reset to the first mood type
-    note.value = ""; // Clear the note field
     form.reset(); // Reset the form state
   },
 });
