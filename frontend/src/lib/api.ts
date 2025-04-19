@@ -22,7 +22,7 @@ export async function getMoods({ page = 1, pageSize = 10 }: { page?: number; pag
   if (!result.ok) {
     throw new Error("Failed to fetch moods");
   }
-  const mood = await result.json() as { moods: MoodEntry[]; total: number; page: string; pageSize: string };
+  const mood = await result.json();
 
   return mood;
 }
@@ -72,11 +72,16 @@ export async function getTotalEntries() {
 }
 
 export async function getStreak() {
-  const result = await api.stats.streak.$get();
+  const result = await api.stats.streak.$get({}, {
+    headers: {
+      "x-user-timezone": Intl.DateTimeFormat().resolvedOptions().timeZone,
+    },
+  });
   if (!result.ok) {
     throw new Error("Failed to fetch streak");
   }
   const data = await result.json();
+
   return data;
 }
 
@@ -86,6 +91,7 @@ export async function getMoodDistribution() {
     throw new Error("Failed to fetch mood distribution");
   }
   const data = await result.json();
+
   return data;
 }
 
