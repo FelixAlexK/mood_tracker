@@ -141,21 +141,21 @@ function handleDelete() {
         </div>
 
         <!-- Note Section -->
-        <div class="">
-          <h3 class="max-lg:text-base text-lg font-bold  mb-4">
+        <div class="mb-8">
+          <h3 class="max-lg:text-sm font-bold  mb-4">
             Your Note
           </h3>
-          <p v-if="data?.note" class="text-mt-600 whitespace-pre-wrap max-lg:text-sm">
+          <p v-if="data?.note" class="text-mt-600 whitespace-pre-wrap text-lg max-lg:text-base">
             {{ data?.note }}
           </p>
-          <p v-else class="text-mt-600 italic max-lg:text-sm">
+          <p v-else class="text-mt-600 italic text-lg max-lg:text-base">
             No note added
           </p>
         </div>
 
         <!-- Edit Mode -->
 
-        <MoodFormComponent v-if="isEditing" class="shadow-none hover:shadow-none w-full" @submit="saveChanges" @cancel="cancelEditing" />
+        <MoodFormComponent v-if="isEditing" :mood="data" class="shadow-none hover:shadow-none w-full" @submit="saveChanges" @cancel="cancelEditing" />
       </div>
     </wrappercardcomponent>
 
