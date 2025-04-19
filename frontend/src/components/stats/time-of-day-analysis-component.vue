@@ -23,12 +23,12 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
       >
         <div class="flex items-center justify-between mb-4">
           <span class=" capitalize max-lg:text-lg text-xl font-semibold">{{ period.timeOfDay }}</span>
-          <span class="max-lg:text-sm text-mt-600">{{ period.percentage !== 'NaN' ? period.percentage : 0 }}%</span>
+          <span class="max-lg:text-sm text-mt-600">{{ Number.isNaN(period.percentage) ? 0 : Number(period.percentage).toFixed(0)  }}%</span>
         </div>
         <div class="h-2 bg-mt-100 rounded-full overflow-hidden flex-grow ">
           <div
             class="h-full bg-mt-500 rounded-full transition-all duration-500"
-            :style="{ width: `${period.percentage !== 'NaN' ? period.percentage : 0}%` }"
+            :style="{ width: `${Number.isNaN(period.percentage) ? 0 : period.percentage }%` }"
           />
         </div>
         <div class="flex  mt-4">
