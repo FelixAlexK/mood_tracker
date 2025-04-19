@@ -26,7 +26,7 @@ const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributi
             <span class="max-lg:text-xl text-2xl drop-shadow-lg mr-2">{{ mood.emoji }}</span>
             <span class="capitalize max-lg:text-lg text-xl font-semibold">{{ mood.type }}</span>
           </div>
-          <span class="max-lg:text-sm text-mt-600">{{ mood.percentage }}%</span>
+          <span class="max-lg:text-sm text-mt-600">{{ mood.percentage.toFixed(0) }}%</span>
         </div>
         <div class="h-2 bg-mt-100 rounded-full overflow-hidden">
           <div
