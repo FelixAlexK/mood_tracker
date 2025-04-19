@@ -40,7 +40,7 @@ const { data: streak, isLoading: isLoadingStreak } = useQuery(streakQueryOptions
       <span v-if="isLoadingStreak && (mostCommon?.count ?? 0 > 0)">Loading...</span>
       <div v-else class="flex items-center ">
         <Flame class="max-lg:text-xl text-2xl drop-shadow-lg text-orange-500 mr-2" />
-        <span class="max-lg:text-lg text-xl capitalize font-semibold">{{ streak ?? 0 }} days</span>
+        <span class="max-lg:text-lg text-xl capitalize font-semibold">{{ streak?.streak_count ?? 0 }} days</span>
       </div>
     </div>
   </div>
