@@ -1,7 +1,11 @@
 import type { Config } from "drizzle-kit";
 
+import { config } from "dotenv";
+import "dotenv/config";
 import { defineConfig } from "drizzle-kit";
-import process from "node:process";
+
+const envFile = process.env.NODE_ENV === "production" ? ".env.production" : ".env.development";
+config({ path: envFile });
 
 export default defineConfig({
   out: "./drizzle",
