@@ -1,9 +1,15 @@
 import { neon } from "@neondatabase/serverless";
+import { config } from "dotenv";
 import { and, count, desc, eq, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/neon-http";
 
 import { moods as moodsTable } from "./schema/moods";
 import { streaks as streakTable } from "./schema/streaks";
+
+import "dotenv/config";
+
+const envFile = process.env.NODE_ENV === "production" ? ".env.production" : ".env.development";
+config({ path: envFile });
 
 const neonSQL = neon(process.env.DATABASE_URL!);
 const db = drizzle({ client: neonSQL, logger: true, casing: "snake_case" });
@@ -90,5 +96,17 @@ export const preparedSelectTimeOfDay = db
   .from(moodsTable)
   .where(eq(moodsTable.user_id, sql.placeholder("user_id")))
   .prepare("SELECT_TIME_OF_DAY");
+
+export const preparedSelectLatestMoodEntry = db
+  .select({
+    created_at: moodsTable.created_at,
+  })
+  .from(moodsTable)
+  .where(
+    eq(moodsTable.user_id, sql.placeholder("user_id")),
+  )
+  .orderBy(desc(moodsTable.created_at))
+  .limit(1)
+  .prepare("SELECT_LATEST_MOOD_ENTRY");
 
 export default db;
