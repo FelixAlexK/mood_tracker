@@ -8,7 +8,7 @@ export const moods = pgTable("moods_table", {
   type: text().notNull(),
   emoji: text().notNull(),
   note: text(),
-  created_at: timestamp({ withTimezone: true }).defaultNow().notNull(), // Store UNIX timestamp in milliseconds
+  created_at: timestamp().defaultNow().notNull(), // Store UNIX timestamp in milliseconds
   newest: boolean().notNull().default(false),
 });
 
