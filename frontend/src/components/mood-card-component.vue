@@ -27,7 +27,7 @@ function handleRouterPush() {
     </div>
 
     <p class="max-lg:text-lg text-xl mb-4 line-clamp-2 ">
-      {{ mood.note ?? 'asds' }}
+      {{ mood.note ?? '' }}
     </p>
 
     <div class="flex items-center mt-auto  text-mt-600">
