@@ -1,11 +1,10 @@
-import { differenceInDays, startOfDay } from "date-fns";
-import { fromZonedTime, toZonedTime } from "date-fns-tz";
 import { and, between, count, desc, eq } from "drizzle-orm";
 import {
   Hono,
 } from "hono";
+import { DateTime } from "luxon";
 
-import db, { preparedCountOfMoods, preparedMostFrequentMood, preparedSelectDistribution, preparedSelectMonthOverview, preparedSelectStreak, preparedSelectTimeOfDay } from "../db";
+import db, { preparedCountOfMoods, preparedMostFrequentMood, preparedSelectDistribution, preparedSelectLatestMoodEntry, preparedSelectMonthOverview, preparedSelectStreak, preparedSelectTimeOfDay } from "../db";
 import { moods as moodsTable } from "../db/schema/moods";
 import { streaks as streakTable } from "../db/schema/streaks";
 import { getUser } from "../kinde";
@@ -34,13 +33,23 @@ export const statsRoute = new Hono()
     const user = context.var.user;
     const userTimeZone = context.req.header("x-user-timezone") || "UTC"; // Get user's time zone from headers
 
-    const now = toZonedTime(new Date(), userTimeZone);
-    const nowUTC = fromZonedTime(now, userTimeZone);
-    const startOfToday = startOfDay(now);
+    const now = DateTime.now().setZone(userTimeZone);
+
+    const startOfToday = now.startOf("day"); // Get start of today in user's time zone
 
     const streaks = await preparedSelectStreak.execute({
       user_id: user.id,
     });
+
+    const latestMoodEntries = await preparedSelectLatestMoodEntry.execute({
+      user_id: user.id,
+    });
+
+    if (latestMoodEntries.length === 0) {
+      return context.json("No mood entries found", 404);
+    }
+
+    const latestMoodEntry = latestMoodEntries[0];
 
     let streak = streaks[0];
 
@@ -58,21 +67,19 @@ export const statsRoute = new Hono()
         .then(res => res[0]);
     }
 
-    if (!streak.updated_at) {
-      return context.json("Streak not found", 404);
-    }
+    const zonedLastMoodDate = DateTime.fromJSDate(latestMoodEntry.created_at, { zone: "utc" });
+    const zonedStreakDate = DateTime.fromJSDate(streak.updated_at, { zone: "utc" });
 
-    const zonedLastStreakDate = toZonedTime(new Date(streak.updated_at), userTimeZone);
-
-    const canUpdateStreakToday = differenceInDays(startOfToday, zonedLastStreakDate) > 0;
+    const canUpdateStreakToday = zonedLastMoodDate.diff(zonedStreakDate, "days").as("days") > 0;
 
     if (streak.streak_status && !canUpdateStreakToday) {
       return context.json(streak, 200);
     }
 
-    const lastUpdateStart = startOfDay(zonedLastStreakDate);
+    const lastUpdateStart = zonedLastMoodDate.startOf("day");
 
-    const isBroken = differenceInDays(startOfToday, lastUpdateStart) > 1;
+    const isBroken
+      = lastUpdateStart.diff(startOfToday, "days").as("days") > 1;
 
     const currentStreak = streak.streak_count;
 
@@ -84,7 +91,7 @@ export const statsRoute = new Hono()
       streak_count: newCount,
       longest_streak: newLongest,
       streak_status: true,
-      updated_at: nowUTC,
+      updated_at: now.toJSDate(),
     });
 
     const updatedStreak = await db
@@ -126,13 +133,9 @@ export const statsRoute = new Hono()
     const user = context.var.user;
     const userTimeZone = context.req.header("x-user-timezone") || "UTC"; // Get user's time zone from headers
 
-    // Get today's date and calculate the start of the week (7 days ago)
-    const today = toZonedTime(new Date(), userTimeZone);
-    const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - 6); // 7 days including today
+    const now = DateTime.now().setZone(userTimeZone); // Convert UTC to user's time zone
 
-    const startOfWeekUTC = fromZonedTime(startOfWeek, userTimeZone);
-    const todayUTC = fromZonedTime(today, userTimeZone);
+    const weekStart = now.startOf("week"); // Monday as the start of the week
 
     // Fetch mood entries from the past 7 days, grouped by day and mood type
     const moods = await db
@@ -144,17 +147,16 @@ export const statsRoute = new Hono()
       })
       .from(moodsTable)
       .where(
-        and(between(moodsTable.created_at, startOfWeekUTC, todayUTC), eq(moodsTable.user_id, user.id)), // Filter by date range
+        and(between(moodsTable.created_at, weekStart.toJSDate(), now.toJSDate()), eq(moodsTable.user_id, user.id)), // Filter by date range
       )
       .groupBy(moodsTable.created_at, moodsTable.type, moodsTable.emoji)
       .orderBy(desc(moodsTable.created_at));
 
     // Create an array for the past 7 days
     const sevenDayTrend = Array.from({ length: 7 }, (_, i) => {
-      const date = new Date(today);
-      date.setDate(today.getDate() - i);
+      const date = now.minus({ days: i }); // Get the date for each day of the week
       return {
-        date: date.toISOString().split("T")[0],
+        date: date.toISODate(), // Format the date to YYYY-MM-DD
         type: "", // Default type is null
         emoji: "", // Default emoji is null
         count: 0, // Default count is 0
@@ -163,7 +165,7 @@ export const statsRoute = new Hono()
 
     // Map the fetched moods to the weekly trend array
     moods.forEach((mood) => {
-      const trendDay = sevenDayTrend.find(day => day.date === (mood.date ? new Date(mood.date).toISOString().split("T")[0] : ""));
+      const trendDay = sevenDayTrend.find(day => day.date === (mood.date ? DateTime.fromJSDate(mood.date).toISODate() : ""));
       if (!trendDay)
         return;
       // If the current mood has a higher count, update the trend day
@@ -227,8 +229,8 @@ export const statsRoute = new Hono()
 
     // Categorize moods by time of day and track mood counts
     moods.forEach((mood) => {
-      const zonedTime = toZonedTime(new Date(mood.created_at), userTimeZone);
-      const hour = zonedTime.getHours();
+      const zonedTime = DateTime.fromJSDate(mood.created_at, { zone: userTimeZone });
+      const hour = zonedTime.hour;
 
       let timeOfDay: keyof typeof timeOfDayCounts | null = null;
       if (hour >= timeRanges.morning.start && hour < timeRanges.morning.end) {
