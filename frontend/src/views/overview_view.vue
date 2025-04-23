@@ -38,14 +38,14 @@ const variables = useMutationState<MoodEntry>({
 
 
 
-const totalPages = computed(() => Math.ceil((data.value?.total.count || 0) / PAGE_SIZE));
+const totalPages = computed(() => Math.ceil((data.value?.data?.total.count || 0) / PAGE_SIZE));
 
 // Group moods by creation date
 const groupedMoods = computed(() => {
-  if (!data.value?.moods)
+  if (!data.value?.data?.moods)
     return {};
 
-  return data.value.moods.reduce((groups: Record<string, MoodEntry[]>, mood: any) => {
+  return data.value.data?.moods.reduce((groups: Record<string, MoodEntry[]>, mood: any) => {
     const date = mood.created_at ? new Date(mood.created_at).toLocaleDateString() : "Unknown Date";
     if (!groups[date]) {
       groups[date] = [];

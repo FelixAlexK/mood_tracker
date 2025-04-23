@@ -35,7 +35,11 @@ const { mutate } = useMutation({
   mutationFn: postMood,
 
   onSuccess: (data) => {
-    toast.success(`${data.emoji} Mood successfully created!`);
+    if(data.error?.status === 401) {
+      toast.error("Please login to create a mood");
+      return;
+    }
+    toast.success(`${data.data?.emoji} Mood successfully created!`);
   },
 
   onError: (error) => {
@@ -75,7 +79,7 @@ async function handleSubmit(value: { note: string | null; type: string; emoji: s
       </h3>
       <div class="">
         <MoodCardComponent
-          v-for="mood in data?.moods"
+          v-for="mood in data?.data?.moods"
           :key="mood.id"
           :mood="mood"
         />
@@ -86,7 +90,7 @@ async function handleSubmit(value: { note: string | null; type: string; emoji: s
           :mood="mood"
         />
       </div>
-      <ButtonComponent :disabled="(data?.total.count ?? 0) <= 1" class="mt-4" text="See All" @click="router.push({ path: '/moods' })" />
+      <ButtonComponent :disabled="(data?.data?.total.count ?? 0) <= 1" class="mt-4" text="See All" @click="router.push({ path: '/moods' })" />
     </div>
   </div>
 </template>

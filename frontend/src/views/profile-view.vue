@@ -23,15 +23,15 @@ const { data } = useQuery(userQueryOptions);
     <WrapperCardComponent>
       <div v-if="data" class="flex items-center mb-8 ">
         <img
-          :src="data.picture || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=faces'"
+          :src="data.data?.picture || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=faces'"
           alt="Profile picture"
           class="w-32 h-auto aspect-auto rounded-full drop-shadow-lg mr-8   object-cover  shadow-lg shadow-mt-600/90 "
         >
 
         <div>
           <h2 class="max-lg:text-lg text-xl capitalize font-semibold">
-            {{ data.given_name }}
-            {{ data.family_name }}
+            {{ data.data?.given_name }}
+            {{ data.data?.family_name }}
           </h2>
         </div>
       </div>
