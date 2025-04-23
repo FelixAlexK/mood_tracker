@@ -17,7 +17,7 @@ const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributi
     <span v-if="isLoadingDist || !distribution">Loading...</span>
     <div v-else-if="distribution" class="grid grid-cols-1 gap-4">
       <div
-        v-for="(mood, index) in distribution"
+        v-for="(mood, index) in distribution.data"
         :key="index"
         class="bg-mt-600/30 shadow-lg rounded-lg p-4 lg:p-8"
       >
