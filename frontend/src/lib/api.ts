@@ -1,5 +1,6 @@
 import type { MoodEntry, UpdateMood } from "@/types";
 import type { ApiRoutes } from "@backend/app";
+import type { ClientResponse } from "hono/client";
 
 import { queryOptions } from "@tanstack/vue-query";
 import { hc } from "hono/client";
@@ -8,114 +9,73 @@ const client = hc<ApiRoutes>("/");
 
 export const api = client.api;
 
-export async function postMood(mood: Omit<MoodEntry, "id" | "created_at" | "user_id">) {
-  const result = await api.moods.$post({ json: mood });
-  if (!result.ok) {
-    throw new Error("Failed to create mood");
+export async function callRpc<T>(rpc: Promise<ClientResponse<T>>): Promise<{ data: T; error: null } | { data: null; error: { message: string; status: number } }> {
+  try {
+    const data = await rpc;
+
+    if (!data.ok) {
+      const res = await data.text();
+      return { data: null, error: { message: res, status: data.status } };
+    }
+
+    const res = await data.json();
+    return { data: res as T, error: null };
   }
-  const data = await result.json();
-  return data;
+  catch (error) {
+    return { data: null, error: { message: (error as Error).message, status: 500 } };
+  }
+}
+
+export async function postMood(mood: Omit<MoodEntry, "id" | "created_at" | "user_id">) {
+  return await callRpc(api.moods.$post({ json: mood }));
 }
 
 export async function getMoods({ page = 1, pageSize = 10 }: { page?: number; pageSize?: number }) {
-  const result = await api.moods.$get({ query: { page: page.toString(), pageSize: pageSize.toString() } });
-  if (!result.ok) {
-    throw new Error("Failed to fetch moods");
-  }
-  const mood = await result.json();
-
-  return mood;
+  return await callRpc(api.moods.$get({ query: { page: page.toString(), pageSize: pageSize.toString() } }));
 }
 
 export async function getMood({ id }: { id: string }) {
-  const result = await api.moods[":id{[0-9]+}"].$get({ param: { id } });
-  if (!result.ok) {
-    throw new Error("Failed to fetch mood");
-  }
-  const data = await result.json();
-
-  return data;
+  return await callRpc(api.moods[":id{[0-9]+}"].$get({ param: { id } }));
 }
 
 export async function deleteMood({ id }: { id: string }) {
-  const result = await api.moods[":id{[0-9]+}"].$delete({ param: { id: id.toString() } });
-  if (!result.ok) {
-    throw new Error("Failed to delete mood");
-  }
+  return await callRpc(api.moods[":id{[0-9]+}"].$delete({ param: { id: id.toString() } }));
 }
 
 export async function updateMood({ id, mood }: { id: string; mood: UpdateMood }) {
-  const result = await api.moods[":id{[0-9]+}"].$patch({ param: { id }, json: mood });
-  if (!result.ok) {
-    throw new Error("Failed to update mood");
-  }
-  const data = await result.json();
-  return data;
+  return await callRpc(api.moods[":id{[0-9]+}"].$patch({ param: { id }, json: mood }));
 }
 
 export async function getMostCommonMood() {
-  const result = await api.stats["most-common"].$get();
-  if (!result.ok) {
-    throw new Error("Failed to fetch most common mood");
-  }
-  const data = await result.json();
-  return data;
+  return await callRpc(api.stats["most-common"].$get());
 }
 
 export async function getTotalEntries() {
-  const result = await api.stats["total-entries"].$get();
-  if (!result.ok) {
-    throw new Error("Failed to fetch total entries");
-  }
-  const data = await result.json();
-  return data;
+  return await callRpc(api.stats["total-entries"].$get());
 }
 
 export async function getStreak() {
-  const result = await api.stats.streak.$get({}, {
+  return await callRpc(api.stats.streak.$get({}, {
     headers: {
       "x-user-timezone": Intl.DateTimeFormat().resolvedOptions().timeZone,
     },
-  });
-  if (!result.ok) {
-    throw new Error("Failed to fetch streak");
-  }
-  const data = await result.json();
-
-  return data;
+  }));
 }
 
 export async function getMoodDistribution() {
-  const result = await api.stats["mood-distribution"].$get();
-  if (!result.ok) {
-    throw new Error("Failed to fetch mood distribution");
-  }
-  const data = await result.json();
-
-  return data;
+  return await callRpc(api.stats["mood-distribution"].$get());
 }
 
 export async function getWeeklyTrend() {
-  const result = await api.stats["weekly-trend"].$get({}, {
+  return await callRpc(api.stats["weekly-trend"].$get({}, {
     headers: {
       "x-user-timezone": Intl.DateTimeFormat().resolvedOptions().timeZone,
     },
-  });
-  if (!result.ok) {
-    throw new Error("Failed to fetch mood distribution count");
-  }
-
-  const data = await result.json();
-  return data;
+  }));
 }
 
 export async function getMonthlyOverView() {
-  const result = await api.stats["monthly-overview"].$get();
-  if (!result.ok) {
-    throw new Error("Failed to fetch mood distribution count");
-  }
-  const data = await result.json();
-  return data;
+  return await callRpc(api.stats["monthly-overview"].$get());
 }
 
 export const userQueryOptions = queryOptions({
@@ -126,12 +86,7 @@ export const userQueryOptions = queryOptions({
 });
 
 export async function getCurrentUser() {
-  const result = await api.me.$get();
-  if (!result.ok) {
-    throw new Error("Failed to fetch user");
-  }
-  const data = await result.json();
-  return data.user;
+  return await callRpc(api.me.$get());
 }
 
 export const totalEntriesQueryOptions = queryOptions({
@@ -164,16 +119,11 @@ export const weeklyTrendQueryOptions = queryOptions({
 });
 
 export async function getTimeOfDayAnalysis() {
-  const result = await api.stats["time-of-day-analysis"].$get({}, {
+  return await callRpc(api.stats["time-of-day-analysis"].$get({}, {
     headers: {
       "x-user-timezone": Intl.DateTimeFormat().resolvedOptions().timeZone,
     },
-  });
-  if (!result.ok) {
-    throw new Error("Failed to fetch time of day analysis");
-  }
-  const data = await result.json();
-  return data;
+  }));
 }
 
 export const timeOfDayAnalysisQueryOptions = queryOptions({
