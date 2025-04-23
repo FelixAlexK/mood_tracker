@@ -2,6 +2,7 @@ import { and, between, count, desc, eq } from "drizzle-orm";
 import {
   Hono,
 } from "hono";
+import { HTTPException } from "hono/http-exception";
 import { DateTime } from "luxon";
 
 import db, { preparedCountOfMoods, preparedMostFrequentMood, preparedSelectDistribution, preparedSelectLatestMoodEntry, preparedSelectMonthOverview, preparedSelectStreak, preparedSelectTimeOfDay } from "../db";
@@ -18,6 +19,10 @@ export const statsRoute = new Hono()
       user_id: user.id,
     });
 
+    if (!mostFrequentMood) {
+      throw new HTTPException(404, { message: "No entries found" });
+    }
+
     return context.json(mostFrequentMood[0]);
   })
 
@@ -25,6 +30,10 @@ export const statsRoute = new Hono()
     const user = context.var.user;
 
     const total = await preparedCountOfMoods.execute({ user_id: user.id });
+
+    if (!total) {
+      throw new HTTPException(404, { message: "No entries found" });
+    }
 
     return context.json(total[0]);
   })
@@ -45,8 +54,8 @@ export const statsRoute = new Hono()
       user_id: user.id,
     });
 
-    if (latestMoodEntries.length === 0) {
-      return context.json("No mood entries found", 404);
+    if (!latestMoodEntries || latestMoodEntries.length === 0) {
+      throw new HTTPException(404, { message: "No moods found" });
     }
 
     const latestMoodEntry = latestMoodEntries[0];
@@ -116,8 +125,8 @@ export const statsRoute = new Hono()
       user_id: user.id,
     });
 
-    if (distribution.length === 0) {
-      context.notFound();
+    if (!distribution || distribution.length === 0) {
+      throw new HTTPException(404, { message: "No entries found" });
     }
 
     const totalMoods = total[0].count;
@@ -176,7 +185,7 @@ export const statsRoute = new Hono()
       }
     });
 
-    return context.json(sevenDayTrend);
+    return context.json(sevenDayTrend, 200);
   })
 
   .get("/monthly-overview", getUser, async (context) => {
@@ -186,6 +195,10 @@ export const statsRoute = new Hono()
     const moods = await preparedSelectMonthOverview.execute({
       user_id: user.id,
     });
+
+    if (!moods || moods.length === 0) {
+      throw new HTTPException(404, { message: "No entries found" });
+    }
 
     // Flatten the data into a single array
     const monthlyMoodStats = moods.map((mood) => {
@@ -199,7 +212,7 @@ export const statsRoute = new Hono()
       };
     });
 
-    return context.json(monthlyMoodStats);
+    return context.json(monthlyMoodStats, 200);
   })
 
   .get("/time-of-day-analysis", getUser, async (context) => {
@@ -210,6 +223,10 @@ export const statsRoute = new Hono()
     const moods = await preparedSelectTimeOfDay.execute({
       user_id: user.id,
     });
+
+    if (!moods || moods.length === 0) {
+      throw new HTTPException(404, { message: "No entries found" });
+    }
 
     // Define time ranges
     const timeRanges = {
@@ -259,6 +276,11 @@ export const statsRoute = new Hono()
     const totalMoods = await preparedCountOfMoods.execute({
       user_id: user.id,
     });
+
+    if (!totalMoods || totalMoods.length === 0) {
+      throw new HTTPException(404, { message: "No total found" });
+    }
+
     const total = totalMoods[0].count;
 
     // Format the response
@@ -279,5 +301,5 @@ export const statsRoute = new Hono()
       };
     });
 
-    return context.json(timeOfDayMoodReport);
+    return context.json(timeOfDayMoodReport, 200);
   });
