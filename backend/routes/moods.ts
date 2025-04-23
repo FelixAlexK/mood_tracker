@@ -3,6 +3,7 @@ import { and, desc, eq } from "drizzle-orm";
 import {
   Hono,
 } from "hono";
+import { HTTPException } from "hono/http-exception";
 import { z } from "zod";
 
 import db, { preparedCountOfMoods, preparedDeleteMood, preparedSelectMoodById } from "../db";
@@ -41,12 +42,12 @@ export const moodsRoute = new Hono()
       .offset((page - 1) * pageSize);
 
     if (!moods || moods.length === 0) {
-      context.notFound();
+      throw new HTTPException(404, { message: "No moods found" });
     }
 
     const count = await preparedCountOfMoods.execute({ user_id: user.id });
 
-    return context.json({ moods, total: count[0], page: query.page, pageSize: query.pageSize });
+    return context.json({ moods, total: count[0], page: query.page, pageSize: query.pageSize }, 200);
   })
 
   .post("/", getUser, zValidator("json", moodPostValidationSchema), async (context) => {
@@ -84,10 +85,10 @@ export const moodsRoute = new Hono()
       .find(result => result?.user_id === user.id); // Ensure it's the inserted mood
 
     if (!insertResult) {
-      return context.json({ error: "Failed to insert mood" }, 500);
+      throw new HTTPException(500, { message: "Unable to insert mood" });
     }
 
-    return context.json(insertResult);
+    return context.json(insertResult, 201);
   })
 
   .get("/:id{[0-9]+}", getUser, async (context) => {
@@ -95,26 +96,26 @@ export const moodsRoute = new Hono()
 
     const user = context.var.user;
 
-    const mood = await preparedSelectMoodById.execute({ user_id: user.id, id });
+    const moods = await preparedSelectMoodById.execute({ user_id: user.id, id });
 
-    if (!mood) {
-      context.notFound();
+    if (!moods || moods.length === 0) {
+      throw new HTTPException(404, { message: "No moods found" });
     }
 
-    return context.json(mood[0]);
+    return context.json(moods[0], 200);
   })
 
   .delete("/:id{[0-9]+}", getUser, async (context) => {
     const id = Number.parseInt(context.req.param("id"));
     const user = context.var.user;
 
-    const mood = await preparedDeleteMood.execute({ user_id: user.id, id });
+    const moods = await preparedDeleteMood.execute({ user_id: user.id, id });
 
-    if (!mood) {
-      context.notFound();
+    if (!moods || moods.length === 0) {
+      throw new HTTPException(404, { message: "No moods found" });
     }
 
-    return context.json(mood[0]);
+    return context.json(moods[0], 200);
   })
 
   .patch("/:id{[0-9]+}", getUser, zValidator("json", moodPostUpdateSchema), async (context) => {
@@ -135,8 +136,8 @@ export const moodsRoute = new Hono()
       .then(res => res[0]);
 
     if (!updatedMood) {
-      context.notFound();
+      throw new HTTPException(500, { message: "Unable to update mood" });
     }
 
-    return context.json(updatedMood);
+    return context.json(updatedMood, 200);
   });
