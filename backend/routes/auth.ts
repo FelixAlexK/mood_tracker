@@ -30,5 +30,5 @@ export const authRoute = new Hono()
 
   .get("/me", getUser, async (context) => {
     const user = context.var.user;
-    return context.json({ user });
+    return context.json(user);
   });
