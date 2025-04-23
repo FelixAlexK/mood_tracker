@@ -4,6 +4,7 @@ import type { Context } from "hono";
 import { createKindeServerClient, GrantType } from "@kinde-oss/kinde-typescript-sdk";
 import { deleteCookie, getCookie, setCookie } from "hono/cookie";
 import { createMiddleware } from "hono/factory";
+import { HTTPException } from "hono/http-exception";
 
 // Client for authorization code flow
 export const kindeClient = createKindeServerClient(GrantType.AUTHORIZATION_CODE, {
@@ -56,7 +57,7 @@ export const getUser = createMiddleware<Env>(async (context, next) => {
     const isAuthenticated = await kindeClient.isAuthenticated(manager); // Boolean: true or false
 
     if (!isAuthenticated) {
-      return context.json({ error: "Unauthorized" }, 401);
+      throw new HTTPException(401, { message: "Unauthorized" });
     }
 
     const user = await kindeClient.getUserProfile(manager);
@@ -65,6 +66,11 @@ export const getUser = createMiddleware<Env>(async (context, next) => {
   }
   catch (error) {
     console.error(error);
-    return context.json({ error: "Unauthorized" }, 401);
+
+    if (error instanceof HTTPException) {
+      throw new HTTPException(error.status, { message: error.message });
+    }
+
+    throw new HTTPException(500, { message: "Internal Server Error" });
   }
 });
