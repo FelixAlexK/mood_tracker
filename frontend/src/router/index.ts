@@ -9,11 +9,11 @@ const queryClient = new QueryClient();
 
 export const routes: RouteRecordRaw[] = [
   { path: "/", component: () => import("../views/home-view.vue"), name: "Mood Tracker", meta: { requiresAuth: true } },
-  { path: "/moods", component: () => import("../views/all-moods-view.vue"), meta: { requiresAuth: true } },
-  { path: "/mood/:id", component: () => import("../views/mood-detail-view.vue"), name: "", props: true, meta: { requiresAuth: true } },
+  { path: "/moods", component: () => import("../views/overview_view.vue"), meta: { requiresAuth: true } },
+  { path: "/mood/:id", component: () => import("../views/detail-view.vue"), name: "", props: true, meta: { requiresAuth: true } },
   { path: "/stats", component: () => import("../views/stats-view.vue"), name: "Stats", meta: { requiresAuth: true } },
   { path: "/about", component: () => import("../views/about-view.vue"), name: "About", meta: { requiresAuth: false } },
-  { path: "/profile", component: () => import("../views/profile.view.vue"), name: "Profile", meta: { requiresAuth: true } },
+  { path: "/profile", component: () => import("../views/profile-view.vue"), name: "Profile", meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({
@@ -39,11 +39,11 @@ router.beforeEach(async (to, _from) => {
     user = undefined;
   }
 
-  if (to.meta.requiresAuth && user) {
+  if (to.meta.requiresAuth && user?.data) {
     authStore.setLoggedIn(true);
-    authStore.setUser(user);
+    authStore.setUser(user?.data);
   }
-  else if (!user) {
+  else if (!user?.data || user?.error) {
     authStore.setLoggedIn(false);
     authStore.setUser(undefined);
   }
