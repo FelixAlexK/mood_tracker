@@ -16,7 +16,7 @@ const { data: monthlyOverview, isLoading: isMonthlyOverviewLoading } = useQuery(
 
 const events = computed(() => {
   const uniqueEvents = new Map(); // Use a Map to ensure unique dates
-  (monthlyOverview.value ?? []).forEach((event) => {
+  (monthlyOverview.value?.data ?? []).forEach((event) => {
     if (!uniqueEvents.has(event.date)) {
       uniqueEvents.set(event.date, {
         title: event.emoji, // Start with the first emoji

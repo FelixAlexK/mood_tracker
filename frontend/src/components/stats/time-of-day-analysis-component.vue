@@ -17,7 +17,7 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
     <span v-if="isLoadingTimeAnalysis || !timeAnalysis">Loading...</span>
     <div v-else-if="timeAnalysis" class="grid grid-cols-1 gap-4">
       <div
-        v-for="period in timeAnalysis"
+        v-for="period in timeAnalysis.data"
         :key="period.timeOfDay"
         class="bg-mt-600/30 shadow-lg rounded-lg p-4 lg:p-8"
       >

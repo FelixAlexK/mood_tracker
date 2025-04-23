@@ -18,12 +18,12 @@ const { data: weeklyTrend, isLoading: isLoadingWeeklyTrend } = useQuery(weeklyTr
     <span v-if="isLoadingWeeklyTrend || !weeklyTrend">Loading...</span>
     <div v-else-if="weeklyTrend" class="grid grid-cols-7 gap-4 px-4 lg:px-8">
       <div
-        v-for="(day, index) in weeklyTrend"
+        v-for="(day, index) in weeklyTrend.data"
         :key="index"
         class="text-center"
       >
         <div class="max-lg:text-sm  font-medium mb-4 ">
-          {{ getDayName(day.date, true) }}
+          {{ getDayName(day.date ?? '', true) }}
         </div>
         <div
           class="aspect-square rounded-lg flex items-center justify-center shadow-lg "
