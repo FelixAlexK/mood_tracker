@@ -61,7 +61,7 @@ const { mutate: deleteMutation } = useMutation({
 });
 
 function startEditing() {
-  isEditing.value = true;
+  if(!isEditing.value) return 
   selectedType.value = data.value?.type || "";
   selectedEmoji.value = data.value?.emoji || "";
   editedNote.value = data.value?.note || "";
@@ -127,7 +127,7 @@ function handleDelete() {
           <div class="flex gap-4  flex-col lg:flex-row">
             <button
               class="text-blue-500 hover:text-blue-600 transition-colors"
-              @click="startEditing"
+              @click="startEditing; isEditing = !isEditing"
             >
               <Edit2 class="max-lg:text-xl text-2xl drop-shadow-lg " />
             </button>
