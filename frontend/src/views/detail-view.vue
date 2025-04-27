@@ -155,7 +155,7 @@ function handleDelete() {
 
         <!-- Edit Mode -->
 
-        <MoodFormComponent v-if="isEditing" :mood="data" class="shadow-none hover:shadow-none w-full" @submit="saveChanges" @cancel="cancelEditing" />
+        <MoodFormComponent v-if="isEditing" cancellable :mood="data" class="shadow-none hover:shadow-none w-full" @submit="saveChanges" @cancel="cancelEditing" />
       </div>
     </wrappercardcomponent>
 
