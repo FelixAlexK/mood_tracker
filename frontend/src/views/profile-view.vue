@@ -13,7 +13,7 @@ const { data } = useQuery(userQueryOptions);
   <div class="max-w-3xl mx-auto">
     <HeadlineComponent
       text="Profile"
-      back-text="Back to Tracker"
+      back-text="Back"
       back-path="/"
     >
       <template #icon>

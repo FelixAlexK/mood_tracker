@@ -4,12 +4,14 @@ import HeadlineComponent from "@/components/headline-component.vue";
 import MoodCardComponent from "@/components/mood-card-component.vue";
 import MoodFormComponent from "@/components/mood-form-component.vue";
 import { useToast } from "@/composables/use-toast";
-import { getMoods, postMood } from "@/lib/api";
+import { getMoods, getTotalEntries, postMood } from "@/lib/api";
 import router from "@/router";
 import { useAuthStore } from "@/stores/auth-store";
-import { useMutation, useMutationState, useQuery, useQueryClient } from "@tanstack/vue-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 
 import type { MoodEntry } from "../types";
+import { moods } from "@backend/db/schema/moods";
+
 
 const authStore = useAuthStore();
 
@@ -21,28 +23,31 @@ const PAGE = 1;
 
 const { data } = useQuery({
   queryKey: ["get-moods"],
-  queryFn: () => getMoods({ page: PAGE, pageSize: PAGE_SIZE }),
-
+  queryFn: () => getMoods({ page: PAGE, page_size: PAGE_SIZE }),
 });
 
-const variables = useMutationState<MoodEntry>({
-  filters: { mutationKey: ["create-mood"], status: "pending" },
-  select: mutation => mutation.state.variables as MoodEntry,
-});
 
 const { mutate } = useMutation({
   mutationKey: ["create-mood"],
   mutationFn: postMood,
 
-  onSuccess: (data) => {
-    if(data.error?.status === 401) {
+  
+
+  onSuccess: async (data) => {
+
+    if(data.error && data.error?.status === 401) {
       toast.error("Please login to create a mood");
       return;
     }
+
+    queryClient.setQueryData(["get-moods"], data.data)
+
+
     toast.success(`${data.data?.emoji} Mood successfully created!`);
   },
 
-  onError: (error) => {
+  onError: (error, newMood, context) => {
+    
     toast.error(`${error.message}`);
   },
 
@@ -80,12 +85,6 @@ async function handleSubmit(value: { note: string | null; type: string; emoji: s
       <div class="">
         <MoodCardComponent
           v-for="mood in data?.data?.moods"
-          :key="mood.id"
-          :mood="mood"
-        />
-
-        <MoodCardComponent
-          v-for="mood in variables"
           :key="mood.id"
           :mood="mood"
         />

@@ -12,7 +12,7 @@ import { ArrowLeft } from "lucide-vue-next";
   <div class="max-w-6xl mx-auto">
     <HeadlineComponent
       text="Mood Statistics"
-      back-text="Back to Tracker"
+      back-text="Back"
       back-path="/"
     >
       <template #icon>
