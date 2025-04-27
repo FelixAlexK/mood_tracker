@@ -9,7 +9,7 @@ const queryClient = new QueryClient();
 
 export const routes: RouteRecordRaw[] = [
   { path: "/", component: () => import("../views/home-view.vue"), name: "Mood Tracker", meta: { requiresAuth: true } },
-  { path: "/moods", component: () => import("../views/overview_view.vue"), meta: { requiresAuth: true } },
+  { path: "/moods", component: () => import("../views/overview-view.vue"), meta: { requiresAuth: true } },
   { path: "/mood/:id", component: () => import("../views/detail-view.vue"), name: "", props: true, meta: { requiresAuth: true } },
   { path: "/stats", component: () => import("../views/stats-view.vue"), name: "Stats", meta: { requiresAuth: true } },
   { path: "/about", component: () => import("../views/about-view.vue"), name: "About", meta: { requiresAuth: false } },
