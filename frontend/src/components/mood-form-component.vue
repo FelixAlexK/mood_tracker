@@ -7,7 +7,7 @@ import { ref } from "vue";
 import ButtonComponent from "./button-component.vue";
 import WrapperCardComponent from "./wrapper-card-component.vue";
 
-const {mood = {} as MoodEntry} = defineProps<{mood?: MoodEntry}>()
+const {mood = {} as MoodEntry, cancellable = false} = defineProps<{mood?: MoodEntry, cancellable?: boolean}>()
 
 const emit = defineEmits<{
   (e: "submit", value: { note: string | null; type: string; emoji: string }): void;
@@ -84,7 +84,7 @@ const form = useForm({
             <Send class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
           </template>
         </ButtonComponent>
-        <ButtonComponent class="" text="Cancel" @click="emit('cancel')">
+        <ButtonComponent v-if="cancellable" class="" text="Cancel" @click="emit('cancel')">
           <template #icon>
             <X class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
           </template>
