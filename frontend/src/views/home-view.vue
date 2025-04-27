@@ -39,6 +39,13 @@ const { mutate } = useMutation({
       toast.error("Please login to create a mood");
       return;
     }
+
+    if(data.error) {
+      toast.error(`Failed to create mood: ${data.error.message}`);
+      return;
+    }
+      
+
     toast.success(`${data.data?.emoji} Mood successfully created!`);
   },
 
