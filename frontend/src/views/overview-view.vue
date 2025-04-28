@@ -4,7 +4,7 @@ import type { MoodEntry } from "@/types";
 import HeadlineComponent from "@/components/headline-component.vue";
 import MoodCardComponent from "@/components/mood-card-component.vue";
 import PaginationComponent from "@/components/pagination-component.vue";
-import { getMoods } from "@/lib/api";
+import { getMoods, getMoodsQueryOptions } from "@/lib/api";
 import { keepPreviousData, useMutationState, useQuery } from "@tanstack/vue-query";
 import { ArrowLeft } from "lucide-vue-next";
 import { computed, ref } from "vue";
@@ -12,11 +12,7 @@ import { computed, ref } from "vue";
 const PAGE_SIZE = 25;
 const page = ref(1);
 
-const { data, isPlaceholderData, isPending, isError, error } = useQuery({
-  queryKey: ["get-moods", page],
-  queryFn: () => getMoods({ page: page.value, pageSize: PAGE_SIZE }),
-  placeholderData: keepPreviousData,
-});
+const { data, isPlaceholderData, isPending, isError, error } = useQuery(getMoodsQueryOptions(page.value, PAGE_SIZE));
 
 function prevPage() {
   page.value = Math.max(page.value - 1, 1);
@@ -31,10 +27,7 @@ function goToPage(p: number) {
   page.value = p;
 }
 
-const variables = useMutationState<MoodEntry>({
-  filters: { mutationKey: ["create-mood"], status: "pending" },
-  select: mutation => mutation.state.variables as MoodEntry,
-});
+
 
 
 
@@ -60,7 +53,7 @@ const groupedMoods = computed(() => {
   <div class="max-w-3xl mx-auto">
     <HeadlineComponent
       text="Overview"
-      back-text="Back to Tracker"
+      back-text="Back"
       back-path="/"
     >
       <template #icon>
@@ -89,13 +82,6 @@ const groupedMoods = computed(() => {
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <MoodCardComponent
             v-for="mood in moods"
-            :key="mood.id"
-            :mood="mood"
-          />
-
-          <MoodCardComponent
-            v-for="mood in variables"
-            v-show="variables"
             :key="mood.id"
             :mood="mood"
           />

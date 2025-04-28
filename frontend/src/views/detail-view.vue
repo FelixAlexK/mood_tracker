@@ -92,7 +92,7 @@ function handleDelete() {
     <!-- Headline -->
     <HeadlineComponent
       :text="`Still ${data?.data?.type || 'Unknown'}?`"
-      back-text="Back to Tracker"
+      back-text="Back"
       back-path="/"
       class="capitalize"
     >

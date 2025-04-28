@@ -2,7 +2,7 @@ import type { MoodEntry, UpdateMood } from "@/types";
 import type { ApiRoutes } from "@backend/app";
 import type { ClientResponse } from "hono/client";
 
-import { queryOptions } from "@tanstack/vue-query";
+import { keepPreviousData, queryOptions } from "@tanstack/vue-query";
 import { hc } from "hono/client";
 
 const client = hc<ApiRoutes>("/");
@@ -30,8 +30,8 @@ export async function postMood(mood: Omit<MoodEntry, "id" | "created_at" | "user
   return await callRpc(api.moods.$post({ json: mood }));
 }
 
-export async function getMoods({ page = 1, pageSize = 10 }: { page?: number; pageSize?: number }) {
-  return await callRpc(api.moods.$get({ query: { page: page.toString(), pageSize: pageSize.toString() } }));
+export async function getMoods({ page = 1, page_size = 10 }: { page?: number; page_size?: number }) {
+  return await callRpc(api.moods.$get({ query: { page: page.toString(), pageSize: page_size.toString() } }));
 }
 
 export async function getMood({ id }: { id: string }) {
@@ -84,6 +84,15 @@ export const userQueryOptions = queryOptions({
 
   staleTime: Infinity,
 });
+
+export function getMoodsQueryOptions(page?: number, page_size?: number) {
+  return queryOptions({
+    queryKey: ["get-moods", page],
+    queryFn: () => getMoods({ page, page_size }),
+    placeholderData: keepPreviousData,
+    staleTime: 1000 * 60 * 5,
+  });
+}
 
 export async function getCurrentUser() {
   return await callRpc(api.me.$get());
