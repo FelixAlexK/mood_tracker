@@ -40,8 +40,11 @@ const { mutate } = useMutation({
       return;
     }
 
-    queryClient.setQueryData(["get-moods"], data.data)
-
+    if(data.error) {
+      toast.error(`Failed to create mood: ${data.error.message}`);
+      return;
+    }
+      
 
     toast.success(`${data.data?.emoji} Mood successfully created!`);
   },

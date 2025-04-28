@@ -6,25 +6,32 @@ import { ref } from "vue";
 
 import ButtonComponent from "./button-component.vue";
 import WrapperCardComponent from "./wrapper-card-component.vue";
+import { useToast } from "@/composables/use-toast"; // Import toast for warnings
 
-const {mood = {} as MoodEntry} = defineProps<{mood?: MoodEntry}>()
+const {mood = {} as MoodEntry, cancellable = false} = defineProps<{mood?: MoodEntry, cancellable?: boolean}>()
 
 const emit = defineEmits<{
   (e: "submit", value: { note: string | null; type: string; emoji: string }): void;
   (e: "cancel"): void;
 }>();
 
-const selectedType = ref<typeof MOOD_TYPES[number]["type"]>(MOOD_TYPES[0].type);
-
+const toast = useToast(); // Initialize toast
+const selectedType = ref<typeof MOOD_TYPES[number]["type"] | undefined>(undefined);
 
 const form = useForm({
   defaultValues: {
     note: mood.note || "",
   },
   onSubmit: async ({ value }) => {
+    // Check if a mood type is selected
+    if (!selectedType.value) {
+      toast.warning("Please select a mood before submitting."); // Show warning
+      return; // Cancel submission
+    }
+
     emit("submit", {
       type: selectedType.value,
-      emoji: MOOD_TYPES.find(m => m.type === selectedType.value)?.emoji || "😊",
+      emoji: MOOD_TYPES.find(m => m.type === selectedType.value)?.emoji || "",
       note: value.note.trim() || null,
     });
 
@@ -59,7 +66,6 @@ const form = useForm({
           </button>
         </div>
       </div>
-
       <form.Field
         name="note"
       >
@@ -84,7 +90,7 @@ const form = useForm({
             <Send class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
           </template>
         </ButtonComponent>
-        <ButtonComponent class="" text="Cancel" @click="emit('cancel')">
+        <ButtonComponent v-if="cancellable" class="" text="Cancel" @click="emit('cancel')">
           <template #icon>
             <X class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
           </template>
