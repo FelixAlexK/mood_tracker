@@ -46,7 +46,7 @@ const { mutate } = useMutation({
     toast.success(`${data.data?.emoji} Mood successfully created!`);
   },
 
-  onError: (error, newMood, context) => {
+  onError: (error) => {
     
     toast.error(`${error.message}`);
   },
