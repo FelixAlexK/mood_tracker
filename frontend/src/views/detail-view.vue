@@ -62,9 +62,9 @@ const { mutate: deleteMutation } = useMutation({
 
 function startEditing() {
   if(!isEditing.value) return 
-  selectedType.value = data.value?.type || "";
-  selectedEmoji.value = data.value?.emoji || "";
-  editedNote.value = data.value?.note || "";
+  selectedType.value = data.value?.data?.type || "";
+  selectedEmoji.value = data.value?.data?.emoji || "";
+  editedNote.value = data.value?.data?.note || "";
 }
 
 function cancelEditing() {
@@ -91,7 +91,7 @@ function handleDelete() {
   <div class="max-w-3xl mx-auto">
     <!-- Headline -->
     <HeadlineComponent
-      :text="`Still ${data?.type || 'Unknown'}?`"
+      :text="`Still ${data?.data?.type || 'Unknown'}?`"
       back-text="Back to Tracker"
       back-path="/"
       class="capitalize"
@@ -112,14 +112,14 @@ function handleDelete() {
         <!-- Mood Details Section -->
         <div class="flex items-center justify-between mb-8">
           <div class="flex  ">
-            <span class="max-lg:text-3xl text-4xl drop-shadow-lg mr-2">{{ data?.emoji || '❤️' }}</span>
+            <span class="max-lg:text-3xl text-4xl drop-shadow-lg mr-2">{{ data?.data?.emoji || '❤️' }}</span>
             <div>
               <h2 class="max-lg:text-lg text-xl font-bold text-gray-800 capitalize mb-4">
-                {{ data?.type || '-' }}
+                {{ data?.data?.type || '-' }}
               </h2>
               <div class="flex items-center text-mt-600 max-lg:text-xs text-sm ">
                 <Clock class="aspect-square w-4 h-auto drop-shadow-lg mr-2" />
-                <span>{{ formattedDate(data?.created_at || null) }}</span>
+                <span>{{ formattedDate(data?.data?.created_at || null) }}</span>
               </div>
             </div>
           </div>
@@ -145,8 +145,8 @@ function handleDelete() {
           <h3 class="max-lg:text-sm font-bold  mb-4">
             Your Note
           </h3>
-          <p v-if="data?.note" class="text-mt-600 whitespace-pre-wrap text-lg max-lg:text-base">
-            {{ data?.note }}
+          <p v-if="data?.data?.note" class="text-mt-600 whitespace-pre-wrap text-lg max-lg:text-base">
+            {{ data?.data?.note }}
           </p>
           <p v-else class="text-mt-600 italic text-lg max-lg:text-base">
             No note added
@@ -155,7 +155,7 @@ function handleDelete() {
 
         <!-- Edit Mode -->
 
-        <MoodFormComponent v-if="isEditing" :mood="data" class="shadow-none hover:shadow-none w-full" @submit="saveChanges" @cancel="cancelEditing" />
+        <MoodFormComponent v-if="isEditing" :mood="data?.data || undefined" class="shadow-none hover:shadow-none w-full" @submit="saveChanges" @cancel="cancelEditing" />
       </div>
     </wrappercardcomponent>
 
