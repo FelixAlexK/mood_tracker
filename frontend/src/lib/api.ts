@@ -1,9 +1,11 @@
 import type { MoodEntry, UpdateMood } from "@/types";
 import type { ApiRoutes } from "@backend/app";
 import type { ClientResponse } from "hono/client";
+import type { Ref } from "vue";
 
 import { keepPreviousData, queryOptions } from "@tanstack/vue-query";
 import { hc } from "hono/client";
+import { ref } from "vue";
 
 const client = hc<ApiRoutes>("/");
 
@@ -30,16 +32,16 @@ export async function postMood(mood: Omit<MoodEntry, "id" | "created_at" | "user
   return await callRpc(api.moods.$post({ json: mood }));
 }
 
-export async function getMoods({ page = 1, page_size = 10 }: { page?: number; page_size?: number }) {
-  return await callRpc(api.moods.$get({ query: { page: page.toString(), pageSize: page_size.toString() } }));
+export async function getMoods({ page = ref(1), page_size = ref(10) }: { page?: Ref<number>; page_size?: Ref<number> }) {
+  return await callRpc(api.moods.$get({ query: { page: page.value.toString(), pageSize: page_size.value.toString() } }));
 }
 
-export async function getMood({ id }: { id: string }) {
-  return await callRpc(api.moods[":id{[0-9]+}"].$get({ param: { id } }));
+export async function getMood({ id }: { id: Ref<string> }) {
+  return await callRpc(api.moods[":id{[0-9]+}"].$get({ param: { id: id.value } }));
 }
 
-export async function deleteMood({ id }: { id: string }) {
-  return await callRpc(api.moods[":id{[0-9]+}"].$delete({ param: { id: id.toString() } }));
+export async function deleteMood({ id }: { id: Ref<string> }) {
+  return await callRpc(api.moods[":id{[0-9]+}"].$delete({ param: { id: id.value } }));
 }
 
 export async function updateMood({ id, mood }: { id: string; mood: UpdateMood }) {
@@ -85,7 +87,7 @@ export const userQueryOptions = queryOptions({
   staleTime: Infinity,
 });
 
-export function getMoodsQueryOptions(page?: number, page_size?: number) {
+export function getMoodsQueryOptions(page?: Ref<number>, page_size?: Ref<number>) {
   return queryOptions({
     queryKey: ["get-moods", page],
     queryFn: () => getMoods({ page, page_size }),
