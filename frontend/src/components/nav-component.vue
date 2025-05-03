@@ -3,6 +3,9 @@ import router from "@/router";
 import { useAuthStore } from "@/stores/auth-store";
 import { BarChart3, Home, LogIn, LogOut, Menu, User, X } from "lucide-vue-next";
 import { onMounted, onUnmounted, ref, watch } from "vue";
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const authStore = useAuthStore();
 
@@ -51,7 +54,7 @@ onUnmounted(() => {
             exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
             <Home class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
-            Home
+            {{ t('general.home') }}
           </router-link>
           <router-link
             v-if="authStore.isLoggedIn"
@@ -60,14 +63,14 @@ onUnmounted(() => {
             exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
             <BarChart3 class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
-            Stats
+            {{ t('general.stats') }}
           </router-link>
           <span
             v-else
             class="flex items-center px-2 py-2 text-gray-400 cursor-not-allowed"
           >
             <BarChart3 class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
-            Stats
+            {{ t('general.stats') }}
           </span>
         </div>
         <div class="flex gap-4">
@@ -78,14 +81,14 @@ onUnmounted(() => {
             exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
             <User class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
-            Profile
+            {{ t('general.profile') }}
           </router-link>
           <span
             v-else
             class="flex items-center px-2 py-2  text-gray-400 cursor-not-allowed"
           >
             <User class="max-lg:text-xl text-2xl drop-shadow-lg" />
-            Profile
+            {{ t('general.profile') }}
           </span>
           <a
             v-if="authStore.isLoggedIn"
@@ -93,7 +96,7 @@ onUnmounted(() => {
             href="/api/logout"
           >
             <LogOut class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
-            Logout
+            {{ t('general.logout') }}
           </a>
           <a
             v-else
@@ -101,7 +104,7 @@ onUnmounted(() => {
             href="/api/login"
           >
             <LogIn class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
-            Login
+            {{ t('general.login') }}
           </a>
         </div>
       </div>
@@ -124,7 +127,7 @@ onUnmounted(() => {
             exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
             <Home class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
-            Home
+            {{ t('general.home') }}
           </router-link>
           <router-link
             v-if="authStore.isLoggedIn"
@@ -133,14 +136,14 @@ onUnmounted(() => {
             exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
             <BarChart3 class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
-            Stats
+            {{ t('general.stats') }}
           </router-link>
           <span
             v-else
             class="flex items-center px-2 py-2 text-mt-600/50 cursor-not-allowed"
           >
             <BarChart3 class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
-            Stats
+            {{ t('general.stats') }}
           </span>
           <router-link
             v-if="authStore.isLoggedIn"
@@ -149,7 +152,7 @@ onUnmounted(() => {
             exact-active-class="border-b-2 border-mt-600 text-mt-600"
           >
             <User class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
-            Profile
+            {{ t('general.profile') }}
           </router-link>
           <span
             v-else
@@ -164,7 +167,7 @@ onUnmounted(() => {
             href="/api/logout"
           >
             <LogOut class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
-            Logout
+            {{ t('general.logout') }}
           </a>
           <a
             v-else
@@ -172,7 +175,7 @@ onUnmounted(() => {
             href="/api/login"
           >
             <LogIn class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
-            Login
+            {{ t('general.login') }}
           </a>
         </nav>
       </div>

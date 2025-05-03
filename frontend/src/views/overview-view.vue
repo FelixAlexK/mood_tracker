@@ -9,6 +9,9 @@ import router from "@/router";
 import { useQuery } from "@tanstack/vue-query";
 import { ArrowLeft } from "lucide-vue-next";
 import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t, locale } = useI18n(); // Access i18n functions
 
 const PAGE_SIZE = ref(25);
 const page = ref(1);
@@ -49,8 +52,8 @@ const groupedMoods = computed(() => {
 <template>
   <div class="max-w-3xl mx-auto">
     <HeadlineComponent
-      text="Overview"
-      go-back-label="Back"
+      :text="t('general.overview')"
+      :go-back-label="t('general.back')"
       @go-back="() => router.back()"
     >
       <template #icon>

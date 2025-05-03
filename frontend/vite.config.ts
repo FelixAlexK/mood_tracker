@@ -15,7 +15,7 @@ export default defineConfig({
     VueI18nPlugin({
       /* options */
       // locale messages resource pre-compile option
-      include: resolve(dirname(fileURLToPath(import.meta.url)), './src/locales/**'),
+      include: resolve(dirname(fileURLToPath(import.meta.url)), './locales/**'),
     }),
   ],
   resolve: {

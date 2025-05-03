@@ -2,7 +2,7 @@ import { createI18n } from 'vue-i18n'
 import en from '../locales/en.json'
 import de from '../locales/de.json'
 
-type MessageSchema = typeof en
+type MessageSchema = typeof en | typeof de
 
 export default createI18n<[MessageSchema], 'en' | 'de'>({
     locale: 'en', // set default locale

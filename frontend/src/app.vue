@@ -1,5 +1,16 @@
 <script setup lang="ts">
+import { onMounted } from "vue";
 import NavComponent from "./components/nav-component.vue";
+import { useI18n } from "vue-i18n";
+
+const { t, locale } = useI18n(); // Access i18n functions
+
+onMounted(() => {
+  const savedLocale = localStorage.getItem("user-locale");
+  if (savedLocale) {
+    locale.value = savedLocale;
+  }
+});
 </script>
 
 <template>

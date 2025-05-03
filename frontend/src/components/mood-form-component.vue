@@ -9,6 +9,9 @@ import { ref } from "vue";
 
 import ButtonComponent from "./button-component.vue";
 import WrapperCardComponent from "./wrapper-card-component.vue";
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const { mood = {} as MoodEntry, cancellable = false } = defineProps<{ mood?: MoodEntry; cancellable?: boolean }>();
 
@@ -49,7 +52,7 @@ const form = useForm({
     <form class="" @submit.prevent.stop="form.handleSubmit">
       <div class="">
         <label class="block max-lg:text-lg text-xl font-medium mb-2">
-          How are you feeling?
+          {{ t('general.howAreYouFeeling') }}
         </label>
         <div class="grid grid-cols-3 gap-4">
           <button
@@ -64,7 +67,7 @@ const form = useForm({
             @click="selectedType = type"
           >
             <span class="max-lg:text-3xl text-4xl mb-4 block drop-shadow-lg">{{ emoji }}</span>
-            <span class="capitalize max-lg:text-sm font-semibold">{{ type }}</span>
+            <span class="capitalize max-lg:text-sm font-semibold">{{ t(`types.${type}`) }}</span>
           </button>
         </div>
       </div>
@@ -74,7 +77,7 @@ const form = useForm({
         <template #default="{ field }">
           <div class="mt-8 mb-4">
             <label for="note" class="block max-lg:text-base text-lg mb-4">
-              Add a note (optional)
+              {{ t('general.addANote') }}	
             </label>
             <textarea
               :name="field.name"
@@ -87,12 +90,12 @@ const form = useForm({
         </template>
       </form.Field>
       <div class="flex gap-4">
-        <ButtonComponent primary class="" text="Save Mood" type="submit">
+        <ButtonComponent primary class="" :text="t('general.save')" type="submit">
           <template #icon>
             <Send class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
           </template>
         </ButtonComponent>
-        <ButtonComponent v-if="cancellable" class="" text="Cancel" @click="emit('cancel')">
+        <ButtonComponent v-if="cancellable" class="" :text="t('general.cancel')" @click="emit('cancel')">
           <template #icon>
             <X class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
           </template>

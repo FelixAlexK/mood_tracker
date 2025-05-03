@@ -4,6 +4,9 @@ import { useQuery } from "@tanstack/vue-query";
 import { Clock } from "lucide-vue-next";
 
 import WrapperCardComponent from "../wrapper-card-component.vue";
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOfDayAnalysisQueryOptions);
 </script>
@@ -12,7 +15,7 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
   <WrapperCardComponent>
     <h2 class=" mb-8 flex items-center  max-lg:text-lg text-xl capitalize font-semibold">
       <Clock class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
-      Time of Day Analysis
+      {{ t('general.timeOfDayAnalysis') }}
     </h2>
     <span v-if="isLoadingTimeAnalysis || !timeAnalysis">Loading...</span>
     <div v-else-if="timeAnalysis" class="grid grid-cols-1 gap-4">
@@ -22,7 +25,7 @@ const { data: timeAnalysis, isLoading: isLoadingTimeAnalysis } = useQuery(timeOf
         class="bg-mt-600/30 shadow-lg rounded-lg p-4 lg:p-8"
       >
         <div class="flex items-center justify-between mb-4">
-          <span class=" capitalize max-lg:text-lg text-xl font-semibold">{{ period.timeOfDay }}</span>
+          <span class=" capitalize max-lg:text-lg text-xl font-semibold">{{ t(`timeOfDay.${period.timeOfDay.toLowerCase()}`) }}</span>
           <span class="max-lg:text-sm text-mt-600">{{ Number.isNaN(period.percentage) ? 0 : Number(period.percentage).toFixed(0) }}%</span>
         </div>
         <div class="h-2 bg-mt-100 rounded-full overflow-hidden flex-grow ">
