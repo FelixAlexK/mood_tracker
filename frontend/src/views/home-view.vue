@@ -11,6 +11,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 
 import type { MoodEntry } from "../types";
 import { moods } from "@backend/db/schema/moods";
+import { ref, type Ref } from "vue";
 
 
 const authStore = useAuthStore();
@@ -18,8 +19,8 @@ const authStore = useAuthStore();
 const toast = useToast();
 const queryClient = useQueryClient();
 
-const PAGE_SIZE = 1;
-const PAGE = 1;
+const PAGE_SIZE = ref(1);
+const PAGE = ref(1);
 
 const { data } = useQuery({
   queryKey: ["get-moods"],
@@ -54,9 +55,10 @@ const { mutate } = useMutation({
     toast.error(`${error.message}`);
   },
 
-  onSettled: () => {
+  onSettled: (data) => {
     // Refetch the moods after mutation
     queryClient.invalidateQueries({ queryKey: ["get-moods"] });
+    
   },
 
 });
