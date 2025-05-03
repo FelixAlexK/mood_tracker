@@ -4,9 +4,9 @@ import type { MoodEntry } from "@/types";
 import HeadlineComponent from "@/components/headline-component.vue";
 import MoodCardComponent from "@/components/mood-card-component.vue";
 import PaginationComponent from "@/components/pagination-component.vue";
-import { getMoods, getMoodsQueryOptions } from "@/lib/api";
+import { getMoodsQueryOptions } from "@/lib/api";
 import router from "@/router";
-import { keepPreviousData, useMutationState, useQuery } from "@tanstack/vue-query";
+import { useQuery } from "@tanstack/vue-query";
 import { ArrowLeft } from "lucide-vue-next";
 import { computed, ref } from "vue";
 

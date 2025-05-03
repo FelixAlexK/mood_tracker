@@ -4,15 +4,11 @@ import HeadlineComponent from "@/components/headline-component.vue";
 import MoodCardComponent from "@/components/mood-card-component.vue";
 import MoodFormComponent from "@/components/mood-form-component.vue";
 import { useToast } from "@/composables/use-toast";
-import { getMoods, getTotalEntries, postMood } from "@/lib/api";
+import { getMoods, postMood } from "@/lib/api";
 import router from "@/router";
 import { useAuthStore } from "@/stores/auth-store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
-
-import type { MoodEntry } from "../types";
-import { moods } from "@backend/db/schema/moods";
-import { ref, type Ref } from "vue";
-
+import { ref } from "vue";
 
 const authStore = useAuthStore();
 
@@ -27,38 +23,31 @@ const { data } = useQuery({
   queryFn: () => getMoods({ page: PAGE, page_size: PAGE_SIZE }),
 });
 
-
 const { mutate } = useMutation({
   mutationKey: ["create-mood"],
   mutationFn: postMood,
 
-  
-
   onSuccess: async (data) => {
-
-    if(data.error && data.error?.status === 401) {
+    if (data.error && data.error?.status === 401) {
       toast.error("Please login to create a mood");
       return;
     }
 
-    if(data.error) {
+    if (data.error) {
       toast.error(`Failed to create mood: ${data.error.message}`);
       return;
     }
-      
 
     toast.success(`${data.data?.emoji} Mood successfully created!`);
   },
 
   onError: (error) => {
-    
     toast.error(`${error.message}`);
   },
 
-  onSettled: (data) => {
+  onSettled: () => {
     // Refetch the moods after mutation
     queryClient.invalidateQueries({ queryKey: ["get-moods"] });
-    
   },
 
 });
