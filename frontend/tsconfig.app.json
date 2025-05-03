@@ -13,6 +13,6 @@
     },
     "strict": true
   },
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "../backend/*"],
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "../backend/*", "locales"],
   "exclude": ["src/**/__tests__/*"]
 }
