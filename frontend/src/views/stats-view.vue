@@ -5,6 +5,7 @@ import DistributionComponent from "@/components/stats/distribution-component.vue
 import MonthlyOverviewComponent from "@/components/stats/monthly-overview-component.vue";
 import TimeOfDayAnalysisComponent from "@/components/stats/time-of-day-analysis-component.vue";
 import WeeklyTrendComponent from "@/components/stats/weekly-trend-component.vue";
+import router from "@/router";
 import { ArrowLeft } from "lucide-vue-next";
 </script>
 
@@ -12,8 +13,8 @@ import { ArrowLeft } from "lucide-vue-next";
   <div class="max-w-6xl mx-auto">
     <HeadlineComponent
       text="Mood Statistics"
-      back-text="Back"
-      back-path="/"
+      go-back-label="Back"
+      @go-back="() => router.back()"
     >
       <template #icon>
         <ArrowLeft class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
