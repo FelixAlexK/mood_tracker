@@ -9,10 +9,10 @@ import { keepPreviousData, useMutationState, useQuery } from "@tanstack/vue-quer
 import { ArrowLeft } from "lucide-vue-next";
 import { computed, ref } from "vue";
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = ref(25);
 const page = ref(1);
 
-const { data, isPlaceholderData, isPending, isError, error } = useQuery(getMoodsQueryOptions(page.value, PAGE_SIZE));
+const { data, isPlaceholderData, isPending, isError, error } = useQuery(getMoodsQueryOptions(page, PAGE_SIZE));
 
 function prevPage() {
   page.value = Math.max(page.value - 1, 1);
@@ -27,11 +27,7 @@ function goToPage(p: number) {
   page.value = p;
 }
 
-
-
-
-
-const totalPages = computed(() => Math.ceil((data.value?.data?.total.count || 0) / PAGE_SIZE));
+const totalPages = computed(() => Math.ceil((data.value?.data?.total.count || 0) / PAGE_SIZE.value));
 
 // Group moods by creation date
 const groupedMoods = computed(() => {
