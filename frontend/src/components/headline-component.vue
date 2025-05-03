@@ -1,8 +1,11 @@
 <script setup lang="ts">
-const { text, backText, backPath } = defineProps<{
+const { text, goBackLabel: backText } = defineProps<{
   text: string;
-  backText?: string;
-  backPath?: string;
+  goBackLabel?: string;
+}>();
+
+defineEmits<{
+  (e: "goBack"): void;
 }>();
 </script>
 
@@ -12,14 +15,10 @@ const { text, backText, backPath } = defineProps<{
       <h1 class=" font-bold max-lg:text-3xl text-wrap text-4xl">
         {{ text }}
       </h1>
-      <router-link
-        v-if="backPath && backText"
-        :to="backPath"
-        class="hover:text-mt-600 cursor-pointer text-nowrap transition-colors flex items-center max-lg:text-xl text-2xl font-semibold"
-      >
+      <button class="hover:text-mt-600 cursor-pointer text-nowrap transition-colors flex items-center max-lg:text-xl text-2xl font-semibold" @click="$emit('goBack')">
         <slot v-if="$slots.icon" name="icon" />
         {{ backText }}
-      </router-link>
+      </button>
     </div>
   </section>
 </template>
