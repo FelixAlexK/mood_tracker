@@ -9,7 +9,7 @@ import { formattedDate } from "@/lib/utils";
 import router from "@/router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { ArrowLeft, Clock, Edit2, Trash2 } from "lucide-vue-next";
-import { computed, ref, onMounted } from "vue";
+import { computed, ref } from "vue";
 
 import { useToast } from "../composables/use-toast";
 
@@ -28,7 +28,7 @@ const editedNote = ref("");
 const currentId = computed(() => id);
 
 // Fetch Mood Data
-const { data, refetch } = useQuery({
+const { data } = useQuery({
   queryKey: ["get-mood-by-id", currentId],
   queryFn: () => getMood({ id: currentId }),
   refetchOnMount: true, // Ensure data is refetched when the component is mounted
@@ -65,7 +65,8 @@ const { mutate: deleteMutation } = useMutation({
 
 // Methods
 function startEditing() {
-  if (!isEditing.value) return;
+  if (!isEditing.value)
+    return;
   selectedType.value = data.value?.data?.type || "";
   selectedEmoji.value = data.value?.data?.emoji || "";
   editedNote.value = data.value?.data?.note || "";
@@ -84,6 +85,7 @@ function saveChanges(value: { note: string | null; type: string; emoji: string }
 }
 
 function handleDelete() {
+  // eslint-disable-next-line no-alert
   if (confirm("Are you sure you want to delete this mood entry?")) {
     deleteMutation();
   }
@@ -95,9 +97,9 @@ function handleDelete() {
     <!-- Headline -->
     <HeadlineComponent
       :text="`Still ${data?.data?.type || 'Unknown'}?`"
-      back-text="Back"
-      back-path="/"
+      go-back-label="Back"
       class="capitalize"
+      @go-back="() => router.back()"
     >
       <template #icon>
         <ArrowLeft class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
@@ -107,7 +109,9 @@ function handleDelete() {
     <WrapperCardComponent>
       <div v-if="!data" class="text-center">
         <!-- Loading State -->
-        <p class="italic">Loading mood details...</p>
+        <p class="italic">
+          Loading mood details...
+        </p>
       </div>
       <div v-else>
         <!-- Mood Details Section -->
@@ -143,11 +147,15 @@ function handleDelete() {
 
         <!-- Note Section -->
         <div class="mb-8">
-          <h3 class="max-lg:text-sm font-bold mb-4">Your Note</h3>
+          <h3 class="max-lg:text-sm font-bold mb-4">
+            Your Note
+          </h3>
           <p v-if="data?.data?.note" class="text-mt-600 whitespace-pre-wrap text-lg max-lg:text-base">
             {{ data?.data?.note }}
           </p>
-          <p v-else class="text-mt-600 italic text-lg max-lg:text-base">No note added</p>
+          <p v-else class="text-mt-600 italic text-lg max-lg:text-base">
+            No note added
+          </p>
         </div>
 
         <!-- Edit Mode -->
