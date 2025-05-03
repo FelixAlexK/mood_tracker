@@ -5,6 +5,7 @@ import HeadlineComponent from "@/components/headline-component.vue";
 import MoodCardComponent from "@/components/mood-card-component.vue";
 import PaginationComponent from "@/components/pagination-component.vue";
 import { getMoods, getMoodsQueryOptions } from "@/lib/api";
+import router from "@/router";
 import { keepPreviousData, useMutationState, useQuery } from "@tanstack/vue-query";
 import { ArrowLeft } from "lucide-vue-next";
 import { computed, ref } from "vue";
@@ -49,8 +50,8 @@ const groupedMoods = computed(() => {
   <div class="max-w-3xl mx-auto">
     <HeadlineComponent
       text="Overview"
-      back-text="Back"
-      back-path="/"
+      go-back-label="Back"
+      @go-back="() => router.back()"
     >
       <template #icon>
         <ArrowLeft class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />

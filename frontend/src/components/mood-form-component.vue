@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { MOOD_TYPES, type MoodEntry } from "@/types";
+import type { MoodEntry } from "@/types";
+
+import { useToast } from "@/composables/use-toast"; // Import toast for warnings
+import { MOOD_TYPES } from "@/types";
 import { useForm } from "@tanstack/vue-form";
 import { Send, X } from "lucide-vue-next";
 import { ref } from "vue";
 
 import ButtonComponent from "./button-component.vue";
 import WrapperCardComponent from "./wrapper-card-component.vue";
-import { useToast } from "@/composables/use-toast"; // Import toast for warnings
 
-const {mood = {} as MoodEntry, cancellable = false} = defineProps<{mood?: MoodEntry, cancellable?: boolean}>()
+const { mood = {} as MoodEntry, cancellable = false } = defineProps<{ mood?: MoodEntry; cancellable?: boolean }>();
 
 const emit = defineEmits<{
   (e: "submit", value: { note: string | null; type: string; emoji: string }): void;
@@ -36,7 +38,7 @@ const form = useForm({
     });
 
     // Reset form fields after submission
-    selectedType.value = MOOD_TYPES[0].type; // Reset to the first mood type
+    selectedType.value = undefined; // Reset to the first mood type
     form.reset(); // Reset the form state
   },
 });
