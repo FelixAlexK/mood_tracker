@@ -10,16 +10,15 @@ import router from "@/router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { ArrowLeft, Clock, Edit2, Trash2 } from "lucide-vue-next";
 import { computed, ref } from "vue";
-
-import { useToast } from "../composables/use-toast";
 import { useI18n } from "vue-i18n";
 
-const { t, locale } = useI18n(); // Access i18n functions
+import { useToast } from "../composables/use-toast";
+
+// Access i18n functions
 
 // Props
 const { id } = defineProps<{ id: string }>();
-
-// Toast and Query Client
+const { t } = useI18n();// Toast and Query Client
 const toast = useToast();
 const queryClient = useQueryClient();
 
@@ -99,7 +98,7 @@ function handleDelete() {
   <div class="max-w-3xl mx-auto">
     <!-- Headline -->
     <HeadlineComponent
-      :text="t('general.details', {type: t(`types.${data?.data?.type}`) })"
+      :text="t('general.details', { type: t(`types.${data?.data?.type}`) })"
       :go-back-label="t('general.back')"
       class="capitalize"
       @go-back="() => router.back()"

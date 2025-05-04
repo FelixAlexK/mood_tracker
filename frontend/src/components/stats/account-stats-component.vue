@@ -2,9 +2,9 @@
 import { mostCommonQueryOptions, streakQueryOptions, totalEntriesQueryOptions } from "@/lib/api";
 import { useQuery } from "@tanstack/vue-query";
 import { BookOpen, Flame } from "lucide-vue-next";
-import { useI18n } from 'vue-i18n'
+import { useI18n } from "vue-i18n";
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 const { data: totalEntries, isLoading: isLoadingTotal } = useQuery(totalEntriesQueryOptions);
 const { data: mostCommon, isLoading: isLoadingMostCommon } = useQuery(mostCommonQueryOptions);
@@ -20,7 +20,7 @@ const { data: streak, isLoading: isLoadingStreak } = useQuery(streakQueryOptions
       <span v-if="isLoadingMostCommon && (mostCommon?.data?.count ?? 0 > 0)">Loading...</span>
       <div v-else-if="mostCommon?.data?.count ?? 0 > 0" class="flex items-center">
         <span class="max-lg:text-xl text-2xl drop-shadow-lg mr-2">{{ mostCommon?.data?.emoji }}</span>
-        <span class="max-lg:text-lg text-xl capitalize font-semibold">{{ mostCommon?.data?.type }}</span>
+        <span class="max-lg:text-lg text-xl capitalize font-semibold">{{ t(`types.${mostCommon?.data?.type}`) }}</span>
       </div>
       <span v-else class="max-lg:text-xl text-2xl">-</span>
     </div>
@@ -32,7 +32,7 @@ const { data: streak, isLoading: isLoadingStreak } = useQuery(streakQueryOptions
       <span v-if="isLoadingTotal && (mostCommon?.data?.count ?? 0 > 0)">Loading...</span>
       <div v-else class="flex items-center ">
         <BookOpen class="max-lg:text-xl text-2xl drop-shadow-lg text-purple-600 mr-2" />
-        <span class="max-lg:text-lg text-xl capitalize font-semibold">{{ totalEntries?.data?.count }} {{ t('general.entry', { count: totalEntries?.data?.count}) }}</span>
+        <span class="max-lg:text-lg text-xl capitalize font-semibold">{{ totalEntries?.data?.count }} {{ t('general.entry', { count: totalEntries?.data?.count }) }}</span>
       </div>
     </div>
 
@@ -43,7 +43,7 @@ const { data: streak, isLoading: isLoadingStreak } = useQuery(streakQueryOptions
       <span v-if="isLoadingStreak && (mostCommon?.data?.count ?? 0 > 0)">Loading...</span>
       <div v-else class="flex items-center ">
         <Flame class="max-lg:text-xl text-2xl drop-shadow-lg text-orange-500 mr-2" />
-        <span class="max-lg:text-lg text-xl capitalize font-semibold">{{streak?.data?.streak_count || 0}} {{ t('general.day', { count: streak?.data?.streak_count || 0 }) }}</span>
+        <span class="max-lg:text-lg text-xl capitalize font-semibold">{{ streak?.data?.streak_count || 0 }} {{ t('general.day', { count: streak?.data?.streak_count || 0 }) }}</span>
       </div>
     </div>
   </div>

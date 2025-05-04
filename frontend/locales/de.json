@@ -1,69 +1,69 @@
 {
-    "general": {
-        "welcomeMessage": "Willkommen {msg}!",
-        "lastEntry": "Letzter Eintrag",
-        "howAreYouFeeling": "Wie fühlst du dich?",
-        "addANote": "Füge eine Notiz hinzu (optional)",
-        "save": "speichern",
-        "cancel": "abbrechen",
-        "mostCommonMood": "Häufigste Stimmung",
-        "totalEntries": "Gesamt Einträge",
-        "latestStreak": "Aktuelle Serie",
-        "day": "{count} Tag | Tage",
-        "entry": "{count} Eintrag | Einträge",
-        "moodDistribution": "Stimmungsverteilung",
-        "weeklyTrend": "Wöchentlicher Trend",
-        "timeOfDayAnalysis": "Tageszeit Analyse",
-        "monthlyOverview": "Monatliche Übersicht",
-        "moodStatistics": "Stimmungsstatistiken",
-        "back": "Zurück",
-        "profile": "Profil",
-        "details": "Immer noch {type}?",
-        "yourNote": "Deine Notiz",
-        "noNoteAdded": "Keine Notiz hinzugefügt",
-        "overview": "Übersicht",
-        "new": "NEU",
-        "seeAll": "Alle anzeigen",
-        "home": "Startseite",
-        "stats": "Statistiken",
-        "logout": "Abmelden",
-        "login": "Anmelden",
-    },
-    "locales": {
-        "en": "Englisch",
-        "de": "Deutsch"
-    },
+  "general": {
+    "welcomeMessage": "Willkommen {msg}!",
+    "lastEntry": "Letzter Eintrag",
+    "howAreYouFeeling": "Wie fühlst du dich?",
+    "addANote": "Füge eine Notiz hinzu (optional)",
+    "save": "speichern",
+    "cancel": "abbrechen",
+    "mostCommonMood": "Häufigste Stimmung",
+    "totalEntries": "Gesamt Einträge",
+    "latestStreak": "Aktuelle Serie",
+    "day": "{count} Tag | Tage",
+    "entry": "{count} Eintrag | Einträge",
+    "moodDistribution": "Stimmungsverteilung",
+    "weeklyTrend": "Wöchentlicher Trend",
+    "timeOfDayAnalysis": "Tageszeit Analyse",
+    "monthlyOverview": "Monatliche Übersicht",
+    "moodStatistics": "Stimmungsstatistiken",
+    "back": "Zurück",
+    "profile": "Profil",
+    "details": "Immer noch {type}?",
+    "yourNote": "Deine Notiz",
+    "noNoteAdded": "Keine Notiz hinzugefügt",
+    "overview": "Übersicht",
+    "new": "NEU",
+    "seeAll": "Alle anzeigen",
+    "home": "Startseite",
+    "stats": "Statistiken",
+    "logout": "Abmelden",
+    "login": "Anmelden"
+  },
+  "locales": {
+    "en": "Englisch",
+    "de": "Deutsch"
+  },
 
-     "types": {
-        "happy": "Glücklich",
-        "sad": "Traurig",
-        "angry": "Wütend",
-        "excited": "Aufgeregt",
-        "tired": "Müde",
-        "relaxed": "Entspannt"
-    },
-    "timeOfDay": {
-        "morning": "Morgen",
-        "afternoon": "Nachmittag",
-        "evening": "Abend",
-        "night": "Nacht"
-    },
-    "dayNames": {
-        "mon": "Montag",
-        "tue": "Dienstag",
-        "wed": "Mittwoch",
-        "thu": "Donnerstag",
-        "fri": "Freitag",
-        "sat": "Samstag",
-        "sun": "Sonntag"
-    },
-    "dayNamesShort": {
-        "mon": "Mo",
-        "tue": "Di",
-        "wed": "Mi",
-        "thu": "Do",
-        "fri": "Fr",
-        "sat": "Sa",
-        "sun": "So"
-    }
+  "types": {
+    "happy": "Glücklich",
+    "sad": "Traurig",
+    "angry": "Wütend",
+    "excited": "Aufgeregt",
+    "tired": "Müde",
+    "relaxed": "Entspannt"
+  },
+  "timeOfDay": {
+    "morning": "Morgen",
+    "afternoon": "Nachmittag",
+    "evening": "Abend",
+    "night": "Nacht"
+  },
+  "dayNames": {
+    "mon": "Montag",
+    "tue": "Dienstag",
+    "wed": "Mittwoch",
+    "thu": "Donnerstag",
+    "fri": "Freitag",
+    "sat": "Samstag",
+    "sun": "Sonntag"
+  },
+  "dayNamesShort": {
+    "mon": "Mo",
+    "tue": "Di",
+    "wed": "Mi",
+    "thu": "Do",
+    "fri": "Fr",
+    "sat": "Sa",
+    "sun": "So"
+  }
 }
