@@ -9,6 +9,9 @@ import router from "@/router";
 import { useAuthStore } from "@/stores/auth-store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const authStore = useAuthStore();
 
@@ -65,7 +68,7 @@ async function handleSubmit(value: { note: string | null; type: string; emoji: s
 <template>
   <div class="max-w-3xl mx-auto">
     <HeadlineComponent
-      :text="`Welcome ${authStore.user?.given_name ?? ''}!`"
+      :text="t('general.welcomeMessage', { msg: authStore.user?.given_name ?? '' })"
     />
 
     <div>
@@ -74,7 +77,7 @@ async function handleSubmit(value: { note: string | null; type: string; emoji: s
 
     <div v-if="authStore.isLoggedIn">
       <h3 class="block max-lg:text-base text-lg font-medium mb-2 pt-8">
-        Latest Entry
+        {{ t('general.lastEntry') }}
       </h3>
       <div class="">
         <MoodCardComponent
@@ -83,7 +86,7 @@ async function handleSubmit(value: { note: string | null; type: string; emoji: s
           :mood="mood"
         />
       </div>
-      <ButtonComponent :disabled="(data?.data?.total.count ?? 0) <= 1" class="mt-4" text="See All" @click="router.push({ path: '/moods' })" />
+      <ButtonComponent :disabled="(data?.data?.total.count ?? 0) <= 1" class="mt-4" :text="t('general.seeAll')" @click="router.push({ path: '/moods' })" />
     </div>
   </div>
 </template>

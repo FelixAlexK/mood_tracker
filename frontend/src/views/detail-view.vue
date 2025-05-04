@@ -10,13 +10,15 @@ import router from "@/router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { ArrowLeft, Clock, Edit2, Trash2 } from "lucide-vue-next";
 import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 import { useToast } from "../composables/use-toast";
 
+// Access i18n functions
+
 // Props
 const { id } = defineProps<{ id: string }>();
-
-// Toast and Query Client
+const { t } = useI18n();// Toast and Query Client
 const toast = useToast();
 const queryClient = useQueryClient();
 
@@ -96,8 +98,8 @@ function handleDelete() {
   <div class="max-w-3xl mx-auto">
     <!-- Headline -->
     <HeadlineComponent
-      :text="`Still ${data?.data?.type || 'Unknown'}?`"
-      go-back-label="Back"
+      :text="t('general.details', { type: t(`types.${data?.data?.type}`) })"
+      :go-back-label="t('general.back')"
       class="capitalize"
       @go-back="() => router.back()"
     >
@@ -120,7 +122,7 @@ function handleDelete() {
             <span class="max-lg:text-3xl text-4xl drop-shadow-lg mr-2">{{ data?.data?.emoji || '❤️' }}</span>
             <div>
               <h2 class="max-lg:text-lg text-xl font-bold text-gray-800 capitalize mb-4">
-                {{ data?.data?.type || '-' }}
+                {{ t(`types.${data?.data?.type}`) }}
               </h2>
               <div class="flex items-center text-mt-600 max-lg:text-xs text-sm">
                 <Clock class="aspect-square w-4 h-auto drop-shadow-lg mr-2" />
@@ -148,13 +150,13 @@ function handleDelete() {
         <!-- Note Section -->
         <div class="mb-8">
           <h3 class="max-lg:text-sm font-bold mb-4">
-            Your Note
+            {{ t('general.yourNote') }}
           </h3>
           <p v-if="data?.data?.note" class="text-mt-600 whitespace-pre-wrap text-lg max-lg:text-base">
             {{ data?.data?.note }}
           </p>
           <p v-else class="text-mt-600 italic text-lg max-lg:text-base">
-            No note added
+            {{ t('general.noNoteAdded') }}
           </p>
         </div>
 

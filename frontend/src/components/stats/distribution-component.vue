@@ -2,8 +2,11 @@
 import { moodDistributionQueryOptions } from "@/lib/api";
 import { useQuery } from "@tanstack/vue-query";
 import { PieChart } from "lucide-vue-next";
+import { useI18n } from "vue-i18n";
 
 import WrapperCardComponent from "../wrapper-card-component.vue";
+
+const { t } = useI18n();
 
 const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributionQueryOptions());
 </script>
@@ -12,7 +15,7 @@ const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributi
   <WrapperCardComponent>
     <h2 class="max-lg:text-lg text-xl capitalize font-semibold mb-8 flex items-center ">
       <PieChart class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
-      Mood Distribution
+      {{ t("general.moodDistribution") }}
     </h2>
     <span v-if="isLoadingDist || !distribution">Loading...</span>
     <div v-else-if="distribution" class="grid grid-cols-1 gap-4">
@@ -24,7 +27,7 @@ const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributi
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center gap-2">
             <span class="max-lg:text-xl text-2xl drop-shadow-lg mr-2">{{ mood.emoji }}</span>
-            <span class="capitalize max-lg:text-lg text-xl font-semibold">{{ mood.type }}</span>
+            <span class="capitalize max-lg:text-lg text-xl font-semibold">{{ t(`types.${mood.type}`) }}</span>
           </div>
           <span class="max-lg:text-sm text-mt-600">{{ mood.percentage.toFixed(0) }}%</span>
         </div>

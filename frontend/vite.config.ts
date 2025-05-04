@@ -1,5 +1,7 @@
+import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 import vueDevTools from "vite-plugin-vue-devtools";
@@ -10,6 +12,11 @@ export default defineConfig({
     vue(),
     vueDevTools(),
     tailwindcss(),
+    VueI18nPlugin({
+      /* options */
+      // locale messages resource pre-compile option
+      include: resolve(dirname(fileURLToPath(import.meta.url)), "./locales/**"),
+    }),
   ],
   resolve: {
     alias: {

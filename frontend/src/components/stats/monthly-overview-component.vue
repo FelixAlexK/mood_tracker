@@ -5,8 +5,11 @@ import FullCalendar from "@fullcalendar/vue3";
 import { useQuery } from "@tanstack/vue-query";
 import { Calendar } from "lucide-vue-next";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 
 import WrapperCardComponent from "../wrapper-card-component.vue";
+
+const { t } = useI18n();
 
 const { data: monthlyOverview, isLoading: isMonthlyOverviewLoading } = useQuery({
   queryKey: ["monthly-overview"],
@@ -47,7 +50,7 @@ const calendarOptions = computed(() => ({
   <WrapperCardComponent>
     <h2 class=" mb-8 flex items-center  max-lg:text-lg text-xl capitalize font-semibold">
       <Calendar class="max-lg:text-xl text-2xl drop-shadow-lg mr-2" />
-      Monthly Overview
+      {{ t('general.monthlyOverview') }}
     </h2>
     <span v-if="isMonthlyOverviewLoading">Loading...</span>
     <FullCalendar v-else class="h-fit max-lg:text-sm" :options="calendarOptions" />
