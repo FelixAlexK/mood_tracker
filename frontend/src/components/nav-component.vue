@@ -3,9 +3,9 @@ import router from "@/router";
 import { useAuthStore } from "@/stores/auth-store";
 import { BarChart3, Home, LogIn, LogOut, Menu, User, X } from "lucide-vue-next";
 import { onMounted, onUnmounted, ref, watch } from "vue";
-import { useI18n } from 'vue-i18n'
+import { useI18n } from "vue-i18n";
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 const authStore = useAuthStore();
 

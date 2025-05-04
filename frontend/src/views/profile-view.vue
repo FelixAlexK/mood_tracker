@@ -44,8 +44,8 @@ function changeLocale(newLocale: string) {
 
         <div class="mt-8 flex justify-start items-center w-full">
           <select v-model="$i18n.locale" class="bg-mt-600/10 text-mt-600/90 border border-mt-600/20 rounded-md  px-4 py-2 focus:outline-none focus:ring focus:ring-mt-600/50" @change="changeLocale($i18n.locale)">
-            <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">
-              {{ t(`locales.${locale}`) }}
+            <option v-for="availableLocale in $i18n.availableLocales" :key="`locale-${availableLocale}`" :value="availableLocale">
+              {{ t(`locales.${availableLocale}`) }}
             </option>
           </select>
         </div>

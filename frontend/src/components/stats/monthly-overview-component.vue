@@ -5,11 +5,11 @@ import FullCalendar from "@fullcalendar/vue3";
 import { useQuery } from "@tanstack/vue-query";
 import { Calendar } from "lucide-vue-next";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 
 import WrapperCardComponent from "../wrapper-card-component.vue";
-import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 const { data: monthlyOverview, isLoading: isMonthlyOverviewLoading } = useQuery({
   queryKey: ["monthly-overview"],

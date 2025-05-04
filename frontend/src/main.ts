@@ -3,14 +3,10 @@ import "./styles.css";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 import { createPinia } from "pinia";
 import { createApp } from "vue";
-import { createI18n } from "vue-i18n";
-import i18n from './i18n'
-
-
 
 import App from "./app.vue";
+import i18n from "./i18n";
 import router from "./router";
-
 
 const pinia = createPinia();
 const app = createApp(App);

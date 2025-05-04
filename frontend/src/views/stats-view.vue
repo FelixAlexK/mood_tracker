@@ -7,9 +7,9 @@ import TimeOfDayAnalysisComponent from "@/components/stats/time-of-day-analysis-
 import WeeklyTrendComponent from "@/components/stats/weekly-trend-component.vue";
 import router from "@/router";
 import { ArrowLeft } from "lucide-vue-next";
-import { useI18n } from 'vue-i18n'
+import { useI18n } from "vue-i18n";
 
-const { t } = useI18n()
+const { t } = useI18n();
 </script>
 
 <template>

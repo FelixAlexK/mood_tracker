@@ -2,11 +2,11 @@
 import { moodDistributionQueryOptions } from "@/lib/api";
 import { useQuery } from "@tanstack/vue-query";
 import { PieChart } from "lucide-vue-next";
-import { useI18n } from 'vue-i18n'
+import { useI18n } from "vue-i18n";
+
 import WrapperCardComponent from "../wrapper-card-component.vue";
 
-const { t } = useI18n()
-
+const { t } = useI18n();
 
 const { data: distribution, isLoading: isLoadingDist } = useQuery(moodDistributionQueryOptions());
 </script>

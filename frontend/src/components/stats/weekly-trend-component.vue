@@ -3,11 +3,11 @@ import { weeklyTrendQueryOptions } from "@/lib/api";
 import { getDayName } from "@/lib/utils";
 import { useQuery } from "@tanstack/vue-query";
 import { TrendingUp } from "lucide-vue-next";
+import { useI18n } from "vue-i18n";
 
 import WrapperCardComponent from "../wrapper-card-component.vue";
-import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 const { data: weeklyTrend, isLoading: isLoadingWeeklyTrend } = useQuery(weeklyTrendQueryOptions);
 </script>

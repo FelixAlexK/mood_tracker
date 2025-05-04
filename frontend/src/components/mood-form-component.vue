@@ -6,12 +6,10 @@ import { MOOD_TYPES } from "@/types";
 import { useForm } from "@tanstack/vue-form";
 import { Send, X } from "lucide-vue-next";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 import ButtonComponent from "./button-component.vue";
 import WrapperCardComponent from "./wrapper-card-component.vue";
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 
 const { mood = {} as MoodEntry, cancellable = false } = defineProps<{ mood?: MoodEntry; cancellable?: boolean }>();
 
@@ -19,6 +17,8 @@ const emit = defineEmits<{
   (e: "submit", value: { note: string | null; type: string; emoji: string }): void;
   (e: "cancel"): void;
 }>();
+
+const { t } = useI18n();
 
 const toast = useToast(); // Initialize toast
 const selectedType = ref<typeof MOOD_TYPES[number]["type"] | undefined>(undefined);
@@ -77,7 +77,7 @@ const form = useForm({
         <template #default="{ field }">
           <div class="mt-8 mb-4">
             <label for="note" class="block max-lg:text-base text-lg mb-4">
-              {{ t('general.addANote') }}	
+              {{ t('general.addANote') }}
             </label>
             <textarea
               :name="field.name"

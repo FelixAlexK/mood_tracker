@@ -9,9 +9,9 @@ import router from "@/router";
 import { useAuthStore } from "@/stores/auth-store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { ref } from "vue";
-import { useI18n } from 'vue-i18n'
+import { useI18n } from "vue-i18n";
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 const authStore = useAuthStore();
 

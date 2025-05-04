@@ -11,7 +11,7 @@ import { ArrowLeft } from "lucide-vue-next";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
-const { t, locale } = useI18n(); // Access i18n functions
+const { t } = useI18n(); // Access i18n functions
 
 const PAGE_SIZE = ref(25);
 const page = ref(1);
