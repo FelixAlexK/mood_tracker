@@ -1,68 +1,68 @@
 {
-    "general": {
-        "welcomeMessage": "Welcome {msg}!",
-        "lastEntry": "Last Entry",
-        "howAreYouFeeling": "How are you feeling?",
-        "addANote": "Add a note (optional)",
-        "save": "save",
-        "cancel": "cancel",
-        "mostCommonMood": "Most common mood",
-        "totalEntries": "Total entries",
-        "latestStreak": "Current streak",
-        "day": "{count} day | days",
-        "entry": "{count} entry | entries",
-        "moodDistribution": "Mood distribution",
-        "weeklyTrend": "Weekly trend",
-        "timeOfDayAnalysis": "Time of day analysis",
-        "monthlyOverview": "Monthly overview",
-        "moodStatistics": "Mood statistics",
-        "back": "Back",
-        "profile": "Profile",
-        "details": "Still {type}?",
-        "yourNote": "Your note",
-        "noNoteAdded": "No note added",
-        "overview": "Overview",
-        "new": "NEW",
-        "seeAll": "See all",
-        "logout": "Logout",
-        "login": "Login",
-    },
+  "general": {
+    "welcomeMessage": "Welcome {msg}!",
+    "lastEntry": "Last Entry",
+    "howAreYouFeeling": "How are you feeling?",
+    "addANote": "Add a note (optional)",
+    "save": "save",
+    "cancel": "cancel",
+    "mostCommonMood": "Most common mood",
+    "totalEntries": "Total entries",
+    "latestStreak": "Current streak",
+    "day": "{count} day | days",
+    "entry": "{count} entry | entries",
+    "moodDistribution": "Mood distribution",
+    "weeklyTrend": "Weekly trend",
+    "timeOfDayAnalysis": "Time of day analysis",
+    "monthlyOverview": "Monthly overview",
+    "moodStatistics": "Mood statistics",
+    "back": "Back",
+    "profile": "Profile",
+    "details": "Still {type}?",
+    "yourNote": "Your note",
+    "noNoteAdded": "No note added",
+    "overview": "Overview",
+    "new": "NEW",
+    "seeAll": "See all",
+    "logout": "Logout",
+    "login": "Login"
+  },
 
-    "locales": {
-        "en": "English",
-        "de": "German"
-    },
+  "locales": {
+    "en": "English",
+    "de": "German"
+  },
 
-    "types": {
-        "happy": "Happy",
-        "sad": "Sad",
-        "angry": "Angry",
-        "excited": "Excited",
-        "tired": "Tired",
-        "relaxed": "Relaxed"
-    }, 
-    "timeOfDay": {
-        "morning": "Morning",
-        "afternoon": "Afternoon",
-        "evening": "Evening",
-        "night": "Night"
-    }, 
-    "dayNamesShort": {
-        "mon": "Mon",
-        "tue": "Tue",
-        "wed": "Wed",
-        "thu": "Thu",
-        "fri": "Fri",
-        "sat": "Sat",
-        "sun": "Sun"
-    }, 
-    "dayNames": {
-        "mon": "Monday",
-        "tue": "Tuesday",
-        "wed": "Wednesday",
-        "thu": "Thursday",
-        "fri": "Friday",
-        "sat": "Saturday",
-        "sun": "Sunday"
-    }
+  "types": {
+    "happy": "Happy",
+    "sad": "Sad",
+    "angry": "Angry",
+    "excited": "Excited",
+    "tired": "Tired",
+    "relaxed": "Relaxed"
+  },
+  "timeOfDay": {
+    "morning": "Morning",
+    "afternoon": "Afternoon",
+    "evening": "Evening",
+    "night": "Night"
+  },
+  "dayNamesShort": {
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "dayNames": {
+    "mon": "Monday",
+    "tue": "Tuesday",
+    "wed": "Wednesday",
+    "thu": "Thursday",
+    "fri": "Friday",
+    "sat": "Saturday",
+    "sun": "Sunday"
+  }
 }
