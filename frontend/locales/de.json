@@ -40,7 +40,22 @@
     "angry": "Wütend",
     "excited": "Aufgeregt",
     "tired": "Müde",
-    "relaxed": "Entspannt"
+    "relaxed": "Entspannt",
+    "bored": "Langweilig",
+    "anxious": "Ängstlich",
+    "stressed": "Gestresst",
+    "confident": "Selbstbewusst",
+    "grateful": "Dankbar",
+    "lonely": "Einsam",
+    "hopeful": "Hoffnungsvoll",
+    "curious": "Neugierig",
+    "proud": "Stolz",
+    "surprised": "Überrascht",
+    "in-love": "Verliebt",
+    "fearful": "Ängstlich",
+    "determined": "Entschlossen",
+    "embarrassed": "Peinlich"
+
   },
   "timeOfDay": {
     "morning": "Morgen",
