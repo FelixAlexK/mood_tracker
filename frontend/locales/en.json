@@ -39,7 +39,21 @@
     "angry": "Angry",
     "excited": "Excited",
     "tired": "Tired",
-    "relaxed": "Relaxed"
+    "relaxed": "Relaxed",
+    "bored": "Bored",
+    "anxious": "Anxious",
+    "stressed": "Stressed",
+    "confident": "Confident",
+    "grateful": "Grateful",
+    "lonely": "Lonely",
+    "hopeful": "Hopeful",
+    "curious": "Curious",
+    "proud": "Proud",
+    "surprised": "Surprised",
+    "in-love": "In love",
+    "fearful": "Fearful",
+    "determined": "Determined",
+    "embarrassed": "Embarrassed"
   },
   "timeOfDay": {
     "morning": "Morning",
