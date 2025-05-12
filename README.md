@@ -19,6 +19,7 @@ Mood Tracker is a web application that helps users log, track, and analyze their
 - **Backend**: Hono, Drizzle ORM, PostgreSQL, Kinde
 - **Runtime**: Bun.js
 - **Database**: Neon Postgres (cloud-hosted PostgreSQL)
+- **Deployment**: Fly.io
 
 ## Installation
 
