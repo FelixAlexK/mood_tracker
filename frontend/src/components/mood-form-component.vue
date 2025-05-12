@@ -48,6 +48,7 @@ const form = useForm({
 
     // Reset form fields after submission
     selectedType.value = undefined; // Reset to the first mood type
+    showAllMoods.value = false; // Reset to show only the first 6 moods
     form.reset(); // Reset the form state
   },
 });
