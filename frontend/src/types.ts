@@ -15,6 +15,20 @@ export const MOOD_TYPES = [
   { type: "sad", emoji: "😢" },
   { type: "angry", emoji: "😠" },
   { type: "tired", emoji: "😴" },
+  { type: "stressed", emoji: "😫" },
+  { type: "confident", emoji: "😎" },
+  { type: "grateful", emoji: "🙏" },
+  { type: "anxious", emoji: "😟" },
+  { type: "lonely", emoji: "🥺" },
+  { type: "hopeful", emoji: "🤞" },
+  { type: "curious", emoji: "🤔" },
+  { type: "proud", emoji: "🥰" },
+  { type: "bored", emoji: "😐" },
+  { type: "surprised", emoji: "😲" },
+  { type: "in-love", emoji: "😍" },
+  { type: "fearful", emoji: "😨" },
+  { type: "determined", emoji: "💪" },
+  { type: "embarrassed", emoji: "😳" },
 ] as const;
 
 export type UserType = {
