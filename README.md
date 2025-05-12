@@ -15,17 +15,18 @@ Mood Tracker is a web application that helps users log, track, and analyze their
 
 ## Tech Stack
 
-- **Frontend**: Vue 3, Tailwind CSS, Vue Query
-- **Backend**: Hono, Drizzle ORM, PostgreSQL
+- **Frontend**: Vue 3, Tailwind CSS, TanStack Query
+- **Backend**: Hono, Drizzle ORM, PostgreSQL, Kinde
 - **Runtime**: Bun.js
-- **Database**: PostgreSQL
+- **Database**: Neon Postgres (cloud-hosted PostgreSQL)
 
 ## Installation
 
 ### Prerequisites
 
-- [Bun](https://bun.sh) (v1.1.42 or later)
-- PostgreSQL database
+- [Bun](https://bun.sh)
+- [Neon Postgres](https://neon.tech)
+- [Kinde](https://kinde.com)
 
 ### Steps
 
@@ -104,3 +105,9 @@ Mood Tracker is a web application that helps users log, track, and analyze their
 ## License
 
 This project is licensed under the MIT License.
+
+## Notes on Neon Postgres
+
+- Neon Postgres is a cloud-hosted PostgreSQL database service. It provides a connection string that you can use in the DATABASE_URL environment variable.
+- Ensure that your Neon database is properly configured and accessible from your backend server.
+- For more information, visit the [Neon documentation](https://neon.tech/docs/introduction).
