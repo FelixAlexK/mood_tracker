@@ -30,7 +30,7 @@ const { mutate } = useMutation({
   mutationKey: ["create-mood"],
   mutationFn: postMood,
 
-  onSuccess: async (data) => {
+  onSuccess: async (data, variables) => {
     if (data.error && data.error?.status === 401) {
       toast.error("Please login to create a mood");
       return;
@@ -41,7 +41,7 @@ const { mutate } = useMutation({
       return;
     }
 
-    toast.success(`${data.data?.emoji} Mood successfully created!`);
+    toast.success(`${variables.emoji} Mood successfully created!`);
   },
 
   onError: (error) => {
