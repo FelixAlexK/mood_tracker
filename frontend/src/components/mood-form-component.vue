@@ -128,7 +128,7 @@ const form = useForm({
             <textarea
               :name="field.name"
               :value="field.state.value"
-              class="w-full p-4 bg-mt-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-mt-600"
+              class="w-full p-4 bg-mt-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-mt-600 "
               rows="3"
               :maxlength="MAX"
               @input="(e) => {
@@ -137,7 +137,7 @@ const form = useForm({
                 field.handleChange(value);
               }"
             />
-            <div class="text-sm text-gray-500 mt-2">
+            <div class="flex justify-end text-sm text-gray-500 ">
               {{ field.state.value.length }}/{{ MAX }} <!-- Display character count -->
             </div>
             <em role="alert" class="text-red-500">{{
