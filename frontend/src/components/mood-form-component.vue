@@ -28,11 +28,13 @@ const { t } = useI18n();
 const toast = useToast(); // Initialize toast
 const selectedType = ref<typeof MOOD_TYPES[number]["type"] | undefined>(undefined);
 const showAllMoods = ref(false);
+const MAX = 200;
 
 const form = useForm({
   defaultValues: {
     note: mood.note || "",
   },
+
   onSubmit: async ({ value }) => {
     // Check if a mood type is selected
     if (!selectedType.value) {
@@ -113,6 +115,10 @@ const form = useForm({
       </div>
       <form.Field
         name="note"
+        :validators="{
+          onChange: ({ value }) =>
+            value.length > MAX ? toast.warning(t('general.maxCharactersReached')) : undefined,
+        }"
       >
         <template #default="{ field }">
           <div class="mt-8 mb-4">
@@ -122,10 +128,21 @@ const form = useForm({
             <textarea
               :name="field.name"
               :value="field.state.value"
-              class="w-full p-4 bg-mt-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-mt-600"
+              class="w-full p-4 bg-mt-100 border rounded-lg focus:outline-none focus:ring-2 focus:ring-mt-600 "
               rows="3"
-              @input="(e) => field.handleChange((e.target as HTMLTextAreaElement)?.value || '')"
+              :maxlength="MAX"
+              @input="(e) => {
+                const value = (e.target as HTMLTextAreaElement)?.value || '';
+
+                field.handleChange(value);
+              }"
             />
+            <div class="flex justify-end text-sm text-gray-500 ">
+              {{ field.state.value.length }}/{{ MAX }} <!-- Display character count -->
+            </div>
+            <em role="alert" class="text-red-500">{{
+              field.state.meta.errors.join(', ')
+            }}</em>
           </div>
         </template>
       </form.Field>
